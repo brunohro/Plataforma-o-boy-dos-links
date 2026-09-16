@@ -1,0 +1,157 @@
+# ==============================
+
+# Python
+
+# ==============================
+
+**pycache**/
+*.py[cod]
+*$py.class
+*.so
+
+# Python virtual environment
+
+venv/
+.venv/
+env/
+ENV/
+.ENV/
+
+# Distribution / packaging
+
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ==============================
+
+# Django
+
+# ==============================
+
+# Local settings
+
+local_settings.py
+
+# Database
+
+db.sqlite3
+db.sqlite3-journal
+
+# Django static/media files
+
+staticfiles/
+media/
+
+# Django cache
+
+*.log
+
+# ==============================
+
+# Environment variables
+
+# ==============================
+
+.env
+.env.*
+!.env.example
+
+# ==============================
+
+# IDEs / Editors
+
+# ==============================
+
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ==============================
+
+# Operating System
+
+# ==============================
+
+# Windows
+
+Thumbs.db
+Desktop.ini
+
+# macOS
+
+.DS_Store
+
+# Linux
+
+.nfs*
+
+# ==============================
+
+# Testing / Coverage
+
+# ==============================
+
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
+
+# ==============================
+
+# Type checking
+
+# ==============================
+
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+
+# ==============================
+
+# Jupyter Notebook
+
+# ==============================
+
+.ipynb_checkpoints/
+
+# ==============================
+
+# Ruff / Black
+
+# ==============================
+
+.ruff_cache/
+
+# ==============================
+
+# Django migrations
+
+# ==============================
+
+# NÃO ignore migrations.
+
+# As migrations devem ser versionadas no Git.
+
+# */migrations/*.py
+
+# !*/migrations/**init**.py

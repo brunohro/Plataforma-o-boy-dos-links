@@ -1,199 +1,48 @@
+{% extends 'plataforma/base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <header class="header">
-
-    <!-- Linha superior -->
-    <div class="header-top">
-        <p class="header-slogan">
-            As melhores promoções, atualizadas todos os dias.
-        </p>
-
-        <div class="header-links">
-            <a href="#">Central de Cupons</a>
-            <a href="#">Área Admin</a>
-        </div>
-    </div>
-
-    <!-- Linha principal -->
-    <div class="header-main">
-
-        <!-- Logo / Nome -->
-        <a href="/" class="logo">
-            <img class="logo-image" src="{% static 'images/logo.png' %}" alt="Logo do site">
-
-            <div class="logo-text">
-                <strong>O Boy <span>dos Links</span></strong>
-                <small>PROMOÇÕES &amp; CUPONS</small>
-            </div>
-        </a>
-
-        <!-- Busca -->
-        <form class="search-form" action="#" method="get">
-            <input
-                type="search"
-                name="q"
-                placeholder="Busque por produtos, marcas e ofertas..."
-                aria-label="Buscar produtos, marcas e ofertas"
-            >
-
-            <button type="submit">
-                BUSCAR
-            </button>
-        </form>
-
-        <!-- Ações -->
-        <div class="header-actions">
-            <a href="#">
-                🎟️ Cupons
-            </a>
-
-            <a href="#">
-                ♙ Sair
-            </a>
-        </div>
-
-    </div>
-
-    <!-- Menu de navegação -->
-    <nav class="header-nav" aria-label="Navegação principal">
-
-        <a href="#" class="categories">
-            <span class="menu-icon">☰</span>
-            Todas as categorias
-        </a>
-
-        <a href="#">
-            Promoções
-        </a>
-
-        <a href="#">
-            Ofertas em Destaque
-        </a>
-
-        <a href="#">
-            Cupons e Descontos
-        </a>
-
-        <a href="#">
-            Sobre
-        </a>
-
-    </nav>
-
-    </header>
-    <main>
-        <section class="banner-section">
-
-    <div class="carousel">
-
+{% block content %}
+<main>
+    <section class="banner-section">
+        <div class="carousel">
         <div class="carousel-track">
+        <div class="carousel-slide">
+            <img src="{% static 'images/banner1.png' %}" 
+                    alt="Semana da Tecnologia">
+        </div>
 
-            <div class="carousel-slide">
-                <img src="{% static 'images/banner1.png' %}" 
-                     alt="Semana da Tecnologia">
-            </div>
+        <div class="carousel-slide">
+            <img src="{% static 'images/banner2.png' %}" 
+                    alt="Ofertas em destaque">
+        </div>
 
-            <div class="carousel-slide">
-                <img src="{% static 'images/banner2.png' %}" 
-                     alt="Ofertas em destaque">
-            </div>
-
-            <div class="carousel-slide">
-                <img src="{% static 'images/banner3.png' %}" 
-                     alt="Cupons e descontos">
-            </div>
+        <div class="carousel-slide">
+            <img src="{% static 'images/banner3.png' %}" 
+                    alt="Cupons e descontos">
+        </div>
 
         </div>
 
         <!-- Botões -->
         <button class="carousel-button prev" onclick="mudarSlide(-1)">
-            ❮
+        ❮
         </button>
 
         <button class="carousel-button next" onclick="mudarSlide(1)">
-            ❯
+        ❯
         </button>
 
         <!-- Indicadores -->
         <div class="carousel-indicators">
 
-            <span class="indicator active" onclick="irParaSlide(0)"></span>
-            <span class="indicator" onclick="irParaSlide(1)"></span>
-            <span class="indicator" onclick="irParaSlide(2)"></span>
+        <span class="indicator active" onclick="irParaSlide(0)"></span>
+        <span class="indicator" onclick="irParaSlide(1)"></span>
+        <span class="indicator" onclick="irParaSlide(2)"></span>
 
         </div>
 
-    </div>
+        </div>
 
-</section>
-    </main>
-</body>
-</html>
-
-<script>
-
-let slideAtual = 0;
-
-const slides = document.querySelectorAll(".carousel-slide");
-const track = document.querySelector(".carousel-track");
-const indicadores = document.querySelectorAll(".indicator");
-
-function mostrarSlide(numero) {
-
-    if (numero >= slides.length) {
-        slideAtual = 0;
-    }
-
-    else if (numero < 0) {
-        slideAtual = slides.length - 1;
-    }
-
-    else {
-        slideAtual = numero;
-    }
-
-    track.style.transform = `translateX(-${slideAtual * 100}%)`;
-
-    indicadores.forEach((indicador, index) => {
-
-        indicador.classList.toggle(
-            "active",
-            index === slideAtual
-        );
-
-    });
-}
-
-
-function mudarSlide(direcao) {
-
-    mostrarSlide(slideAtual + direcao);
-
-}
-
-
-function irParaSlide(numero) {
-
-    mostrarSlide(numero);
-
-}
-
-
-/* Troca automática */
-
-setInterval(() => {
-
-    mudarSlide(1);
-
-}, 5000);
-
-</script>
+    </section>
+</main>
+{% endblock %}

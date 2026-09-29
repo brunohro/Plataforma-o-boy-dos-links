@@ -1,0 +1,80 @@
+{% load static %}
+<header class="header">
+    <!-- Linha superior -->
+    <div class="header-top">
+        <p class="header-slogan">
+            As melhores promoções, atualizadas todos os dias.
+        </p>
+
+        <div class="header-links">
+            <a href="#">Central de Cupons</a>
+            <a href="#">Área Admin</a>
+        </div>
+    </div>
+
+    <!-- Linha principal -->
+    <div class="header-main">
+
+        <!-- Logo / Nome -->
+        <a href="/" class="logo">
+            <img class="logo-image" src="{% static 'images/logo.png' %}" alt="Logo do site">
+
+            <div class="logo-text">
+                <strong>O Boy <span>dos Links</span></strong>
+                <small>PROMOÇÕES &amp; CUPONS</small>
+            </div>
+        </a>
+
+        <!-- Busca -->
+        <form class="search-form" action="#" method="get">
+            <input
+                type="search"
+                name="q"
+                placeholder="Busque por produtos, marcas e ofertas..."
+                aria-label="Buscar produtos, marcas e ofertas"
+            >
+
+            <button type="submit">
+                BUSCAR
+            </button>
+        </form>
+
+        <!-- Ações -->
+        <div class="header-actions">
+            <a href="#">
+                🎟️ Cupons
+            </a>
+
+            <a href="#">
+                ♙ Sair
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Menu de navegação -->
+    <nav class="header-nav" aria-label="Navegação principal">
+
+        <a href="#" class="categories">
+            <span class="menu-icon">☰</span>
+            Todas as categorias
+        </a>
+
+        <a href="#">
+            Promoções
+        </a>
+
+        <a href="#">
+            Ofertas em Destaque
+        </a>
+
+        <a href="#">
+            Cupons e Descontos
+        </a>
+
+        <a href="#">
+            Sobre
+        </a>
+
+    </nav>
+</header>

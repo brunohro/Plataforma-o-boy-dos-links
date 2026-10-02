@@ -1,80 +1,229 @@
 {% load static %}
-<header class="header">
-    <!-- Linha superior -->
-    <div class="header-top">
-        <p class="header-slogan">
-            As melhores promoções, atualizadas todos os dias.
-        </p>
 
-        <div class="header-links">
-            <a href="#">Central de Cupons</a>
-            <a href="#">Área Admin</a>
+<header class="site-header">
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <span class="top-message">
+                As melhores promoções, atualizadas todos os dias.
+            </span>
+
+            <div class="top-links">
+                <a href="/cupons">Central de Cupons</a>
+                <a href="/admin">Área Admin</a>
+            </div>
         </div>
     </div>
 
-    <!-- Linha principal -->
-    <div class="header-main">
 
-        <!-- Logo / Nome -->
+    <!-- HEADER PRINCIPAL -->
+    <div class="header-main container">
+
+        <!-- MENU MOBILE -->
+        <button class="mobile-menu-button" id="mobileMenuButton">
+            ☰
+        </button>
+
+
+        <!-- LOGO -->
         <a href="/" class="logo">
-            <img class="logo-image" src="{% static 'images/logo.png' %}" alt="Logo do site">
 
-            <div class="logo-text">
-                <strong>O Boy <span>dos Links</span></strong>
-                <small>PROMOÇÕES &amp; CUPONS</small>
-            </div>
+            <span class="logo-icon">
+                <img src="{% static 'images/favicon-2.png' %}" alt="Logo do site">
+            </span>
+
+            <span class="logo-text">
+                <strong>
+                    O Boy <span>dos Links</span>
+                </strong>
+
+                <small>
+                    PROMOÇÕES &amp; CUPONS
+                </small>
+            </span>
+
         </a>
 
-        <!-- Busca -->
-        <form class="search-form" action="#" method="get">
+
+        <!-- BUSCA DESKTOP -->
+        <form class="search-form desktop-search" action="/categoria/eletronicos">
+
+            <span class="search-icon">⌕</span>
+
             <input
-                type="search"
+                type="text"
                 name="q"
                 placeholder="Busque por produtos, marcas e ofertas..."
-                aria-label="Buscar produtos, marcas e ofertas"
             >
 
             <button type="submit">
-                BUSCAR
+                Buscar
             </button>
+
         </form>
 
-        <!-- Ações -->
-        <div class="header-actions">
-            <a href="#">
-                🎟️ Cupons
-            </a>
 
-            <a href="#">
-                ♙ Sair
+        <!-- AÇÕES -->
+        <div class="header-actions">
+
+            <a href="/cupons" class="header-action coupon-action">
+                <i class="fa-solid fa-ticket"></i>
+                <span>Cupons</span>
             </a>
+            
+
+            <!-- CONTA -->
+            <div class="account-dropdown">
+
+                <button class="account-button">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Entrar</span>
+                    <small>⌄</small>
+                </button>
+
+                <div class="account-menu">
+
+                    <strong>Minha Conta</strong>
+
+                    <div class="menu-divider"></div>
+
+                    <a href="/login">
+                        ↪ Entrar
+                    </a>
+
+                    <a href="/cadastro">
+                        <i class="fa-solid fa-user"></i>
+                        Criar conta
+                    </a>
+
+                    <div class="menu-divider"></div>
+
+                    <a href="/cupons">
+                        ♡ Favoritos
+                    </a>
+
+                    <a href="/cupons">
+                        <i class="fa-solid fa-ticket"></i>
+                        Meus cupons
+                    </a>
+
+                    <div class="menu-divider"></div>
+
+                    <a href="/admin">
+                        ▦ Painel Admin
+                    </a>
+
+                    <a href="/configuracoes">
+                        ⚙ Configurações
+                    </a>
+
+                </div>
+
+            </div>
+
         </div>
 
     </div>
 
-    <!-- Menu de navegação -->
-    <nav class="header-nav" aria-label="Navegação principal">
 
-        <a href="#" class="categories">
-            <span class="menu-icon">☰</span>
-            Todas as categorias
-        </a>
+    <!-- BUSCA MOBILE -->
+    <div class="mobile-search container">
 
-        <a href="#">
-            Promoções
-        </a>
+        <form action="/categoria/eletronicos">
 
-        <a href="#">
-            Ofertas em Destaque
-        </a>
+            <span class="search-icon">⌕</span>
 
-        <a href="#">
-            Cupons e Descontos
-        </a>
+            <input
+                type="text"
+                name="q"
+                placeholder="Buscar ofertas..."
+            >
 
-        <a href="#">
-            Sobre
-        </a>
+        </form>
+
+    </div>
+
+
+    <!-- CATEGORIAS DESKTOP -->
+    <nav class="categories-bar">
+
+        <div class="container categories-content">
+
+            <div class="categories-dropdown">
+
+                <button class="categories-button">
+                    ☰
+                    Todas as categorias
+                </button>
+
+                <div class="categories-menu">
+
+                    <a href="/categoria/eletronicos">
+                        📱 Eletrônicos
+                    </a>
+
+                    <a href="/categoria/moda">
+                        👕 Moda
+                    </a>
+
+                    <a href="/categoria/casa">
+                        🏠 Casa
+                    </a>
+
+                    <a href="/categoria/esportes">
+                        ⚽ Esportes
+                    </a>
+
+                    <a href="/categoria/beleza">
+                        💄 Beleza
+                    </a>
+
+                    <a href="/categoria/informatica">
+                        💻 Informática
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <a href="/categoria/eletronicos">Eletrônicos</a>
+            <a href="/categoria/moda">Moda</a>
+            <a href="/categoria/casa">Casa</a>
+            <a href="/categoria/esportes">Esportes</a>
+            <a href="/categoria/beleza">Beleza</a>
+            <a href="/categoria/informatica">Informática</a>
+
+        </div>
 
     </nav>
+
+
+    <!-- MENU MOBILE -->
+    <div class="mobile-menu" id="mobileMenu">
+
+        <a href="/categoria/eletronicos">📱 Eletrônicos</a>
+        <a href="/categoria/moda">👕 Moda</a>
+        <a href="/categoria/casa">🏠 Casa</a>
+        <a href="/categoria/esportes">⚽ Esportes</a>
+        <a href="/categoria/beleza">💄 Beleza</a>
+        <a href="/categoria/informatica">💻 Informática</a>
+
+        <a href="/cupons" class="mobile-menu-coupon">
+            🎟️ Cupons
+        </a>
+
+    </div>
+
 </header>
+
+
+<script>
+    const mobileButton = document.getElementById('mobileMenuButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    mobileButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('active');
+    });
+</script>

@@ -1,0 +1,296 @@
+{% extends "plataforma/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="adm-page">
+
+    <!-- =========================
+         CABEÇALHO
+    ========================== -->
+
+    <section class="adm-header">
+
+        <div>
+            <span class="adm-subtitle">PAINEL ADMINISTRATIVO</span>
+
+            <h1>Painel de Administração</h1>
+
+            <p>
+                Gerencie os principais recursos da plataforma e acompanhe
+                o desempenho das ofertas.
+            </p>
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         ATALHOS
+    ========================== -->
+
+    <section class="adm-section">
+
+        <div class="section-title">
+            <h2>Gerenciamento</h2>
+            <span>Atalhos administrativos</span>
+        </div>
+
+
+        <div class="management-grid">
+
+            <a href="/adm/usuarios/" class="management-card">
+
+                <div class="management-icon">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+
+                <div class="management-info">
+                    <h3>Usuários</h3>
+                    <p>Gerencie os usuários cadastrados.</p>
+                </div>
+
+                <i class="fa-solid fa-chevron-right card-arrow"></i>
+
+            </a>
+
+
+            <a href="/adm/produtos/" class="management-card">
+
+                <div class="management-icon">
+                    <i class="fa-solid fa-box"></i>
+                </div>
+
+                <div class="management-info">
+                    <h3>Produtos</h3>
+                    <p>Gerencie as ofertas cadastradas.</p>
+                </div>
+
+                <i class="fa-solid fa-chevron-right card-arrow"></i>
+
+            </a>
+
+
+            <a href="/adm/pedidos/" class="management-card">
+
+                <div class="management-icon">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </div>
+
+                <div class="management-info">
+                    <h3>Pedidos</h3>
+                    <p>Acompanhe os pedidos realizados.</p>
+                </div>
+
+                <i class="fa-solid fa-chevron-right card-arrow"></i>
+
+            </a>
+
+
+            <a href="/adm/relatorios/" class="management-card">
+
+                <div class="management-icon">
+                    <i class="fa-solid fa-chart-column"></i>
+                </div>
+
+                <div class="management-info">
+                    <h3>Relatórios</h3>
+                    <p>Visualize dados e estatísticas.</p>
+                </div>
+
+                <i class="fa-solid fa-chevron-right card-arrow"></i>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         MÉTRICAS
+    ========================== -->
+
+    <section class="adm-section">
+
+        <div class="section-title">
+            <h2>Resumo</h2>
+            <span>Visão geral da plataforma</span>
+        </div>
+
+
+        <div class="metrics-grid">
+
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+
+                <div>
+                    <span class="metric-label">Usuários</span>
+                    <strong>1.248</strong>
+                </div>
+
+            </div>
+
+
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-box"></i>
+                </div>
+
+                <div>
+                    <span class="metric-label">Ofertas</span>
+                    <strong>356</strong>
+                </div>
+
+            </div>
+
+
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-eye"></i>
+                </div>
+
+                <div>
+                    <span class="metric-label">Visitas</span>
+                    <strong>8.492</strong>
+                </div>
+
+            </div>
+
+
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-arrow-pointer"></i>
+                </div>
+
+                <div>
+                    <span class="metric-label">Cliques</span>
+                    <strong>2.731</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         GRÁFICO
+    ========================== -->
+
+    <section class="adm-section">
+
+        <div class="section-title">
+
+            <div>
+                <h2>Visitas e Cliques</h2>
+
+                <span>
+                    Acompanhe o desempenho da plataforma por período.
+                </span>
+            </div>
+
+
+            <div class="period-filter">
+
+                <button class="period-button active">
+                    Dia
+                </button>
+
+                <button class="period-button">
+                    Semana
+                </button>
+
+                <button class="period-button">
+                    Mês
+                </button>
+
+                <button class="period-button">
+                    Ano
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div class="chart-legend">
+
+                    <span>
+                        <i class="legend-dot visits"></i>
+                        Visitas
+                    </span>
+
+                    <span>
+                        <i class="legend-dot clicks"></i>
+                        Cliques
+                    </span>
+
+                </div>
+
+
+                <select class="date-filter">
+
+                    <option value="7">Últimos 7 dias</option>
+                    <option value="15">Últimos 15 dias</option>
+                    <option value="30" selected>Últimos 30 dias</option>
+                    <option value="90">Últimos 90 dias</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="chart-placeholder">
+
+                <div class="chart-y-axis">
+                    <span>1000</span>
+                    <span>750</span>
+                    <span>500</span>
+                    <span>250</span>
+                    <span>0</span>
+                </div>
+
+
+                <div class="chart-area">
+
+                    <div class="chart-line visits-line"></div>
+
+                    <div class="chart-line clicks-line"></div>
+
+                    <div class="chart-grid-line line-1"></div>
+                    <div class="chart-grid-line line-2"></div>
+                    <div class="chart-grid-line line-3"></div>
+                    <div class="chart-grid-line line-4"></div>
+
+                    <div class="chart-x-axis">
+                        <span>01</span>
+                        <span>07</span>
+                        <span>14</span>
+                        <span>21</span>
+                        <span>30</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

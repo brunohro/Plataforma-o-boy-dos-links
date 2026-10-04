@@ -5,291 +5,366 @@
 {% block content %}
 
 <div class="adm-page">
+<!-- =========================
+     CABEÇALHO
+========================== -->
 
-    <!-- =========================
-         CABEÇALHO
-    ========================== -->
+<section class="adm-header">
 
-    <section class="adm-header">
+    <div>
+
+        <span class="adm-subtitle">
+            PAINEL ADMINISTRATIVO
+        </span>
+
+        <h1>Promoções</h1>
+
+        <p>
+            Gerencie as promoções cadastradas na plataforma.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     RESUMO
+========================== -->
+
+<section class="adm-section">
+
+    <div class="section-title">
 
         <div>
-            <span class="adm-subtitle">PAINEL ADMINISTRATIVO</span>
 
-            <h1>Painel de Administração</h1>
+            <h2>
+                Promoções
+            </h2>
 
-            <p>
-                Gerencie os principais recursos da plataforma e acompanhe
-                o desempenho das ofertas.
-            </p>
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         ATALHOS
-    ========================== -->
-
-    <section class="adm-section">
-
-        <div class="section-title">
-            <h2>Gerenciamento</h2>
-            <span>Atalhos administrativos</span>
-        </div>
-
-
-        <div class="management-grid">
-
-            <a href="/adm/usuarios/" class="management-card">
-
-                <div class="management-icon">
-                    <i class="fa-solid fa-users"></i>
-                </div>
-
-                <div class="management-info">
-                    <h3>Usuários</h3>
-                    <p>Gerencie os usuários cadastrados.</p>
-                </div>
-
-                <i class="fa-solid fa-chevron-right card-arrow"></i>
-
-            </a>
-
-
-            <a href="/adm/produtos/" class="management-card">
-
-                <div class="management-icon">
-                    <i class="fa-solid fa-box"></i>
-                </div>
-
-                <div class="management-info">
-                    <h3>Produtos</h3>
-                    <p>Gerencie as ofertas cadastradas.</p>
-                </div>
-
-                <i class="fa-solid fa-chevron-right card-arrow"></i>
-
-            </a>
-
-
-            <a href="/adm/pedidos/" class="management-card">
-
-                <div class="management-icon">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                </div>
-
-                <div class="management-info">
-                    <h3>Pedidos</h3>
-                    <p>Acompanhe os pedidos realizados.</p>
-                </div>
-
-                <i class="fa-solid fa-chevron-right card-arrow"></i>
-
-            </a>
-
-
-            <a href="/adm/relatorios/" class="management-card">
-
-                <div class="management-icon">
-                    <i class="fa-solid fa-chart-column"></i>
-                </div>
-
-                <div class="management-info">
-                    <h3>Relatórios</h3>
-                    <p>Visualize dados e estatísticas.</p>
-                </div>
-
-                <i class="fa-solid fa-chevron-right card-arrow"></i>
-
-            </a>
+            <span>
+                Visão geral das promoções cadastradas.
+            </span>
 
         </div>
 
-    </section>
+    </div>
 
 
-    <!-- =========================
-         MÉTRICAS
-    ========================== -->
+    <div class="metrics-grid">
 
-    <section class="adm-section">
+        <!-- TOTAL -->
 
-        <div class="section-title">
-            <h2>Resumo</h2>
-            <span>Visão geral da plataforma</span>
-        </div>
+        <div class="metric-card">
 
-
-        <div class="metrics-grid">
-
-            <div class="metric-card">
-
-                <div class="metric-icon">
-                    <i class="fa-solid fa-users"></i>
-                </div>
-
-                <div>
-                    <span class="metric-label">Usuários</span>
-                    <strong>1.248</strong>
-                </div>
-
+            <div class="metric-icon">
+                <i class="fa-solid fa-bolt"></i>
             </div>
-
-
-            <div class="metric-card">
-
-                <div class="metric-icon">
-                    <i class="fa-solid fa-box"></i>
-                </div>
-
-                <div>
-                    <span class="metric-label">Ofertas</span>
-                    <strong>356</strong>
-                </div>
-
-            </div>
-
-
-            <div class="metric-card">
-
-                <div class="metric-icon">
-                    <i class="fa-solid fa-eye"></i>
-                </div>
-
-                <div>
-                    <span class="metric-label">Visitas</span>
-                    <strong>8.492</strong>
-                </div>
-
-            </div>
-
-
-            <div class="metric-card">
-
-                <div class="metric-icon">
-                    <i class="fa-solid fa-arrow-pointer"></i>
-                </div>
-
-                <div>
-                    <span class="metric-label">Cliques</span>
-                    <strong>2.731</strong>
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         GRÁFICO
-    ========================== -->
-
-    <section class="adm-section">
-
-        <div class="section-title">
 
             <div>
-                <h2>Visitas e Cliques</h2>
 
-                <span>
-                    Acompanhe o desempenho da plataforma por período.
+                <span class="metric-label">
+                    Total
                 </span>
-            </div>
 
-
-            <div class="period-filter">
-
-                <button class="period-button active">
-                    Dia
-                </button>
-
-                <button class="period-button">
-                    Semana
-                </button>
-
-                <button class="period-button">
-                    Mês
-                </button>
-
-                <button class="period-button">
-                    Ano
-                </button>
+                <strong>
+                    {{ promocoes|length }}
+                </strong>
 
             </div>
 
         </div>
 
 
-        <div class="chart-card">
+        <!-- DESTAQUES -->
 
-            <div class="chart-header">
+        <div class="metric-card">
 
-                <div class="chart-legend">
-
-                    <span>
-                        <i class="legend-dot visits"></i>
-                        Visitas
-                    </span>
-
-                    <span>
-                        <i class="legend-dot clicks"></i>
-                        Cliques
-                    </span>
-
-                </div>
-
-
-                <select class="date-filter">
-
-                    <option value="7">Últimos 7 dias</option>
-                    <option value="15">Últimos 15 dias</option>
-                    <option value="30" selected>Últimos 30 dias</option>
-                    <option value="90">Últimos 90 dias</option>
-
-                </select>
-
+            <div class="metric-icon">
+                <i class="fa-solid fa-star"></i>
             </div>
 
+            <div>
 
-            <div class="chart-placeholder">
+                <span class="metric-label">
+                    Destaques
+                </span>
 
-                <div class="chart-y-axis">
-                    <span>1000</span>
-                    <span>750</span>
-                    <span>500</span>
-                    <span>250</span>
-                    <span>0</span>
-                </div>
-
-
-                <div class="chart-area">
-
-                    <div class="chart-line visits-line"></div>
-
-                    <div class="chart-line clicks-line"></div>
-
-                    <div class="chart-grid-line line-1"></div>
-                    <div class="chart-grid-line line-2"></div>
-                    <div class="chart-grid-line line-3"></div>
-                    <div class="chart-grid-line line-4"></div>
-
-                    <div class="chart-x-axis">
-                        <span>01</span>
-                        <span>07</span>
-                        <span>14</span>
-                        <span>21</span>
-                        <span>30</span>
-                    </div>
-
-                </div>
+                <strong>
+                    {{ total_destaques }}
+                </strong>
 
             </div>
 
         </div>
 
-    </section>
+
+        <!-- RELÂMPAGO -->
+
+        <div class="metric-card">
+
+            <div class="metric-icon">
+                <i class="fa-solid fa-bolt-lightning"></i>
+            </div>
+
+            <div>
+
+                <span class="metric-label">
+                    Relâmpago
+                </span>
+
+                <strong>
+                    {{ total_relampago }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- COM CUPOM -->
+
+        <div class="metric-card">
+
+            <div class="metric-icon">
+                <i class="fa-solid fa-ticket"></i>
+            </div>
+
+            <div>
+
+                <span class="metric-label">
+                    Com cupom
+                </span>
+
+                <strong>
+                    {{ total_com_cupom }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     LISTA DE PROMOÇÕES
+========================== -->
+
+<section class="adm-section">
+
+    <div class="section-title">
+
+        <div>
+
+            <h2>
+                Promoções cadastradas
+            </h2>
+
+            <span>
+                Todas as promoções disponíveis no sistema.
+            </span>
+
+        </div>
+
+
+        <a href="{% url 'painel_adm' %}"
+           class="section-link">
+
+            Voltar ao painel
+
+        </a>
+
+    </div>
+
+
+    <div class="admin-offers-list">
+
+        {% for promocao in promocoes %}
+
+            <div class="admin-offer-card">
+
+                <!-- =========================
+                     INFORMAÇÕES
+                ========================== -->
+
+                <div class="admin-offer-info">
+
+                    <h3>
+                        {{ promocao.nome_produto }}
+                    </h3>
+
+
+                    {% if promocao.loja %}
+
+                        <span>
+                            <i class="fa-solid fa-store"></i>
+                            {{ promocao.loja.nome }}
+                        </span>
+
+                    {% endif %}
+
+
+                    {% if promocao.categoria %}
+
+                        <span>
+                            <i class="fa-solid fa-layer-group"></i>
+                            {{ promocao.categoria.nome }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- =========================
+                     PREÇOS
+                ========================== -->
+
+                <div class="admin-offer-price">
+
+                    <small>
+                        R$ {{ promocao.preco_anterior }}
+                    </small>
+
+                    <strong>
+                        R$ {{ promocao.preco_atual }}
+                    </strong>
+
+                </div>
+
+
+                <!-- =========================
+                     DESCONTO
+                ========================== -->
+
+                <div class="admin-offer-discount">
+
+                    {{ promocao.desconto }}%
+
+                </div>
+
+
+                <!-- =========================
+                     INFORMAÇÕES EXTRAS
+                ========================== -->
+
+                <div class="promotion-info">
+
+                    {% if promocao.cupom %}
+
+                        <span class="promotion-badge coupon">
+
+                            <i class="fa-solid fa-ticket"></i>
+
+                            {{ promocao.cupom.codigo }}
+
+                        </span>
+
+                    {% endif %}
+
+
+                    {% if promocao.is_destaque %}
+
+                        <span class="promotion-badge highlight">
+
+                            <i class="fa-solid fa-star"></i>
+
+                            Destaque
+
+                        </span>
+
+                    {% endif %}
+
+
+                    {% if promocao.is_relampago %}
+
+                        <span class="promotion-badge flash">
+
+                            <i class="fa-solid fa-bolt"></i>
+
+                            Relâmpago
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- =========================
+                     PERÍODO
+                ========================== -->
+
+                <div class="promotion-date">
+
+                    <small>
+                        Início
+                    </small>
+
+                    <span>
+                        {{ promocao.data_inicio|date:"d/m/Y" }}
+                    </span>
+
+
+                    <small>
+                        Fim
+                    </small>
+
+                    <span>
+                        {{ promocao.data_fim|date:"d/m/Y" }}
+                    </span>
+
+                </div>
+
+
+                <!-- =========================
+                     LINK
+                ========================== -->
+
+                {% if promocao.link_afiliado %}
+
+                    <a
+                        href="{{ promocao.link_afiliado }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="promotion-link"
+                    >
+
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                        Ver oferta
+
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        {% empty %}
+
+            <div class="empty-state">
+
+                <i class="fa-solid fa-bolt"></i>
+
+                <h3>
+                    Nenhuma promoção cadastrada
+                </h3>
+
+                <p>
+                    Ainda não existem promoções cadastradas
+                    na plataforma.
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
 
 </div>
 

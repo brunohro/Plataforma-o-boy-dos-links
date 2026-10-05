@@ -632,7 +632,6 @@ def signup(request):
 # =========================================================
 
 @login_required
-@login_required
 def admin_dashboard(request):
 
     if not request.user.is_staff:
@@ -644,17 +643,44 @@ def admin_dashboard(request):
 
     hoje = date.today()
 
+    # =========================
+    # CONTADORES
+    # =========================
+
     total_usuarios = Usuario.objects.count()
+
     total_ofertas = Oferta.objects.count()
+
     total_lojas = loja.objects.count()
+
     total_categorias = Categoria.objects.count()
+
     total_cupons_ativos = Cupom.objects.filter(
         ativo=True,
         data_validade__gte=hoje
     ).count()
+
     total_promocoes = Promocao.objects.count()
+
+    total_destaques = Promocao.objects.filter(
+        is_destaque=True
+    ).count()
+
+    total_relampago = Promocao.objects.filter(
+        is_relampago=True
+    ).count()
+
+    total_com_cupom = Promocao.objects.filter(
+        cupom__isnull=False
+    ).count()
+
     total_votos = voto.objects.count()
+
     total_favoritos = favorito.objects.count()
+
+    # =========================
+    # TOTAL DE CLIQUES
+    # =========================
 
     total_clicks = sum(
         Oferta.objects.values_list(
@@ -662,6 +688,24 @@ def admin_dashboard(request):
             flat=True
         )
     )
+
+    # =========================
+    # PROMOÇÕES
+    # =========================
+
+    promocoes = (
+        Promocao.objects
+        .select_related(
+            "loja",
+            "categoria",
+            "cupom",
+        )
+        .order_by("-data_inicio")
+    )
+
+    # =========================
+    # OFERTAS RECENTES
+    # =========================
 
     ofertas_recentes = (
         Oferta.objects
@@ -673,6 +717,10 @@ def admin_dashboard(request):
         .order_by("-criado_em")[:10]
     )
 
+    # =========================
+    # RENDER
+    # =========================
+
     return render(
         request,
         "plataforma/adm/painel_adm.html",
@@ -682,10 +730,17 @@ def admin_dashboard(request):
             "total_lojas": total_lojas,
             "total_categorias": total_categorias,
             "total_cupons_ativos": total_cupons_ativos,
+
             "total_promocoes": total_promocoes,
+            "total_destaques": total_destaques,
+            "total_relampago": total_relampago,
+            "total_com_cupom": total_com_cupom,
+
             "total_votos": total_votos,
             "total_favoritos": total_favoritos,
             "total_clicks": total_clicks,
+
+            "promocoes": promocoes,
             "ofertas_recentes": ofertas_recentes,
         }
     )
@@ -704,7 +759,7 @@ def adm_usuarios(request):
 
     return render(
         request,
-        "plataforma/adm/usuarios.html",
+        "plataforma/adm/painel_adm.html",
         {
             "usuarios": usuarios,
         }
@@ -733,7 +788,7 @@ def adm_ofertas(request):
 
     return render(
         request,
-        "plataforma/adm/ofertas.html",
+        "plataforma/adm/painel_adm.html",
         {
             "ofertas": ofertas,
         }
@@ -754,7 +809,7 @@ def adm_lojas(request):
 
     return render(
         request,
-        "plataforma/adm/lojas.html",
+        "plataforma/adm/painel_adm.html",
         {
             "lojas": lojas,
         }
@@ -775,7 +830,7 @@ def adm_categorias(request):
 
     return render(
         request,
-        "plataforma/adm/categorias.html",
+        "plataforma/adm/painel_adm.html",
         {
             "categorias": categorias,
         }
@@ -800,7 +855,7 @@ def adm_cupons(request):
 
     return render(
         request,
-        "plataforma/adm/cupons.html",
+        "plataforma/adm/painel_adm.html",
         {
             "cupons": cupons,
         }
@@ -827,7 +882,7 @@ def adm_promocoes(request):
 
     return render(
         request,
-        "plataforma/adm/promocoes.html",
+        "plataforma/adm/painel_adm.html",
         {
             "promocoes": promocoes,
         }

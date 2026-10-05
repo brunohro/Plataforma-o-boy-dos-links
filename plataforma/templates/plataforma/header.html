@@ -158,42 +158,19 @@
                 </button>
 
                 <div class="categories-menu">
-
-                    <a href="/categoria/eletronicos">
-                        📱 Eletrônicos
-                    </a>
-
-                    <a href="/categoria/moda">
-                        👕 Moda
-                    </a>
-
-                    <a href="/categoria/casa">
-                        🏠 Casa
-                    </a>
-
-                    <a href="/categoria/esportes">
-                        ⚽ Esportes
-                    </a>
-
-                    <a href="/categoria/beleza">
-                        💄 Beleza
-                    </a>
-
-                    <a href="/categoria/informatica">
-                        💻 Informática
-                    </a>
-
+                    {% for categoria in categorias_header %}
+                    <a href="/categoria/{{categoria.slug}}">{{categoria.nome}}</a>
+                    {% endfor %}
                 </div>
 
             </div>
 
 
-            <a href="/categoria/eletronicos">Eletrônicos</a>
-            <a href="/categoria/moda">Moda</a>
-            <a href="/categoria/casa">Casa</a>
-            <a href="/categoria/esportes">Esportes</a>
-            <a href="/categoria/beleza">Beleza</a>
-            <a href="/categoria/informatica">Informática</a>
+            <div class="categories-links">
+                {% for categoria in categorias_header %}
+                <a href="/categoria/{{categoria.slug}}">{{categoria.nome}}</a>
+                {% endfor %}
+            </div>
 
         </div>
 
@@ -203,17 +180,18 @@
     <!-- MENU MOBILE -->
     <div class="mobile-menu" id="mobileMenu">
 
-        <a href="/categoria/eletronicos">📱 Eletrônicos</a>
-        <a href="/categoria/moda">👕 Moda</a>
-        <a href="/categoria/casa">🏠 Casa</a>
-        <a href="/categoria/esportes">⚽ Esportes</a>
-        <a href="/categoria/beleza">💄 Beleza</a>
-        <a href="/categoria/informatica">💻 Informática</a>
+        <div class="mobile-menu-header">
+            <strong>Menu</strong>
+            <button class="close-button" id="closeMobileMenuButton">✖</button>
+        </div>
 
-        <a href="/cupons" class="mobile-menu-coupon">
-            🎟️ Cupons
-        </a>
-
+        <ul class="mobile-menu-list">
+            {% for categoria in categorias_header %}
+            <li>
+                <a href="/categoria/{{categoria.slug}}">{{categoria.nome}}</a>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
 
 </header>

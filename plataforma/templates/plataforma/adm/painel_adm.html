@@ -13,94 +13,30 @@
     <section class="adm-header">
 
         <div>
-            <span class="adm-subtitle">PAINEL ADMINISTRATIVO</span>
 
-            <h1>Painel de Administração</h1>
+            <span class="adm-subtitle">
+                PAINEL ADMINISTRATIVO
+            </span>
+
+            <h1>Promoções</h1>
 
             <p>
-                Gerencie os principais recursos da plataforma e acompanhe
-                o desempenho das ofertas.
+                Gerencie as promoções cadastradas na plataforma.
             </p>
-        </div>
 
-    </section>
-
-
-    <!-- =========================
-         ATALHOS
-    ========================== -->
-
-    <section class="adm-section">
-
-        <div class="section-title">
-            <h2>Gerenciamento</h2>
-            <span>Atalhos administrativos</span>
         </div>
 
 
-        <div class="management-grid">
+        <!-- AÇÕES -->
 
-            <a href="/adm/usuarios/" class="management-card">
+        <div class="adm-header-actions">
 
-                <div class="management-icon">
-                    <i class="fa-solid fa-users"></i>
-                </div>
-
-                <div class="management-info">
-                    <h3>Usuários</h3>
-                    <p>Gerencie os usuários cadastrados.</p>
-                </div>
-
-                <i class="fa-solid fa-chevron-right card-arrow"></i>
-
-            </a>
-
-
-            <a href="/adm/produtos/" class="management-card">
-
-                <div class="management-icon">
-                    <i class="fa-solid fa-box"></i>
-                </div>
-
-                <div class="management-info">
-                    <h3>Produtos</h3>
-                    <p>Gerencie as ofertas cadastradas.</p>
-                </div>
-
-                <i class="fa-solid fa-chevron-right card-arrow"></i>
-
-            </a>
-
-
-            <a href="/adm/pedidos/" class="management-card">
-
-                <div class="management-icon">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                </div>
-
-                <div class="management-info">
-                    <h3>Pedidos</h3>
-                    <p>Acompanhe os pedidos realizados.</p>
-                </div>
-
-                <i class="fa-solid fa-chevron-right card-arrow"></i>
-
-            </a>
-
-
-            <a href="/adm/relatorios/" class="management-card">
-
-                <div class="management-icon">
-                    <i class="fa-solid fa-chart-column"></i>
-                </div>
-
-                <div class="management-info">
-                    <h3>Relatórios</h3>
-                    <p>Visualize dados e estatísticas.</p>
-                </div>
-
-                <i class="fa-solid fa-chevron-right card-arrow"></i>
-
+            <a
+                href=""
+                class="btn-primary"
+            >
+                <i class="fa-solid fa-plus"></i>
+                Nova promoção
             </a>
 
         </div>
@@ -109,19 +45,156 @@
 
 
     <!-- =========================
-         MÉTRICAS
+         RESUMO DAS PROMOÇÕES
     ========================== -->
 
     <section class="adm-section">
 
         <div class="section-title">
-            <h2>Resumo</h2>
-            <span>Visão geral da plataforma</span>
+
+            <div>
+
+                <h2>
+                    Promoções
+                </h2>
+
+                <span>
+                    Visão geral das promoções cadastradas.
+                </span>
+
+            </div>
+
         </div>
 
 
         <div class="metrics-grid">
 
+
+            <!-- TOTAL -->
+
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+
+                <div>
+
+                    <span class="metric-label">
+                        Total
+                    </span>
+
+                    <strong>
+                        {{ total_promocoes }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- DESTAQUES -->
+
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-star"></i>
+                </div>
+
+                <div>
+
+                    <span class="metric-label">
+                        Destaques
+                    </span>
+
+                    <strong>
+                        {{ total_destaques }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- RELÂMPAGO -->
+
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-bolt-lightning"></i>
+                </div>
+
+                <div>
+
+                    <span class="metric-label">
+                        Relâmpago
+                    </span>
+
+                    <strong>
+                        {{ total_relampago }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- COM CUPOM -->
+
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-ticket"></i>
+                </div>
+
+                <div>
+
+                    <span class="metric-label">
+                        Com cupom
+                    </span>
+
+                    <strong>
+                        {{ total_com_cupom }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         VISÃO GERAL DO SISTEMA
+    ========================== -->
+
+    <section class="adm-section">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+                    Visão geral do sistema
+                </h2>
+
+                <span>
+                    Informações gerais da plataforma.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="metrics-grid">
+
+
+            <!-- USUÁRIOS -->
+
             <div class="metric-card">
 
                 <div class="metric-icon">
@@ -129,40 +202,159 @@
                 </div>
 
                 <div>
-                    <span class="metric-label">Usuários</span>
-                    <strong>1.248</strong>
+
+                    <span class="metric-label">
+                        Usuários
+                    </span>
+
+                    <strong>
+                        {{ total_usuarios }}
+                    </strong>
+
                 </div>
 
             </div>
 
+
+            <!-- OFERTAS -->
 
             <div class="metric-card">
 
                 <div class="metric-icon">
-                    <i class="fa-solid fa-box"></i>
+                    <i class="fa-solid fa-tag"></i>
                 </div>
 
                 <div>
-                    <span class="metric-label">Ofertas</span>
-                    <strong>356</strong>
+
+                    <span class="metric-label">
+                        Ofertas
+                    </span>
+
+                    <strong>
+                        {{ total_ofertas }}
+                    </strong>
+
                 </div>
 
             </div>
 
+
+            <!-- LOJAS -->
 
             <div class="metric-card">
 
                 <div class="metric-icon">
-                    <i class="fa-solid fa-eye"></i>
+                    <i class="fa-solid fa-store"></i>
                 </div>
 
                 <div>
-                    <span class="metric-label">Visitas</span>
-                    <strong>8.492</strong>
+
+                    <span class="metric-label">
+                        Lojas
+                    </span>
+
+                    <strong>
+                        {{ total_lojas }}
+                    </strong>
+
                 </div>
 
             </div>
 
+
+            <!-- CATEGORIAS -->
+
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+
+                <div>
+
+                    <span class="metric-label">
+                        Categorias
+                    </span>
+
+                    <strong>
+                        {{ total_categorias }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- CUPONS -->
+
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-ticket"></i>
+                </div>
+
+                <div>
+
+                    <span class="metric-label">
+                        Cupons ativos
+                    </span>
+
+                    <strong>
+                        {{ total_cupons_ativos }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- FAVORITOS -->
+
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+
+                <div>
+
+                    <span class="metric-label">
+                        Favoritos
+                    </span>
+
+                    <strong>
+                        {{ total_favoritos }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- VOTOS -->
+
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-thumbs-up"></i>
+                </div>
+
+                <div>
+
+                    <span class="metric-label">
+                        Votos
+                    </span>
+
+                    <strong>
+                        {{ total_votos }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- CLIQUES -->
 
             <div class="metric-card">
 
@@ -171,11 +363,19 @@
                 </div>
 
                 <div>
-                    <span class="metric-label">Cliques</span>
-                    <strong>2.731</strong>
+
+                    <span class="metric-label">
+                        Cliques
+                    </span>
+
+                    <strong>
+                        {{ total_clicks }}
+                    </strong>
+
                 </div>
 
             </div>
+
 
         </div>
 
@@ -183,7 +383,7 @@
 
 
     <!-- =========================
-         GRÁFICO
+         LISTA DE PROMOÇÕES
     ========================== -->
 
     <section class="adm-section">
@@ -191,105 +391,295 @@
         <div class="section-title">
 
             <div>
-                <h2>Visitas e Cliques</h2>
+
+                <h2>
+                    Promoções cadastradas
+                </h2>
 
                 <span>
-                    Acompanhe o desempenho da plataforma por período.
+                    Todas as promoções disponíveis no sistema.
                 </span>
+
             </div>
 
 
-            <div class="period-filter">
+            <div class="section-actions">
 
-                <button class="period-button active">
-                    Dia
-                </button>
-
-                <button class="period-button">
-                    Semana
-                </button>
-
-                <button class="period-button">
-                    Mês
-                </button>
-
-                <button class="period-button">
-                    Ano
-                </button>
+                <a
+                    href=""
+                    class="btn-primary"
+                >
+                    <i class="fa-solid fa-plus"></i>
+                    Nova promoção
+                </a>
 
             </div>
 
         </div>
 
 
-        <div class="chart-card">
-
-            <div class="chart-header">
-
-                <div class="chart-legend">
-
-                    <span>
-                        <i class="legend-dot visits"></i>
-                        Visitas
-                    </span>
-
-                    <span>
-                        <i class="legend-dot clicks"></i>
-                        Cliques
-                    </span>
-
-                </div>
+        <div class="admin-offers-list">
 
 
-                <select class="date-filter">
+            {% for promocao in promocoes %}
 
-                    <option value="7">Últimos 7 dias</option>
-                    <option value="15">Últimos 15 dias</option>
-                    <option value="30" selected>Últimos 30 dias</option>
-                    <option value="90">Últimos 90 dias</option>
-
-                </select>
-
-            </div>
+                <div class="admin-offer-card">
 
 
-            <div class="chart-placeholder">
+                    <!-- =========================
+                         INFORMAÇÕES
+                    ========================== -->
 
-                <div class="chart-y-axis">
-                    <span>1000</span>
-                    <span>750</span>
-                    <span>500</span>
-                    <span>250</span>
-                    <span>0</span>
-                </div>
+                    <div class="admin-offer-info">
+
+                        <h3>
+                            {{ promocao.nome_produto }}
+                        </h3>
 
 
-                <div class="chart-area">
+                        {% if promocao.loja %}
 
-                    <div class="chart-line visits-line"></div>
+                            <span>
 
-                    <div class="chart-line clicks-line"></div>
+                                <i class="fa-solid fa-store"></i>
 
-                    <div class="chart-grid-line line-1"></div>
-                    <div class="chart-grid-line line-2"></div>
-                    <div class="chart-grid-line line-3"></div>
-                    <div class="chart-grid-line line-4"></div>
+                                {{ promocao.loja.nome }}
 
-                    <div class="chart-x-axis">
-                        <span>01</span>
-                        <span>07</span>
-                        <span>14</span>
-                        <span>21</span>
-                        <span>30</span>
+                            </span>
+
+                        {% endif %}
+
+
+                        {% if promocao.categoria %}
+
+                            <span>
+
+                                <i class="fa-solid fa-layer-group"></i>
+
+                                {{ promocao.categoria.nome }}
+
+                            </span>
+
+                        {% endif %}
+
                     </div>
 
+
+                    <!-- =========================
+                         PREÇOS
+                    ========================== -->
+
+                    <div class="admin-offer-price">
+
+                        <small>
+                            R$ {{ promocao.preco_anterior }}
+                        </small>
+
+                        <strong>
+                            R$ {{ promocao.preco_atual }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- =========================
+                         DESCONTO
+                    ========================== -->
+
+                    <div class="admin-offer-discount">
+
+                        {{ promocao.desconto }}%
+
+                    </div>
+
+
+                    <!-- =========================
+                         INFORMAÇÕES EXTRAS
+                    ========================== -->
+
+                    <div class="promotion-info">
+
+
+                        {% if promocao.cupom %}
+
+                            <span class="promotion-badge coupon">
+
+                                <i class="fa-solid fa-ticket"></i>
+
+                                {{ promocao.cupom.codigo }}
+
+                            </span>
+
+                        {% endif %}
+
+
+                        {% if promocao.is_destaque %}
+
+                            <span class="promotion-badge highlight">
+
+                                <i class="fa-solid fa-star"></i>
+
+                                Destaque
+
+                            </span>
+
+                        {% endif %}
+
+
+                        {% if promocao.is_relampago %}
+
+                            <span class="promotion-badge flash">
+
+                                <i class="fa-solid fa-bolt"></i>
+
+                                Relâmpago
+
+                            </span>
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                    <!-- =========================
+                         PERÍODO
+                    ========================== -->
+
+                    <div class="promotion-date">
+
+                        <small>
+                            Início
+                        </small>
+
+                        <span>
+                            {{ promocao.data_inicio|date:"d/m/Y" }}
+                        </span>
+
+
+                        <small>
+                            Fim
+                        </small>
+
+                        <span>
+                            {{ promocao.data_fim|date:"d/m/Y" }}
+                        </span>
+
+                    </div>
+
+
+                    <!-- =========================
+                         AÇÕES
+                    ========================== -->
+
+                    <div class="promotion-actions">
+
+
+                        <!-- VER OFERTA -->
+
+                        {% if promocao.link_afiliado %}
+
+                            <button
+                                href="{{ promocao.link_afiliado }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="promotion-link"
+                                title="Ver oferta"
+                            >
+                            
+
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                                Ver
+
+                            </button>
+
+                        {% endif %}
+
+
+                        <!-- EDITAR -->
+
+                        <button
+                            href=""
+                            class="promotion-edit"
+                            title="Editar promoção"
+                        >
+
+                            <i class="fa-solid fa-pen"></i>
+
+                            Editar
+
+                        </button>
+
+
+                        <!-- EXCLUIR -->
+
+                        <form
+                            method="post"
+                            action="{% url 'excluir_promocao' promocao.pk %}"
+                            style="display: inline;"
+                            onsubmit="return confirm('Tem certeza que deseja excluir esta promoção?');"
+                        >
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                href=""
+                                class="promotion-edit"
+                                title="Editar promoção"
+                            >
+
+                                <i class="fa-solid fa-trash"></i>
+
+                                Excluir
+
+                            </button>
+                        </form>
+
+                    </div>
+
+
                 </div>
 
-            </div>
+
+            {% empty %}
+
+
+                <div class="empty-state">
+
+                    <i class="fa-solid fa-bolt"></i>
+
+                    <h3>
+                        Nenhuma promoção cadastrada
+                    </h3>
+
+                    <p>
+                        Ainda não existem promoções cadastradas
+                        na plataforma.
+                    </p>
+
+
+                    <a
+                        href=""
+                        class="btn-primary"
+                    >
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Cadastrar primeira promoção
+
+                    </a>
+
+                </div>
+
+
+            {% endfor %}
+
 
         </div>
 
     </section>
+
 
 </div>
 

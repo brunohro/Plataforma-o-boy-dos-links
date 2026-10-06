@@ -9,22 +9,6 @@ class Usuario(AbstractUser):
     def __str__(self):
         return self.username
 
-
-class Administrador(models.Model):
-    usuario = models.OneToOneField(
-        Usuario,
-        on_delete=models.CASCADE,
-        related_name="perfil_administrador",
-    )
-
-    def __str__(self):
-        return self.usuario.username
-
-    class Meta:
-        verbose_name = "Administrador"
-        verbose_name_plural = "Administradores"
-
-
 class Categoria(models.Model):
     nome = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(unique=True, blank=True, null=True)

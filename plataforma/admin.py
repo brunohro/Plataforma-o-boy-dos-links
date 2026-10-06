@@ -28,19 +28,6 @@ class UsuarioAdmin(admin.ModelAdmin):
         "last_name",
     )
 
-
-@admin.register(Administrador)
-class AdministradorAdmin(admin.ModelAdmin):
-    list_display = (
-        "usuario",
-    )
-
-    search_fields = (
-        "usuario__username",
-        "usuario__email",
-    )
-
-
 @admin.register(Categoria)
 class CategoriaAdmin(admin.ModelAdmin):
     list_display = (

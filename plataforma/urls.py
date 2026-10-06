@@ -4,21 +4,21 @@ from . import views
 
 urlpatterns = [
 
-    # Página inicial
+    # =====================================================
+    # PÁGINA INICIAL
+    # =====================================================
+
     path(
         "",
         views.home,
         name="index",
     ),
 
-    # Painel administrativo
-    path(
-        "adm/",
-        views.admin_dashboard,
-        name="painel_adm",
-    ),
 
-    # Ofertas
+    # =====================================================
+    # OFERTAS
+    # =====================================================
+
     path(
         "ofertas/",
         views.offers,
@@ -37,42 +37,66 @@ urlpatterns = [
         name="search",
     ),
 
-    # Categorias
+
+    # =====================================================
+    # CATEGORIAS
+    # =====================================================
+
     path(
         "categoria/<int:categoria_id>/",
         views.category,
         name="category",
     ),
 
-    # Lojas
+
+    # =====================================================
+    # LOJAS
+    # =====================================================
+
     path(
         "lojas/",
         views.stores,
         name="stores",
     ),
 
-    # Cupons
+
+    # =====================================================
+    # CUPONS
+    # =====================================================
+
     path(
         "cupons/",
         views.coupons,
         name="coupons",
     ),
 
-    # Favoritos
+
+    # =====================================================
+    # FAVORITOS
+    # =====================================================
+
     path(
         "oferta/<int:pk>/favorito/",
         views.toggle_favorite,
         name="toggle_favorite",
     ),
 
-    # Votos
+
+    # =====================================================
+    # VOTOS
+    # =====================================================
+
     path(
         "oferta/<int:pk>/voto/<int:value>/",
         views.vote,
         name="vote",
     ),
 
-    # Carrinho
+
+    # =====================================================
+    # CARRINHO
+    # =====================================================
+
     path(
         "carrinho/",
         views.cart,
@@ -91,13 +115,22 @@ urlpatterns = [
         name="remove_cart",
     ),
 
+
+    # =====================================================
+    # CHECKOUT
+    # =====================================================
+
     path(
         "checkout/",
         views.checkout,
         name="checkout",
     ),
 
-    # Conta
+
+    # =====================================================
+    # CONTA
+    # =====================================================
+
     path(
         "conta/",
         views.account,
@@ -109,90 +142,69 @@ urlpatterns = [
         views.signup,
         name="signup",
     ),
+
+
     # =====================================================
-# ADMINISTRAÇÃO
-# =====================================================
+    # PAINEL ADMINISTRATIVO
+    # =====================================================
 
-path(
-    "adm/",
-    views.admin_dashboard,
-    name="painel_adm",
-),
+    # Página principal do ADM
+    path(
+        "adm/",
+        views.admin_dashboard,
+        name="painel_adm",
+    ),
 
-path(
-    "adm/usuarios/",
-    views.adm_usuarios,
-    name="adm_usuarios",
-),
+    # Usuários
+    path(
+        "adm/usuarios/",
+        views.adm_usuarios,
+        name="adm_usuarios",
+    ),
 
-path(
-    "adm/ofertas/",
-    views.adm_ofertas,
-    name="adm_ofertas",
-),
+    # Ofertas
+    path(
+        "adm/ofertas/",
+        views.adm_ofertas,
+        name="adm_ofertas",
+    ),
 
-path(
-    "adm/lojas/",
-    views.adm_lojas,
-    name="adm_lojas",
-),
+    # Lojas
+    path(
+        "adm/lojas/",
+        views.adm_lojas,
+        name="adm_lojas",
+    ),
 
-path(
-    "adm/categorias/",
-    views.adm_categorias,
-    name="adm_categorias",
-),
+    # Categorias
+    path(
+        "adm/categorias/",
+        views.adm_categorias,
+        name="adm_categorias",
+    ),
 
-path(
-    "adm/cupons/",
-    views.adm_cupons,
-    name="adm_cupons",
-),
-# =====================================================
-# ADMINISTRAÇÃO
-# =====================================================
+    # Cupons
+    path(
+        "adm/cupons/",
+        views.adm_cupons,
+        name="adm_cupons",
+    ),
 
-path(
-    "adm/",
-    views.admin_dashboard,
-    name="painel_adm",
-),
+    # =====================================================
+    # PROMOÇÕES
+    # =====================================================
 
-path(
-    "adm/usuarios/",
-    views.adm_usuarios,
-    name="adm_usuarios",
-),
+    # Lista de promoções
+    path(
+        "adm/promocoes/",
+        views.adm_promocoes,
+        name="adm_promocoes",
+    ),
 
-path(
-    "adm/ofertas/",
-    views.adm_ofertas,
-    name="adm_ofertas",
-),
-
-path(
-    "adm/lojas/",
-    views.adm_lojas,
-    name="adm_lojas",
-),
-
-path(
-    "adm/categorias/",
-    views.adm_categorias,
-    name="adm_categorias",
-),
-
-path(
-    "adm/cupons/",
-    views.adm_cupons,
-    name="adm_cupons",
-),
-path(
-    "adm/promocoes/",
-    views.adm_promocoes,
-    name="adm_promocoes",
-),
-
-
-
+    # Excluir promoção
+    path(
+        "adm/promocoes/<int:pk>/excluir/",
+        views.excluir_promocao,
+        name="excluir_promocao",
+    ),
 ]

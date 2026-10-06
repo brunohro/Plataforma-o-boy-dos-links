@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .models import *
+from .forms import *
 
 
 # =========================================================
@@ -888,3 +889,29 @@ def adm_promocoes(request):
         }
     )
 
+
+# =========================================================
+# CRUD DE PROMOÇÕES
+# =========================================================
+
+@login_required
+def excluir_promocao(request, pk):
+    if not request.user.is_staff:
+        messages.error(
+            request,
+            "Você não tem permissão para acessar o painel administrativo."
+        )
+        return redirect("index")
+
+    promocao = get_object_or_404(Promocao, pk=pk)
+
+    if request.method == "POST":
+        nome = promocao.nome_produto
+        promocao.delete()
+
+        messages.success(
+            request,
+            f'Promoção "{nome}" excluída com sucesso!'
+        )
+
+    return redirect("painel_adm")

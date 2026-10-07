@@ -117,7 +117,6 @@ class LojaAdmin(admin.ModelAdmin):
     list_display = (
         "nome",
         "verificado",
-        "slug",
     )
 
     list_filter = (
@@ -127,10 +126,6 @@ class LojaAdmin(admin.ModelAdmin):
     search_fields = (
         "nome",
     )
-
-    prepopulated_fields = {
-        "slug": ("nome",),
-    }
 
 
 @admin.register(Oferta)
@@ -165,10 +160,6 @@ class OfertaAdmin(admin.ModelAdmin):
         "categoria__nome",
         "cupom__codigo",
     )
-
-    prepopulated_fields = {
-        "slug": ("nome_produto",),
-    }
 
     readonly_fields = (
         "criado_em",

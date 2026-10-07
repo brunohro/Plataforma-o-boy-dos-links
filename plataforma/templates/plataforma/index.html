@@ -43,6 +43,157 @@
 
         </div>
 
+        <div class="admin-offers-list">
+
+
+            {% for promocao in promocoes %}
+
+                <div class="admin-offer-card">
+
+
+                    <!-- =========================
+                         INFORMAÇÕES
+                    ========================== -->
+
+                    <div class="admin-offer-info">
+
+                        <h3>
+                            {{ promocao.nome_produto }}
+                        </h3>
+
+
+                        {% if promocao.loja %}
+
+                            <span>
+
+                                <i class="fa-solid fa-store"></i>
+
+                                {{ promocao.loja.nome }}
+
+                            </span>
+
+                        {% endif %}
+
+
+                        {% if promocao.categoria %}
+
+                            <span>
+
+                                <i class="fa-solid fa-layer-group"></i>
+
+                                {{ promocao.categoria.nome }}
+
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- =========================
+                         PREÇOS
+                    ========================== -->
+
+                    <div class="admin-offer-price">
+
+                        <small>
+                            R$ {{ promocao.preco_anterior }}
+                        </small>
+
+                        <strong>
+                            R$ {{ promocao.preco_atual }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- =========================
+                         DESCONTO
+                    ========================== -->
+
+                    <div class="admin-offer-discount">
+
+                        {{ promocao.desconto }}%
+
+                    </div>
+
+
+                    <!-- =========================
+                         INFORMAÇÕES EXTRAS
+                    ========================== -->
+
+                    <div class="promotion-info">
+
+
+                        {% if promocao.cupom %}
+
+                            <span class="promotion-badge coupon">
+
+                                <i class="fa-solid fa-ticket"></i>
+
+                                {{ promocao.cupom.codigo }}
+
+                            </span>
+
+                        {% endif %}
+
+
+                        {% if promocao.is_destaque %}
+
+                            <span class="promotion-badge highlight">
+
+                                <i class="fa-solid fa-star"></i>
+
+                                Destaque
+
+                            </span>
+
+                        {% endif %}
+
+
+                        {% if promocao.is_relampago %}
+
+                            <span class="promotion-badge flash">
+
+                                <i class="fa-solid fa-bolt"></i>
+
+                                Relâmpago
+
+                            </span>
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                    <!-- =========================
+                         PERÍODO
+                    ========================== -->
+
+                    <div class="promotion-date">
+
+                        <small>
+                            Início
+                        </small>
+
+                        <span>
+                            {{ promocao.data_inicio|date:"d/m/Y" }}
+                        </span>
+
+
+                        <small>
+                            Fim
+                        </small>
+
+                        <span>
+                            {{ promocao.data_fim|date:"d/m/Y" }}
+                        </span>
+
+                    </div>
+            {% endfor %}
+
+        </div>
     </section>
 </main>
 {% endblock %}

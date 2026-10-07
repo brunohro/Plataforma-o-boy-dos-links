@@ -11,7 +11,6 @@ class Usuario(AbstractUser):
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(unique=True, blank=True, null=True)
     quantidade_ofertas_ativas = models.IntegerField(default=0)
 
     def __str__(self):
@@ -20,7 +19,6 @@ class Categoria(models.Model):
 
 class LojaParceira(models.Model):
     nome = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(unique=True, blank=True, null=True)
     logo_url = models.URLField(blank=True, null=True)
     verificado = models.BooleanField(default=True)
 
@@ -75,7 +73,6 @@ class Promocao(models.Model):
 
 class loja(models.Model):
     nome = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(unique=True, blank=True, null=True)
     logo_url = models.URLField(blank=True, null=True)
     verificado = models.BooleanField(default=True)
     def __str__(self):
@@ -96,7 +93,6 @@ class Oferta(models.Model):
     data_fim = models.DateField()
     is_destaque = models.BooleanField(default=False)
     is_relampago = models.BooleanField(default=False)
-    slug = models.SlugField(unique=True, blank=True, null=True)
     categoria = models.ForeignKey(
         Categoria,
         on_delete=models.SET_NULL,

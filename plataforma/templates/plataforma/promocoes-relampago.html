@@ -1,0 +1,116 @@
+{% if promocoes_relampago %}
+<section class="flash-promotions">
+    <div class="flash-container">
+
+        <div class="flash-header">
+            <div class="flash-title">
+                <div class="flash-icon">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <h2>Promoções Relâmpago</h2>
+            </div>
+        </div>
+
+
+        <div class="flash-grid">
+
+            {% for promocao in promocoes_relampago %}
+
+            <article class="flash-card">
+
+                <div class="product-image">
+
+                    <span class="discount-badge">
+                        -{{ promocao.desconto|floatformat:0 }}%
+                    </span>
+
+                    <button
+                        type="button"
+                        class="favorite-button"
+                        aria-label="Adicionar aos favoritos"
+                    >
+                        ♡
+                    </button>
+
+                    {% if promocao.imagem %}
+                        <img
+                            src="{{ promocao.imagem.url }}"
+                            alt="{{ promocao.nome_produto }}"
+                        >
+                    {% else %}
+                        <div class="product-image-placeholder">
+                            Sem imagem
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <div class="product-content">
+
+                    <div class="product-meta">
+
+                        <span class="store-name">
+                            {{ promocao.loja.nome }}
+                        </span>
+
+                        <span class="product-timer">
+                            Até {{ promocao.data_fim|date:"d/m/Y" }}
+                        </span>
+
+                    </div>
+
+
+                    <h3 class="product-title">
+                        {{ promocao.nome_produto }}
+                    </h3>
+
+
+                    <div class="price-area">
+
+                        <span class="old-price">
+                            R$ {{ promocao.preco_anterior|floatformat:2 }}
+                        </span>
+
+                        <strong class="current-price">
+                            R$ {{ promocao.preco_atual|floatformat:2 }}
+                        </strong>
+
+                        <span class="saving">
+                            Economize R$
+                            {{ promocao.preco_anterior|add:"-"|add:promocao.preco_atual }}
+                        </span>
+
+                    </div>
+
+
+                    {% if promocao.cupom %}
+
+                    <div class="coupon">
+                        🏷
+                        Cupom {{ promocao.cupom.codigo }}
+                    </div>
+
+                    {% endif %}
+
+
+                    <a
+                        href="{{ promocao.link_afiliado }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="offer-button"
+                    >
+                        Ver oferta
+                    </a>
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+</section>
+{% endif %}

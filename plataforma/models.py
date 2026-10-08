@@ -1,10 +1,9 @@
 from datetime import timedelta
 from decimal import Decimal, ROUND_HALF_UP
-
+from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import AbstractUser
 
 
 class Usuario(AbstractUser):
@@ -42,7 +41,7 @@ class Cupom(models.Model):
     )
     codigo = models.CharField(max_length=20, unique=True)
     descricao = models.TextField()
-    data_validade = models.DateTimeField()  # também em horas
+    data_validade = models.DateTimeField()
     desconto = models.DecimalField(max_digits=5, decimal_places=2)
     quantidade_usos = models.IntegerField(default=0)
     ativo = models.BooleanField(default=True)
@@ -100,37 +99,6 @@ class DescontoCalculadoMixin(models.Model):
                     {"preco_atual": "O preço atual não pode ser maior que o preço anterior."}
                 )
 
-class Promocao(DescontoCalculadoMixin):
-    loja = models.ForeignKey(
-        LojaParceira,
-        on_delete=models.CASCADE,  # apagar a loja apaga as promoções dela; categoria/cupom não
-        related_name="promocoes",
-    )
-    categoria = models.ForeignKey(
-        Categoria,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="promocoes",
-    )
-    cupom = models.ForeignKey(
-        Cupom,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="promocoes",
-        default=None,
-    )
-    nome_produto = models.CharField(max_length=100)
-    link_afiliado = models.URLField()
-    is_destaque = models.BooleanField(default=False)
-    is_relampago = models.BooleanField(default=False)
-    imagem_url = models.URLField(blank=True, null=True)
-    descricao = models.TextField(blank=True, null=True)
-
-    def __str__(self):
-        return self.nome_produto
-
 
 class Oferta(DescontoCalculadoMixin):
     loja = models.ForeignKey(
@@ -154,10 +122,12 @@ class Oferta(DescontoCalculadoMixin):
     )
     nome_produto = models.CharField(max_length=100)
     link_afiliado = models.URLField()
-    is_destaque = models.BooleanField(default=False)
-    is_relampago = models.BooleanField(default=False)
     image_url = models.URLField(blank=True, null=True)
     descricao = models.TextField(blank=True, null=True)
+
+    is_destaque = models.BooleanField(default=False)
+    is_relampago = models.BooleanField("Oferta relâmpago", default=False)
+
     criado_em = models.DateTimeField(auto_now_add=True)
     votos = models.IntegerField(default=0)
     clicks = models.IntegerField(default=0)

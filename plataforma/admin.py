@@ -2,7 +2,6 @@ from decimal import Decimal
 
 from django.contrib import admin
 from django.db.models import DecimalField, ExpressionWrapper, F
-from django.utils import timezone
 
 from .models import (
     Categoria,
@@ -10,7 +9,6 @@ from .models import (
     Favorito,
     LojaParceira,
     Oferta,
-    Promocao,
     Usuario,
     Voto,
 )
@@ -80,8 +78,8 @@ class CupomAdmin(admin.ModelAdmin):
     ordering = ("-data_validade",)
 
 
-@admin.register(Promocao)
-class PromocaoAdmin(DescontoAdminMixin, admin.ModelAdmin):
+@admin.register(Oferta)
+class OfertaAdmin(DescontoAdminMixin, admin.ModelAdmin):
     list_display = (
         "nome_produto",
         "loja",
@@ -92,37 +90,6 @@ class PromocaoAdmin(DescontoAdminMixin, admin.ModelAdmin):
         "desconto_exibido",
         "data_inicio",
         "data_fim",
-        "ativa",
-        "is_destaque",
-        "is_relampago",
-    )
-    list_filter = (
-        "loja",
-        "categoria",
-        "is_destaque",
-        "is_relampago",
-        "data_inicio",
-        "data_fim",
-    )
-    search_fields = (
-        "nome_produto",
-        "loja__nome",
-        "categoria__nome",
-        "cupom__codigo",
-    )
-    readonly_fields = ("desconto_exibido",)
-    ordering = ("-data_inicio",)
-
-
-@admin.register(Oferta)
-class OfertaAdmin(DescontoAdminMixin, admin.ModelAdmin):
-    list_display = (
-        "nome_produto",
-        "loja",
-        "categoria",
-        "preco_atual",
-        "preco_anterior",
-        "desconto_exibido",
         "ativa",
         "is_destaque",
         "is_relampago",
@@ -145,7 +112,14 @@ class OfertaAdmin(DescontoAdminMixin, admin.ModelAdmin):
         "categoria__nome",
         "cupom__codigo",
     )
-    readonly_fields = ("desconto_exibido", "criado_em", "votos", "clicks")
+    readonly_fields = (
+        "desconto_exibido",
+        "data_inicio",
+        "data_fim",
+        "criado_em",
+        "votos",
+        "clicks",
+    )
     ordering = ("-criado_em",)
 
 

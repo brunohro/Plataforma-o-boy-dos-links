@@ -1,4 +1,4 @@
-{% if promocoes_relampago %}
+{% if ofertas_relampago %}
 <section class="flash-promotions">
     <div class="flash-container">
 
@@ -14,7 +14,7 @@
 
         <div class="flash-grid">
 
-            {% for promocao in promocoes_relampago %}
+            {% for promocao in ofertas_relampago %}
 
             <article class="flash-card">
 
@@ -32,9 +32,9 @@
                         ♡
                     </button>
 
-                    {% if promocao.imagem_url %}
+                    {% if promocao.image_url %}
                         <img
-                            src="{{ promocao.imagem_url }}"
+                            src="{{ promocao.image_url }}"
                             alt="{{ promocao.nome_produto }}"
                         >
                     {% else %}
@@ -77,8 +77,7 @@
                         </strong>
 
                         <span class="saving">
-                            Economize R$
-                            {{ promocao.preco_anterior|add:"-"|add:promocao.preco_atual }}
+                            Economize R$ {{ promocao.economia|floatformat:2 }}
                         </span>
 
                     </div>

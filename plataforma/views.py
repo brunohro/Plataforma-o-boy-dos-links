@@ -406,10 +406,8 @@ def vote(request, pk, value):
 # CARRINHO
 # =========================================================
 
-def add_cart(request, pk):
-    """
-    Adiciona uma oferta ao carrinho da sessão.
-    """
+"""def add_cart(request, pk):
+    
 
     oferta = get_object_or_404(
         Oferta,
@@ -444,9 +442,7 @@ def add_cart(request, pk):
 
 
 def remove_cart(request, pk):
-    """
-    Remove uma oferta do carrinho.
-    """
+
 
     cart = request.session.get(
         "cart",
@@ -465,9 +461,7 @@ def remove_cart(request, pk):
 
 
 def cart(request):
-    """
-    Exibe o carrinho.
-    """
+  
 
     cart_data = request.session.get(
         "cart",
@@ -505,7 +499,7 @@ def cart(request):
         },
     )
 
-
+"""
 # =========================================================
 # CHECKOUT
 # =========================================================
@@ -915,3 +909,27 @@ def excluir_promocao(request, pk):
         )
 
     return redirect("painel_adm")
+
+# =========================================================
+# LISTAGEM PROMOÇÕES
+# =========================================================
+
+def promocoes(request):
+
+    user_promocoes = (
+        Promocao.objects
+        .select_related(
+            "loja",
+            "categoria",
+            "cupom",
+        )
+        .order_by("-data_inicio")
+    )
+
+    return render(
+        request,
+        "plataforma/index.html",
+        {
+            "promocoes": user_promocoes,
+        }
+    )

@@ -94,29 +94,6 @@ urlpatterns = [
 
 
     # =====================================================
-    # CARRINHO
-    # =====================================================
-
-    path(
-        "carrinho/",
-        views.cart,
-        name="cart",
-    ),
-
-    path(
-        "carrinho/adicionar/<int:pk>/",
-        views.add_cart,
-        name="add_cart",
-    ),
-
-    path(
-        "carrinho/remover/<int:pk>/",
-        views.remove_cart,
-        name="remove_cart",
-    ),
-
-
-    # =====================================================
     # CHECKOUT
     # =====================================================
 
@@ -207,4 +184,11 @@ urlpatterns = [
         views.excluir_promocao,
         name="excluir_promocao",
     ),
+
+        path(
+        "promocoes/",
+        views.promocoes,
+        name="promocoes",
+    ),
+
 ]

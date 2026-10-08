@@ -1,0 +1,41 @@
+{% load static %}
+<section class="banner-section">
+        <div class="carousel">
+        <div class="carousel-track">
+        <div class="carousel-slide">
+            <img src="{% static 'images/banner1.png' %}" 
+                    alt="Semana da Tecnologia">
+        </div>
+
+        <div class="carousel-slide">
+            <img src="{% static 'images/banner2.png' %}" 
+                    alt="Ofertas em destaque">
+        </div>
+
+        <div class="carousel-slide">
+            <img src="{% static 'images/banner3.png' %}" 
+                    alt="Cupons e descontos">
+        </div>
+
+        </div>
+
+        <!-- Botões -->
+        <button class="carousel-button prev" onclick="mudarSlide(-1)">
+        ❮
+        </button>
+
+        <button class="carousel-button next" onclick="mudarSlide(1)">
+        ❯
+        </button>
+
+        <!-- Indicadores -->
+        <div class="carousel-indicators">
+
+        <span class="indicator active" onclick="irParaSlide(0)"></span>
+        <span class="indicator" onclick="irParaSlide(1)"></span>
+        <span class="indicator" onclick="irParaSlide(2)"></span>
+
+        </div>
+
+        </div>
+</section>

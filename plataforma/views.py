@@ -10,13 +10,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .models import *
 from .forms import *
 
-
-# =========================================================
-# HOME
-# =========================================================
-
 def home(request):
     hoje = date.today()
+    
 
     ofertas = (
         Oferta.objects
@@ -56,6 +52,21 @@ def home(request):
         .order_by("data_validade")[:6]
     )
 
+    promocoes_relampago = (
+        Promocao.objects
+        .filter(
+            is_relampago=True,
+            data_inicio__lte=hoje,
+            data_fim__gte=hoje,
+        )
+        .select_related(
+            "loja",
+            "categoria",
+            "cupom",
+        )
+        .order_by("data_fim")[:4]
+    )
+
     return render(
         request,
         "plataforma/index.html",
@@ -64,6 +75,7 @@ def home(request):
             "hot": hot,
             "categorias": categorias,
             "coupons": cupons,
+            "promocoes_relampago": promocoes_relampago,
         },
     )
 

@@ -49,7 +49,15 @@ def home(request):
         "coupons": cupons,
         "promocoes_relampago": promocoes_relampago,
     })
+# =========================================================
+# LOGIN
+# =========================================================
 
+def login(request):
+    return render(
+        request, 
+        "plataforma/login/login.html"
+    )
 
 # =========================================================
 # LISTAGEM PÚBLICA DE PROMOÇÕES

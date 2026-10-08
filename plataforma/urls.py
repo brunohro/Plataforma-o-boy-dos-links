@@ -44,8 +44,8 @@ urlpatterns = [
 
     path(
         "categoria/<int:categoria_id>/",
-        views.category,
-        name="category",
+        views.categoria,
+        name="categoria",
     ),
 
 

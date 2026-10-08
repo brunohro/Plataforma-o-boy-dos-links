@@ -62,7 +62,7 @@ def home(request):
         {
             "offers": ofertas,
             "hot": hot,
-            "categories": categorias,
+            "categorias": categorias,
             "coupons": cupons,
         },
     )
@@ -152,7 +152,7 @@ def offers(request):
 # CATEGORIA
 # =========================================================
 
-def category(request, categoria_id):
+def categoria(request, categoria_id):
     """
     Exibe as ofertas de uma determinada categoria.
     """
@@ -180,12 +180,12 @@ def category(request, categoria_id):
 
     return render(
         request,
-        "offers/offers.html",
+        "plataforma/categoria.html",
         {
-            "offers": ofertas,
-            "query": categoria.nome,
+            "ofertas": ofertas,
+            "consulta": categoria.nome,
             "sort": "recent",
-            "category": categoria,
+            "categoria": categoria,
         },
     )
 

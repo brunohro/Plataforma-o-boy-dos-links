@@ -1,6 +1,40 @@
-from django.contrib import admin
+from decimal import Decimal
 
-from .models import*
+from django.contrib import admin
+from django.db.models import DecimalField, ExpressionWrapper, F
+from django.utils import timezone
+
+from .models import (
+    Categoria,
+    Cupom,
+    Favorito,
+    LojaParceira,
+    Oferta,
+    Promocao,
+    Usuario,
+    Voto,
+)
+
+
+class DescontoAdminMixin:
+    """Mostra o desconto calculado e permite ordenar por ele na listagem."""
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.annotate(
+            _desconto=ExpressionWrapper(
+                (F("preco_anterior") - F("preco_atual")) * Decimal("100") / F("preco_anterior"),
+                output_field=DecimalField(max_digits=6, decimal_places=2),
+            )
+        )
+
+    @admin.display(description="Desconto (%)", ordering="_desconto")
+    def desconto_exibido(self, obj):
+        return f"{obj.desconto}%"
+
+    @admin.display(description="Ativa?", boolean=True)
+    def ativa(self, obj):
+        return obj.esta_ativa
 
 
 @admin.register(Usuario)
@@ -14,41 +48,21 @@ class UsuarioAdmin(admin.ModelAdmin):
         "is_staff",
         "is_active",
     )
+    list_filter = ("is_staff", "is_superuser", "is_active")
+    search_fields = ("username", "email", "first_name", "last_name")
 
-    list_filter = (
-        "is_staff",
-        "is_superuser",
-        "is_active",
-    )
-
-    search_fields = (
-        "username",
-        "email",
-        "first_name",
-        "last_name",
-    )
 
 @admin.register(Categoria)
 class CategoriaAdmin(admin.ModelAdmin):
-    list_display = (
-        "nome",
-        "quantidade_ofertas_ativas",
-    )
-
-    search_fields = (
-        "nome",
-    )
+    list_display = ("nome", "quantidade_ofertas_ativas")
+    search_fields = ("nome",)
 
 
 @admin.register(LojaParceira)
 class LojaParceiraAdmin(admin.ModelAdmin):
-    list_display = (
-        "nome",
-    )
-
-    search_fields = (
-        "nome",
-    )
+    list_display = ("nome", "verificado")
+    list_filter = ("verificado",)
+    search_fields = ("nome",)
 
 
 @admin.register(Cupom)
@@ -61,26 +75,13 @@ class CupomAdmin(admin.ModelAdmin):
         "quantidade_usos",
         "ativo",
     )
-
-    list_filter = (
-        "ativo",
-        "loja",
-        "data_validade",
-    )
-
-    search_fields = (
-        "codigo",
-        "descricao",
-        "loja__nome",
-    )
-
-    ordering = (
-        "-data_validade",
-    )
+    list_filter = ("ativo", "loja", "data_validade")
+    search_fields = ("codigo", "descricao", "loja__nome")
+    ordering = ("-data_validade",)
 
 
 @admin.register(Promocao)
-class PromocaoAdmin(admin.ModelAdmin):
+class PromocaoAdmin(DescontoAdminMixin, admin.ModelAdmin):
     list_display = (
         "nome_produto",
         "loja",
@@ -88,13 +89,13 @@ class PromocaoAdmin(admin.ModelAdmin):
         "cupom",
         "preco_atual",
         "preco_anterior",
-        "desconto",
+        "desconto_exibido",
         "data_inicio",
         "data_fim",
+        "ativa",
         "is_destaque",
         "is_relampago",
     )
-
     list_filter = (
         "loja",
         "categoria",
@@ -103,47 +104,32 @@ class PromocaoAdmin(admin.ModelAdmin):
         "data_inicio",
         "data_fim",
     )
-
     search_fields = (
         "nome_produto",
         "loja__nome",
         "categoria__nome",
         "cupom__codigo",
     )
-
-
-@admin.register(loja)
-class LojaAdmin(admin.ModelAdmin):
-    list_display = (
-        "nome",
-        "verificado",
-    )
-
-    list_filter = (
-        "verificado",
-    )
-
-    search_fields = (
-        "nome",
-    )
+    readonly_fields = ("desconto_exibido",)
+    ordering = ("-data_inicio",)
 
 
 @admin.register(Oferta)
-class OfertaAdmin(admin.ModelAdmin):
+class OfertaAdmin(DescontoAdminMixin, admin.ModelAdmin):
     list_display = (
         "nome_produto",
         "loja",
         "categoria",
         "preco_atual",
         "preco_anterior",
-        "desconto",
+        "desconto_exibido",
+        "ativa",
         "is_destaque",
         "is_relampago",
         "votos",
         "clicks",
         "criado_em",
     )
-
     list_filter = (
         "loja",
         "categoria",
@@ -152,7 +138,6 @@ class OfertaAdmin(admin.ModelAdmin):
         "data_inicio",
         "data_fim",
     )
-
     search_fields = (
         "nome_produto",
         "descricao",
@@ -160,62 +145,24 @@ class OfertaAdmin(admin.ModelAdmin):
         "categoria__nome",
         "cupom__codigo",
     )
-
-    readonly_fields = (
-        "criado_em",
-        "votos",
-        "clicks",
-    )
-
-    ordering = (
-        "-criado_em",
-    )
+    readonly_fields = ("desconto_exibido", "criado_em", "votos", "clicks")
+    ordering = ("-criado_em",)
 
 
-@admin.register(favorito)
+@admin.register(Favorito)
 class FavoritoAdmin(admin.ModelAdmin):
-    list_display = (
-        "usuario",
-        "oferta",
-        "criado_em",
-    )
-
-    list_filter = (
-        "criado_em",
-    )
-
-    search_fields = (
-        "usuario__username",
-        "usuario__email",
-        "oferta__nome_produto",
-    )
-
-    readonly_fields = (
-        "criado_em",
-    )
+    list_display = ("usuario", "oferta", "criado_em")
+    list_filter = ("criado_em",)
+    search_fields = ("usuario__username", "usuario__email", "oferta__nome_produto")
+    readonly_fields = ("criado_em",)
 
 
-@admin.register(voto)
+@admin.register(Voto)
 class VotoAdmin(admin.ModelAdmin):
-    list_display = (
-        "usuario",
-        "oferta",
-        "criado_em",
-    )
-
-    list_filter = (
-        "criado_em",
-    )
-
-    search_fields = (
-        "usuario__username",
-        "usuario__email",
-        "oferta__nome_produto",
-    )
-
-    readonly_fields = (
-        "criado_em",
-    )
+    list_display = ("usuario", "oferta", "criado_em")
+    list_filter = ("criado_em",)
+    search_fields = ("usuario__username", "usuario__email", "oferta__nome_produto")
+    readonly_fields = ("criado_em",)
 
 
 admin.site.site_header = "Boydoslinks • Administração"

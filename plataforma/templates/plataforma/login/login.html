@@ -1,0 +1,81 @@
+{% extends "plataforma/base.html" %}
+{% load static %}
+
+{% block content %}
+    <main class="login-container">
+        <div class="login-area">
+
+            <h1 class="login-titulo">
+                o Boy <span>Dos Links</span>
+            </h1>
+
+            <div class="login-box">
+
+                <h2 class="login-subtitulo">
+                    Entrar
+                </h2>
+
+                <p class="login-descricao">
+                    Acesse sua conta para salvar<br>
+                    seus links e aproveitar recursos.
+                </p>
+
+                <form class="login-form">
+
+                    <div class="login-campo">
+
+                        <label for="email">
+                            E-mail
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="seu@email.com"
+                        >
+
+                    </div>
+
+                    <div class="login-campo login-senha-area">
+
+                        <div class="login-senha-label">
+
+                            <label for="senha">
+                                Senha
+                            </label>
+
+                            <a href="#">
+                                Esqueceu?
+                            </a>
+
+                        </div>
+
+                        <input
+                            type="password"
+                            id="senha"
+                            placeholder="••••••"
+                        >
+
+                    </div>
+
+                    <button class="login-botao" type="submit">
+                        Entrar
+                    </button>
+
+                </form>
+
+            </div>
+
+            <p class="login-cadastro">
+                Não tem uma conta?
+                <a href="#">Cadastre-se</a>
+            </p>
+
+        </div>
+    </main>
+
+</body>
+
+</html>
+
+{% endblock %}

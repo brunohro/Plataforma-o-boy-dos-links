@@ -7,9 +7,7 @@ urlpatterns = [
     # Público
     path("", views.home, name="index"),
     path("ofertas/", views.ofertas, name="ofertas"),
-    # Mantém links antigos funcionando
     path("promocoes/", RedirectView.as_view(pattern_name="ofertas", permanent=True)),
-    path("login/", views.login, name="login"),
 
     # Painel administrativo
     path("adm/", views.admin_dashboard, name="painel_adm"),

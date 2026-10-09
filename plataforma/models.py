@@ -1,5 +1,6 @@
 from datetime import timedelta
 from decimal import Decimal, ROUND_HALF_UP
+
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -16,7 +17,7 @@ class Usuario(AbstractUser):
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=100, unique=True)
-    quantidade_ofertas_ativas = models.IntegerField(default=0)
+    icone_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return self.nome

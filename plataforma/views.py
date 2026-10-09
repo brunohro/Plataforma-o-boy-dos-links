@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
-from django.db.models import Sum
+from django.db.models import Count, Q, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST
@@ -32,7 +32,16 @@ def home(request):
     hot = ativas.order_by("-votos", "-clicks")[:6]
     ofertas_relampago = ativas.filter(is_relampago=True).order_by("data_fim")[:4]
 
-    categorias = Categoria.objects.order_by("nome")[:12]
+    categorias = (
+        Categoria.objects
+        .annotate(
+            total_ativas=Count(
+                "ofertas",
+                filter=Q(ofertas__data_inicio__lte=agora, ofertas__data_fim__gte=agora),
+            )
+        )
+        .order_by("-total_ativas", "nome")[:12]
+    )
 
     cupons = (
         Cupom.objects
@@ -143,6 +152,3 @@ def excluir_oferta(request, pk):
 
     messages.success(request, f'Oferta "{nome}" excluída com sucesso!')
     return redirect("adm_ofertas")
-
-def login(request):
-    return render(request, "plataforma/login/login.html")

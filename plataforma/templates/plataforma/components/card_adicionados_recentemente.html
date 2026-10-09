@@ -1,20 +1,19 @@
-{% if ofertas_relampago %}
 <section class="flash-promotions">
-    <div class="flash-container flash-border">
+    <div class="flash-container">
 
         <div class="flash-header">
             <div class="flash-title">
                 <div class="flash-icon">
-                    <i class="fa-solid fa-bolt"></i>
+                    <i class="fa-solid fa-clock"></i>
                 </div>
-                <h2>Promoções Relâmpago</h2>
+                <h2>Adicionados Recentemente</h2>
             </div>
         </div>
 
 
         <div class="flash-grid">
 
-            {% for promocao in ofertas_relampago %}
+            {% for promocao in ofertas_relampago %} <!-- Aqui deve ser modificado para ofertas_adicionadas_recentemente -->
 
             <article class="flash-card">
 
@@ -112,4 +111,3 @@
 
     </div>
 </section>
-{% endif %}

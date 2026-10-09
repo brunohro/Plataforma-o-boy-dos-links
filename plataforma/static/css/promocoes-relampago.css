@@ -9,13 +9,13 @@
   width: 1216px;
   max-width: 1536px;
   margin: 0 auto;
-
   padding: 28px;
-
   background: var(--background-secundary);
-
-  border: 1px solid var(--primary);
   border-radius: 22px;
+}
+
+.flash-container.flash-border {
+  border: 1px solid var(--primary);
 }
 
 

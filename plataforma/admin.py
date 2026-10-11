@@ -1,7 +1,9 @@
 from decimal import Decimal
 
 from django.contrib import admin
-from django.db.models import DecimalField, ExpressionWrapper, F
+from django.db.models import Count, DecimalField, ExpressionWrapper, F, Q
+from django.utils import timezone
+from django.utils.html import format_html
 
 from .models import (
     Categoria,
@@ -52,8 +54,27 @@ class UsuarioAdmin(admin.ModelAdmin):
 
 @admin.register(Categoria)
 class CategoriaAdmin(admin.ModelAdmin):
-    list_display = ("nome", "quantidade_ofertas_ativas")
+    list_display = ("nome", "miniatura", "ofertas_ativas")
     search_fields = ("nome",)
+
+    def get_queryset(self, request):
+        agora = timezone.now()
+        return super().get_queryset(request).annotate(
+            _ativas=Count(
+                "ofertas",
+                filter=Q(ofertas__data_inicio__lte=agora, ofertas__data_fim__gte=agora),
+            )
+        )
+
+    @admin.display(description="Ícone")
+    def miniatura(self, obj):
+        if obj.icone_url:
+            return format_html('<img src="{}" style="height:32px;">', obj.icone_url)
+        return "-"
+
+    @admin.display(description="Ofertas ativas", ordering="_ativas")
+    def ofertas_ativas(self, obj):
+        return obj._ativas
 
 
 @admin.register(LojaParceira)

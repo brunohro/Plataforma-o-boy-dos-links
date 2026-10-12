@@ -145,4 +145,4 @@ def excluir_oferta(request, pk):
     return redirect("adm_ofertas")
 
 def login(request):
-    return render(request, "plataforma/login/cadastro.html")
+    return render(request, "plataforma/login/login.html")

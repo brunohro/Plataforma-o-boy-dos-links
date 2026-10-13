@@ -1,0 +1,514 @@
+/* ========================================
+   CUPONS EM DESTAQUE
+======================================== */
+
+.featured-coupons {
+    width: 100%;
+    padding: 28px 0;
+    background: var(--background);
+    color: var(--text-primary);
+    font-family: inherit;
+}
+
+.featured-coupons *,
+.featured-coupons *::before,
+.featured-coupons *::after {
+    box-sizing: border-box;
+}
+
+.featured-coupons__container {
+    width: 1216px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* ========================================
+   CABEÇALHO
+======================================== */
+
+.featured-coupons__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.featured-coupons__heading {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.featured-coupons__heading h2 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 23px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.featured-coupons__heading-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: var(--primary);
+    color: var(--text-primary);
+    font-size: 17px;
+}
+
+.featured-coupons__view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.featured-coupons__view-all:hover {
+    color: var(--primary-hover);
+    gap: 10px;
+}
+
+/* ========================================
+   GRADE DE CUPONS
+======================================== */
+
+.featured-coupons__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+/* ========================================
+   CARD
+======================================== */
+
+.coupon-card {
+    display: grid;
+    grid-template-columns: 125px minmax(0, 1fr);
+    min-width: 0;
+    min-height: 150px;
+    overflow: hidden;
+
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+
+    transition:
+        border-color 0.25s ease,
+        transform 0.25s ease,
+        background-color 0.25s ease;
+}
+
+.coupon-card:hover {
+    border-color: var(--primary-dark);
+    background: var(--card-hover);
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   ÁREA DO DESCONTO
+======================================== */
+
+.coupon-card__discount {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 12px 8px;
+
+    background: var(--surface);
+    text-align: center;
+}
+
+.coupon-card__ticket {
+    margin-bottom: 0;
+    color: var(--primary);
+    font-size: 21px;
+}
+
+.coupon-card__discount strong {
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+}
+
+.coupon-card__discount > span {
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* ========================================
+   CONTEÚDO DO CUPOM
+======================================== */
+
+.coupon-card__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 7px;
+    min-width: 0;
+    padding: 11px 13px;
+}
+
+.coupon-card__store {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.coupon-card__store-name {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.coupon-card__status {
+    flex-shrink: 0;
+    padding: 3px 9px;
+    border-radius: 20px;
+    background: var(--success);
+    color: var(--background);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.coupon-card__title {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.coupon-card__details {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+/* ========================================
+   CÓDIGO E BOTÃO COPIAR
+======================================== */
+
+.coupon-card__code-area {
+    display: flex;
+    align-items: stretch;
+    gap: 7px;
+    min-width: 0;
+    margin-top: 2px;
+}
+
+.coupon-card__code {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-width: 0;
+    min-height: 36px;
+    padding: 6px 9px;
+
+    border: 1px dashed var(--border);
+    border-radius: 9px;
+    background: var(--surface);
+
+    color: var(--text-primary);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.coupon-card__copy {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-shrink: 0;
+
+    min-height: 36px;
+    padding: 0 11px;
+
+    border: none;
+    border-radius: 9px;
+    background: var(--primary);
+    color: var(--text-primary);
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.coupon-card__copy:hover {
+    background: var(--primary-hover);
+}
+
+.coupon-card__copy:active {
+    transform: scale(0.97);
+}
+
+.coupon-card__copy.is-copied {
+    background: var(--success);
+    color: var(--background);
+}
+
+/* ========================================
+   ESTADO VAZIO
+======================================== */
+
+.featured-coupons__empty {
+    grid-column: 1 / -1;
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    text-align: center;
+}
+
+/* ========================================
+   RESPONSIVIDADE — NOTEBOOK / TABLET
+======================================== */
+
+@media (max-width: 1100px) {
+    .featured-coupons__container {
+        padding: 0 20px;
+    }
+
+    .coupon-card {
+        grid-template-columns: 105px minmax(0, 1fr);
+    }
+
+    .coupon-card__content {
+        padding: 10px;
+        gap: 7px;
+    }
+
+    .coupon-card__code-area {
+        gap: 6px;
+    }
+
+    .coupon-card__code {
+        flex-basis: 0;
+        padding: 6px;
+        font-size: 11px;
+    }
+
+    .coupon-card__copy {
+        padding: 0 9px;
+        font-size: 11px;
+    }
+}
+
+/* ========================================
+   RESPONSIVIDADE — CELULAR
+======================================== */
+
+@media (max-width: 760px) {
+    .featured-coupons {
+        padding: 22px 0;
+    }
+
+    .featured-coupons__container {
+        padding: 0 16px;
+    }
+
+    .featured-coupons__grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .featured-coupons__header {
+        margin-bottom: 13px;
+    }
+
+    .featured-coupons__heading {
+        gap: 8px;
+    }
+
+    .featured-coupons__heading h2 {
+        font-size: 20px;
+    }
+
+    .featured-coupons__heading-icon {
+        width: 34px;
+        height: 34px;
+        font-size: 15px;
+    }
+
+    .coupon-card {
+        grid-template-columns: 100px minmax(0, 1fr);
+        min-height: 135px;
+        border-radius: 13px;
+    }
+
+    .coupon-card__discount {
+        padding: 10px 6px;
+        gap: 5px;
+    }
+
+    .coupon-card__ticket {
+        font-size: 19px;
+    }
+
+    .coupon-card__discount strong {
+        font-size: 21px;
+    }
+
+    .coupon-card__discount > span {
+        font-size: 10px;
+    }
+
+    .coupon-card__content {
+        gap: 6px;
+        padding: 9px 10px;
+    }
+
+    .coupon-card__store-name {
+        font-size: 10px;
+    }
+
+    .coupon-card__status {
+        padding: 3px 7px;
+        font-size: 10px;
+    }
+
+    .coupon-card__title {
+        font-size: 12px;
+    }
+
+    .coupon-card__details {
+        font-size: 10px;
+    }
+
+    .coupon-card__code-area {
+        flex-wrap: nowrap;
+        gap: 6px;
+        margin-top: 1px;
+    }
+
+    .coupon-card__code {
+        flex: 1;
+        min-height: 32px;
+        padding: 5px;
+        font-size: 10px;
+        letter-spacing: 0.3px;
+    }
+
+    .coupon-card__copy {
+        width: auto;
+        min-height: 32px;
+        padding: 0 8px;
+        gap: 5px;
+        font-size: 10px;
+    }
+}
+
+/* ========================================
+   CELULARES PEQUENOS
+======================================== */
+
+@media (max-width: 380px) {
+    .featured-coupons__container {
+        padding: 0 12px;
+    }
+
+    .featured-coupons__header {
+        align-items: center;
+        gap: 8px;
+    }
+
+    .featured-coupons__heading {
+        gap: 6px;
+    }
+
+    .featured-coupons__heading h2 {
+        font-size: 17px;
+    }
+
+    .featured-coupons__heading-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 13px;
+    }
+
+    .featured-coupons__view-all {
+        gap: 4px;
+        font-size: 11px;
+    }
+
+    .coupon-card {
+        grid-template-columns: 82px minmax(0, 1fr);
+    }
+
+    .coupon-card__content {
+        padding: 8px;
+    }
+
+    .coupon-card__store {
+        gap: 4px;
+    }
+
+    .coupon-card__store-name {
+        font-size: 9px;
+    }
+
+    .coupon-card__status {
+        padding: 3px 6px;
+        font-size: 9px;
+    }
+
+    .coupon-card__title {
+        font-size: 11px;
+    }
+
+    .coupon-card__code {
+        font-size: 9px;
+    }
+
+    .coupon-card__copy {
+        padding: 0 6px;
+        font-size: 9px;
+    }
+}
+
+/* ========================================
+   ACESSIBILIDADE
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .coupon-card,
+    .coupon-card__copy,
+    .featured-coupons__view-all {
+        transition: none;
+    }}

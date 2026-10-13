@@ -1,28 +1,36 @@
 {% load static %}
 
 <header class="site-header">
-
     <!-- TOP BAR -->
     <div class="top-bar">
         <div class="container top-bar-content">
+
             <span class="top-message">
+                <i class="fa-solid fa-bolt"></i>
                 As melhores promoções, atualizadas todos os dias.
             </span>
 
             <div class="top-links">
-                <a href="/cupons">Central de Cupons</a>
-                <a href="/admin">Área Admin</a>
+                <a
+                    href="https://wa.me/message/O2VMAB5BBUTZG1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <i class="fa-brands fa-whatsapp"></i>
+                    Entre no nosso grupo do WhatsApp
+                    <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+                </a>
             </div>
+
         </div>
     </div>
-
 
     <!-- HEADER PRINCIPAL -->
     <div class="header-main container">
 
         <!-- MENU MOBILE -->
         <button class="mobile-menu-button" id="mobileMenuButton">
-            ☰
+            <i class="fa-solid fa-bars"></i>
         </button>
 
 
@@ -35,7 +43,7 @@
 
             <span class="logo-text">
                 <strong>
-                    O Boy <span>dos Links</span>
+                    O Boy <span>Dos Links</span>
                 </strong>
 
                 <small>
@@ -71,15 +79,14 @@
                 <i class="fa-solid fa-ticket"></i>
                 <span>Cupons</span>
             </a>
-            
-
+    
             <!-- CONTA -->
             <div class="account-dropdown">
 
                 <button class="account-button">
                     <i class="fa-solid fa-user"></i>
                     <span>Entrar</span>
-                    <small>⌄</small>
+                    <i class="fa-solid fa-chevron-down"></i>
                 </button>
 
                 <div class="account-menu">
@@ -89,18 +96,20 @@
                     <div class="menu-divider"></div>
 
                     <a href="{% url 'login' %}">
-                        ↪ Entrar
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        Entrar
                     </a>
 
                     <a href="/cadastro">
-                        <i class="fa-solid fa-user"></i>
+                        <i class="fa-solid fa-user-plus"></i>
                         Criar conta
                     </a>
 
                     <div class="menu-divider"></div>
 
                     <a href="/cupons">
-                        ♡ Favoritos
+                        <i class="fa-regular fa-heart"></i>
+                        Favoritos
                     </a>
 
                     <a href="/cupons">
@@ -110,16 +119,17 @@
 
                     <div class="menu-divider"></div>
 
-                    <a href="adm/">
-                        ▦ Painel Admin
+                    <a href="/adm/">
+                        <i class="fa-solid fa-table-columns"></i>
+                        Painel Admin
                     </a>
 
                     <a href="/configuracoes">
-                        ⚙ Configurações
+                        <i class="fa-solid fa-gear"></i>
+                        Configurações
                     </a>
 
                 </div>
-
             </div>
 
         </div>
@@ -153,7 +163,7 @@
             <div class="categories-dropdown">
 
                 <button class="categories-button">
-                    ☰
+                    <i class="fa-solid fa-bars"></i>
                     Todas as categorias
                 </button>
 
@@ -195,13 +205,3 @@
     </div>
 
 </header>
-
-
-<script>
-    const mobileButton = document.getElementById('mobileMenuButton');
-    const mobileMenu = document.getElementById('mobileMenu');
-
-    mobileButton.addEventListener('click', () => {
-        mobileMenu.classList.toggle('active');
-    });
-</script>

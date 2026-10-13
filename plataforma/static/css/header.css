@@ -1,3 +1,238 @@
+
+/* =========================================================
+   PADRONIZAÇÃO DE FONTE — HEADER
+========================================================= */
+
+.site-header {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-primary);
+}
+
+/* Links e textos */
+.site-header a,
+.site-header p,
+.site-header span {
+    font-size: 14px;
+    line-height: inherit;
+}
+
+/* Botões */
+.site-header button {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Campos de pesquisa */
+.site-header input,
+.site-header select {
+    font-size: 14px;
+}
+
+/* Ícones */
+.site-header i {
+    font-size: 16px;
+}
+
+/* Logo ou nome da marca */
+.site-header .logo {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+/* Menu de navegação */
+.site-header .nav-link {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Botão do menu mobile */
+.site-header .mobile-menu-button {
+    font-size: 22px;
+}
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.top-bar {
+    width: 100%;
+    position: relative;
+    z-index: 1001;
+    overflow: hidden;
+
+    background: #111111;
+    border-bottom: 1px solid #292929;
+
+    animation: topBarAppear 0.5s ease both;
+}
+
+.top-bar-content {
+    min-height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+/* =========================================================
+   MENSAGEM PRINCIPAL
+========================================================= */
+
+.top-message {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #A3A3A3;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+
+    transition: color 0.25s ease;
+}
+
+.top-message i {
+    color: #F04B2F;
+    font-size: 11px;
+
+    animation: boltPulse 2s ease-in-out infinite;
+}
+
+.top-message:hover {
+    color: #F5F5F5;
+}
+
+/* =========================================================
+   LINK DO WHATSAPP
+========================================================= */
+
+.top-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.top-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    color: #B8B8B8;
+    font-size: 13px;
+    font-weight: 500;
+
+    text-decoration: none;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.top-links a .fa-whatsapp {
+    color: #25D366;
+    font-size: 14px;
+
+    transition:
+        transform 0.25s ease,
+        color 0.25s ease;
+}
+
+.top-links a .external-icon {
+    color: #737373;
+    font-size: 9px;
+
+    transition:
+        transform 0.25s ease,
+        color 0.25s ease;
+}
+
+/* Hover */
+.top-links a:hover {
+    color: #F5F5F5;
+    transform: translateY(-1px);
+}
+
+.top-links a:hover .fa-whatsapp {
+    color: #39E879;
+    transform: scale(1.12);
+}
+
+.top-links a:hover .external-icon {
+    color: #F04B2F;
+    transform: translate(2px, -2px);
+}
+
+/* =========================================================
+   ANIMAÇÕES
+========================================================= */
+
+@keyframes topBarAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes boltPulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.65;
+        transform: scale(1.12);
+    }
+}
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+
+@media (max-width: 600px) {
+    .top-bar-content {
+        min-height: 34px;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .top-message {
+        display: none;
+    }
+
+    .top-links {
+        justify-content: center;
+    }
+
+    .top-links a {
+        font-size: 11px;
+    }
+}
+
+/* Respeita preferência por movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+    .top-bar,
+    .top-message i {
+        animation: none;
+    }
+
+    .top-links a,
+    .top-links a i {
+        transition: none;
+    }
+}
+
 /* =========================================================
    HEADER - O BOY DOS LINKS
 ========================================================= */
@@ -17,54 +252,11 @@
 
 .site-header .container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1216px;
     margin: 0 auto;
     padding-left: 20px;
     padding-right: 20px;
 }
-
-
-/* =========================================================
-   TOP BAR
-========================================================= */
-
-.top-bar {
-    width: 100%;
-    background: #0D0D0D;
-    border-bottom: 1px solid #333333;
-}
-
-.top-bar-content {
-    min-height: 32px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.top-message {
-    color: #858585;
-    font-size: 11px;
-}
-
-.top-links {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.top-links a {
-    color: #B8B8B8;
-    font-size: 11px;
-    text-decoration: none;
-
-    transition: color 0.2s ease;
-}
-
-.top-links a:hover {
-    color: #F04B2F;
-}
-
 
 /* =========================================================
    HEADER PRINCIPAL
@@ -132,7 +324,10 @@
 }
 
 .logo-text strong span {
-    color: #F04B2F;
+    color: var(--primary);
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: 700;
 }
 
 .logo-text small {
@@ -201,7 +396,7 @@
 
     border: none;
 
-    background: #F04B2F;
+    background: var(--primary-dark);
 
     color: #FFFFFF;
 
@@ -291,28 +486,38 @@
 
 .account-menu {
     position: absolute;
-
-    top: calc(100% + 8px);
+    top: 100%;
     right: 0;
 
     width: 210px;
-
     padding: 15px;
 
     background: #151515;
-
     border: 1px solid #333333;
     border-radius: 8px;
 
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 
-    display: none;
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: translateY(5px);
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
 
     z-index: 9999;
 }
 
-.account-dropdown:hover .account-menu {
-    display: block;
+.account-dropdown:hover .account-menu,
+.account-dropdown:focus-within .account-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
 }
 
 .account-menu strong {
@@ -462,11 +667,10 @@
 
 .categories-dropdown {
     position: relative;
-
     flex-shrink: 0;
-
     z-index: 9999;
 }
+
 
 .categories-button {
     display: flex;
@@ -548,22 +752,28 @@
 
 .categories-menu {
     position: absolute;
-
-    top: calc(100% + 5px);
+    top: 100%;
     left: 0;
 
     width: 220px;
-
     padding: 8px;
 
     background: #151515 !important;
-
     border: 1px solid #333333;
     border-radius: 8px;
 
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
 
-    display: none;
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: translateY(5px);
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
 
     z-index: 99999;
 }
@@ -571,10 +781,13 @@
 
 /* ABRE AO PASSAR O MOUSE */
 
-.categories-dropdown:hover .categories-menu {
-    display: block;
+.categories-dropdown:hover .categories-menu,
+.categories-dropdown:focus-within .categories-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
 }
-
 
 /* LINKS DO DROPDOWN */
 
@@ -588,7 +801,7 @@
 
     border-radius: 5px;
 
-    color: #737373 !important;
+    color: var(--text-secondary) !important;
 
     background: transparent !important;
 
@@ -605,9 +818,110 @@
 }
 
 .categories-menu a:hover {
-    color: #F5F5F5 !important;
+    color: var(--text-primary) !important;
 
-    background: #F04B2F !important;
+    background: var(--primary) !important;
+}
+
+
+/* =========================================================
+   LINKS DAS CATEGORIAS DESKTOP
+========================================================= */
+
+.categories-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.categories-links > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 40px;
+    padding: 9px 14px;
+
+    color: #A3A3A3 !important;
+    background: transparent;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+
+    text-decoration: none !important;
+    white-space: nowrap;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.categories-links > a:hover,
+.categories-links > a:focus-visible {
+    color: var(--primary) !important;
+    outline: none;
+}
+
+/* Botão "Todas as categorias" */
+.categories-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    min-height: 40px;
+    padding: 9px 14px;
+
+    color: var(--text-primary);
+    background: var(--background-secondary);
+
+    border: 1px solid var(--border-color)       ;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.categories-button:hover {
+    background: #262626;
+    border-color: var(--primary);
+}
+
+/* Links do menu dropdown */
+.categories-menu > a {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    padding: 10px 12px;
+
+    color: #A3A3A3 !important;
+    background: transparent;
+
+    border-radius: 7px;
+
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none !important;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.categories-menu > a:hover {
+    color: #F5F5F5 !important;
+    background: #242424;
 }
 
 

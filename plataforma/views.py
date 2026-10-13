@@ -32,6 +32,10 @@ def home(request):
     hot = ativas.order_by("-votos", "-clicks")[:6]
     ofertas_relampago = ativas.filter(is_relampago=True).order_by("data_fim")[:4]
 
+    lojas_parceiras = (
+        LojaParceira.objects.all().order_by("nome")
+    )
+
     categorias = (
         Categoria.objects
         .annotate(
@@ -56,6 +60,7 @@ def home(request):
         "categorias": categorias,
         "coupons": cupons,
         "ofertas_relampago": ofertas_relampago,
+        "lojas_parceiras": lojas_parceiras,
     })
 
 

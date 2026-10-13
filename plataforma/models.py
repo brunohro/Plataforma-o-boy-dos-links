@@ -1,18 +1,23 @@
 from datetime import timedelta
 from decimal import Decimal, ROUND_HALF_UP
-
-from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 
-class Usuario(AbstractUser):
+class UsuarioReal(AbstractUser):
+    apelido = models.CharField(max_length=150)
     email = models.EmailField(unique=True)
+    telefone = models.CharField(max_length=20, blank=True)
     data_nascimento = models.DateField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    data_cadastro = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.username
+        return self.apelido
 
 
 class Categoria(models.Model):
@@ -22,6 +27,11 @@ class Categoria(models.Model):
     def __str__(self):
         return self.nome
 
+    class Meta:
+        verbose_name = "Categoria"
+        verbose_name_plural = "Categorias"
+        ordering = ["nome"]
+
 
 class LojaParceira(models.Model):
     nome = models.CharField(max_length=100, unique=True)
@@ -30,6 +40,11 @@ class LojaParceira(models.Model):
 
     def __str__(self):
         return self.nome
+
+    class Meta: 
+        verbose_name = "Loja Parceira"
+        verbose_name_plural = "Lojas Parceiras"
+        ordering = ["nome"]
 
 
 class Cupom(models.Model):
@@ -49,6 +64,11 @@ class Cupom(models.Model):
 
     def __str__(self):
         return self.codigo
+
+    class Meta:
+        verbose_name = "Cupom"
+        verbose_name_plural = "Cupons"
+        ordering = ["-data_validade"]
 
 
 class DescontoCalculadoMixin(models.Model):
@@ -136,10 +156,15 @@ class Oferta(DescontoCalculadoMixin):
     def __str__(self):
         return self.nome_produto
 
+    class Meta:
+        verbose_name = "Oferta"
+        verbose_name_plural = "Ofertas"
+        ordering = ["-criado_em"]
+
 
 class Favorito(models.Model):
     usuario = models.ForeignKey(
-        Usuario,
+        UsuarioReal,
         on_delete=models.CASCADE,
         related_name="favoritos",
     )
@@ -151,6 +176,9 @@ class Favorito(models.Model):
     criado_em = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        verbose_name = "Favorito"
+        verbose_name_plural = "Favoritos"
+        ordering = ["-criado_em"]
         constraints = [
             models.UniqueConstraint(
                 fields=["usuario", "oferta"],
@@ -162,9 +190,10 @@ class Favorito(models.Model):
         return f"{self.usuario} - {self.oferta}"
 
 
+
 class Voto(models.Model):
     usuario = models.ForeignKey(
-        Usuario,
+        UsuarioReal,
         on_delete=models.CASCADE,
         related_name="votos",
     )
@@ -176,6 +205,9 @@ class Voto(models.Model):
     criado_em = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        verbose_name = "Voto"
+        verbose_name_plural = "Votos"
+        ordering = ["-criado_em"]
         constraints = [
             models.UniqueConstraint(
                 fields=["usuario", "oferta"],

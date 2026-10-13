@@ -4,10 +4,15 @@ from django.db.models import Count, Q, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST
-
-from .models import Categoria, Cupom, Favorito, LojaParceira, Oferta, Usuario, Voto
+from .forms import CadastroForm
+from .models import Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto
+from django.contrib.auth import login
+from django.contrib.auth.forms import AuthenticationForm
 
 TEMPLATE_PAINEL = "plataforma/adm/painel_adm.html"
+TEMPLATE_INDEX = "plataforma/index.html"
+TEMPLATE_LOGIN = "plataforma/login/login.html"
+TEMPLATE_CADASTRO = "plataforma/login/cadastro.html"
 
 
 def ofertas_ativas_qs():
@@ -27,9 +32,7 @@ def ofertas_ativas_qs():
 def home(request):
     agora = timezone.now()
     ativas = ofertas_ativas_qs()
-
-    recentes = ativas.order_by("-criado_em")[:12]
-    hot = ativas.order_by("-votos", "-clicks")[:6]
+    recentes = ativas.filter(is_destaque=True, is_relampago=False).order_by("-criado_em")[:8] ### Adicionado apenas 8 campos de ofertas recentes
     ofertas_relampago = ativas.filter(is_relampago=True).order_by("data_fim")[:4]
 
     categorias = (
@@ -50,22 +53,12 @@ def home(request):
         .order_by("data_validade")[:6]
     )
 
-    return render(request, "plataforma/index.html", {
+    return render(request, TEMPLATE_INDEX, {
         "offers": recentes,
-        "hot": hot,
         "categorias": categorias,
         "coupons": cupons,
         "ofertas_relampago": ofertas_relampago,
     })
-
-
-# =========================================================
-# LISTAGEM PÚBLICA DE OFERTAS
-# =========================================================
-
-def ofertas(request):
-    lista = ofertas_ativas_qs().order_by("data_fim")
-    return render(request, "plataforma/ofertas.html", {"ofertas": lista})
 
 
 # =========================================================
@@ -77,7 +70,7 @@ def admin_dashboard(request):
     agora = timezone.now()
 
     contexto = {
-        "total_usuarios": Usuario.objects.count(),
+        "total_usuarios": UsuarioReal.objects.count(),
         "total_ofertas": Oferta.objects.count(),
         "total_lojas": LojaParceira.objects.count(),
         "total_categorias": Categoria.objects.count(),
@@ -107,7 +100,7 @@ def admin_dashboard(request):
 
 @staff_member_required
 def adm_usuarios(request):
-    usuarios = Usuario.objects.order_by("-date_joined")
+    usuarios = UsuarioReal.objects.order_by("-date_joined")
     return render(request, TEMPLATE_PAINEL, {"usuarios": usuarios})
 
 
@@ -143,6 +136,10 @@ def adm_cupons(request):
 # CRUD DE OFERTAS
 # =========================================================
 
+def ofertas(request):
+    lista = ofertas_ativas_qs().order_by("data_fim")
+    return render(request, "plataforma/ofertas.html", {"ofertas": lista})
+
 @staff_member_required
 @require_POST
 def excluir_oferta(request, pk):
@@ -153,5 +150,28 @@ def excluir_oferta(request, pk):
     messages.success(request, f'Oferta "{nome}" excluída com sucesso!')
     return redirect("adm_ofertas")
 
-def login(request):
-    return render(request, "plataforma/login/login.html")
+# =========================================================
+# LOGIN E CADASTRO
+# =========================================================
+
+def login_view(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            return redirect("index")
+    else:
+        form = AuthenticationForm()
+    return render(request, TEMPLATE_LOGIN, {"form": form})
+
+def cadastro(request):
+    if request.method == "POST":
+        form = CadastroForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Cadastro realizado com sucesso!")
+            return redirect("login")
+    else:
+        form = CadastroForm()
+    return render(request, TEMPLATE_CADASTRO, {"form": form})
+

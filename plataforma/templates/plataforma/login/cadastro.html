@@ -2,108 +2,77 @@
 {% load static %}
 
 {% block content %}
-    <main class="cadastro-container">
-        <div class="cadastro-area">
+<main class="cadastro-container">
+    <div class="cadastro-area">
 
-            <h1 class="cadastro-titulo">
-                o Boy <span>Dos Links</span>
-            </h1>
+        <h1 class="cadastro-titulo">
+            o Boy <span>Dos Links</span>
+        </h1>
 
-            <div class="cadastro-box">
+        <div class="cadastro-box">
 
-                <h2 class="cadastro-subtitulo">
-                    Criar Conta
-                </h2>
+            <h2 class="cadastro-subtitulo">Criar Conta</h2>
 
-                <p class="cadastro-descricao">
-                    Crie sua conta e acesse para salvar<br>
-                    seus links e aproveitar recursos.
-                </p>
-
-                <form class="cadastro-form">
-
-                    <div class="cadastro-campo">
-
-                        <label for="name">
-                            Nome
-                        </label>
-
-                        <input
-                            type="name"
-                            id="name"
-                            placeholder="ex.: Renan"
-                        >
-
-                    </div>
-
-                    <div class="cadastro-campo">
-
-                        <label for="email">
-                            E-mail
-                        </label>
-
-                        <input
-                            type="email"
-                            id="email"
-                            placeholder="seu@email.com"
-                        >
-
-                    </div>
-
-                    <div class="cadastro-campo cadastro-senha-area">
-
-                        <div class="cadastro-senha-label">
-
-                            <label for="senha">
-                                Senha
-                            </label>
-
-                        </div>
-
-                        <input
-                            type="password"
-                            id="senha"
-                            placeholder="••••••"
-                        >
-
-                    </div>
-
-                    <div class="cadastro-campo cadastro-senha-area">
-
-                        <div class="cadastro-senha-label">
-
-                            <label for="confirmar_senha">
-                                Confirmar senha
-                            </label>
-
-                        </div>
-
-                        <input
-                            type="password"
-                            id="senha"
-                            placeholder="••••••"
-                        >
-                        
-                    </div>
-
-                    <button class="cadastro-botao" type="submit">
-                        Cadastrar
-                    </button>
-
-                </form>
-
-            </div>
-
-            <p class="cadastro-cadastro">
-                Já possui uma conta?
-                <a href="/cadastro">Entrar</a>
+            <p class="cadastro-descricao">
+                Crie sua conta e acesse para salvar<br>
+                seus links e aproveitar recursos.
             </p>
 
+            <form class="cadastro-form" method="post" novalidate>
+                {% csrf_token %}
+
+                <div class="cadastro-campo">
+                    <label for="{{ form.username.id_for_label }}">Apelido</label>
+                    {{ form.username }}
+                    {{ form.username.errors }}
+                </div>
+
+                <div class="cadastro-campo">
+                    <label for="{{ form.email.id_for_label }}">E-mail</label>
+                    {{ form.email }}
+                    {{ form.email.errors }}
+                </div>
+
+                <div class="cadastro-campo">
+                    <label for="{{ form.telefone.id_for_label }}">Telefone</label>
+                    {{ form.telefone }}
+                    {{ form.telefone.errors }}
+                </div>
+
+                <div class="cadastro-campo">
+                    <label for="{{ form.data_nascimento.id_for_label }}">Data de nascimento</label>
+                    {{ form.data_nascimento }}
+                    {{ form.data_nascimento.errors }}
+                </div>
+
+                <div class="cadastro-campo cadastro-senha-area">
+                    <div class="cadastro-senha-label">
+                        <label for="{{ form.password1.id_for_label }}">Senha</label>
+                    </div>
+                    {{ form.password1 }}
+                    {{ form.password1.errors }}
+                </div>
+
+                <div class="cadastro-campo cadastro-senha-area">
+                    <div class="cadastro-senha-label">
+                        <label for="{{ form.password2.id_for_label }}">Confirmar senha</label>
+                    </div>
+                    {{ form.password2 }}
+                    {{ form.password2.errors }}
+                </div>
+
+                {{ form.non_field_errors }}
+
+                <button class="cadastro-botao" type="submit">Cadastrar</button>
+            </form>
+
         </div>
-    </main>
 
-</body>
+        <p class="cadastro-cadastro">
+            Já possui uma conta?
+            <a href="{% url 'login' %}">Entrar</a>
+        </p>
 
-</html>
-
+    </div>
+</main>
 {% endblock %}

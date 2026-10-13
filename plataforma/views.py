@@ -47,18 +47,20 @@ def home(request):
         .order_by("-total_ativas", "nome")[:12]
     )
 
-    cupons = (
-        Cupom.objects
-        .filter(ativo=True, data_validade__gte=agora)
-        .select_related("loja")
-        .order_by("data_validade")[:6]
-    )
+    # cupons2 = (
+    #     Cupom.objects
+    #     .filter(ativo=True, data_validade__gte=agora)
+    #     .select_related("loja")
+    #     .order_by("data_validade")[:6]
+    # )
+
+    cupons = Cupom.objects.all()
 
     return render(request, "plataforma/index.html", {
-        "offers": recentes,
+        "ofertas_recentes": recentes,
         "hot": hot,
         "categorias": categorias,
-        "coupons": cupons,
+        "cupons": cupons,
         "ofertas_relampago": ofertas_relampago,
         "lojas_parceiras": lojas_parceiras,
     })

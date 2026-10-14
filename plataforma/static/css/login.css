@@ -5,6 +5,25 @@
 }
 
 /* Container principal */
+.login-voltar-container {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.login-botao-voltar {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: var(--fonte-principal, sans-serif);
+    color: var(--cor-texto, #666); /* Use suas variáveis aqui */
+    transition: color 0.2s ease;
+}
+
+.login-botao-voltar:hover {
+    color: var(--cor-principal, #000); /* Use suas variáveis aqui */
+}
 
 .login-container {
     width: 100%;
@@ -44,6 +63,7 @@
 
     font-size: 24px;
     font-weight: bold;
+    text-align: center;
 
     white-space: nowrap;
 

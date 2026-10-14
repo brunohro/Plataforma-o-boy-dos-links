@@ -13,7 +13,9 @@
         <div class="cadastro-area">
 
             <h1 class="cadastro-titulo">
-                O Boy <span>Dos Links</span>
+                <a href="{% url 'index' %}">
+                    O Boy <span>Dos Links</span>
+                </a>
             </h1>
 
             <div class="cadastro-box">
@@ -24,7 +26,6 @@
 
                 <p class="cadastro-descricao">
                     Crie sua conta e acesse para salvar<br>
-                    seus links e aproveitar recursos.
                 </p>
 
                 <form class="cadastro-form">
@@ -57,6 +58,19 @@
 
                     </div>
 
+                    <div class="cadastro-campo">
+
+                        <label for="telefone">
+                            Whatsapp
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="telefone"
+                            placeholder="(00) 00000-0000"
+                        >
+                    </div>
+
                     <div class="cadastro-campo cadastro-senha-area">
 
                         <div class="cadastro-senha-label">
@@ -87,7 +101,7 @@
 
                         <input
                             type="password"
-                            id="senha"
+                            id="confirmar_senha"
                             placeholder="••••••"
                         >
                         

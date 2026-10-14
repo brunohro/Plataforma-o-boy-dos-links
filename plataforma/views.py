@@ -166,3 +166,6 @@ def excluir_oferta(request, pk):
 
 def login(request):
     return render(request, "plataforma/login/login.html")
+
+def cadastro(request):
+    return render(request, "plataforma/login/cadastro.html")

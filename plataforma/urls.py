@@ -10,6 +10,7 @@ urlpatterns = [
     path("promocoes/", RedirectView.as_view(pattern_name="ofertas", permanent=True)),
     path("login/", views.login, name="login"),
 
+
     # Painel administrativo
     path("adm/", views.admin_dashboard, name="painel_adm"),
     path("adm/usuarios/", views.adm_usuarios, name="adm_usuarios"),

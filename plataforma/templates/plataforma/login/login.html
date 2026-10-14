@@ -1,12 +1,19 @@
-{% extends "plataforma/base.html" %}
 {% load static %}
-
-{% block content %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - O Boy Dos Links</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
     <main class="login-container">
         <div class="login-area">
 
             <h1 class="login-titulo">
-                o Boy <span>Dos Links</span>
+                O Boy <span>Dos Links</span>
             </h1>
 
             <div class="login-box">
@@ -68,14 +75,10 @@
 
             <p class="login-cadastro">
                 Não tem uma conta?
-                <a href="#">Cadastre-se</a>
+                <a href="{% url 'cadastro' %}">Cadastre-se</a>
             </p>
 
         </div>
     </main>
-
 </body>
-
 </html>
-
-{% endblock %}

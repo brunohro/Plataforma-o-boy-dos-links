@@ -1,12 +1,19 @@
-{% extends "plataforma/base.html" %}
 {% load static %}
-
-{% block content %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - O Boy Dos Links</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cadastro.css' %}">
+</head>
+<body>
     <main class="cadastro-container">
         <div class="cadastro-area">
 
             <h1 class="cadastro-titulo">
-                o Boy <span>Dos Links</span>
+                O Boy <span>Dos Links</span>
             </h1>
 
             <div class="cadastro-box">
@@ -96,14 +103,10 @@
 
             <p class="cadastro-cadastro">
                 Já possui uma conta?
-                <a href="/cadastro">Entrar</a>
+                <a href="{% url 'login' %}">Entrar</a>
             </p>
 
         </div>
     </main>
-
 </body>
-
 </html>
-
-{% endblock %}

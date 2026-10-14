@@ -160,5 +160,9 @@ def excluir_oferta(request, pk):
     messages.success(request, f'Oferta "{nome}" excluída com sucesso!')
     return redirect("adm_ofertas")
 
+# =========================================================
+# AUTENTICAÇÃO DE USUÁRIOS
+# =========================================================
+
 def login(request):
     return render(request, "plataforma/login/login.html")

@@ -1,3 +1,4 @@
+{% load static %}
 <section class="categories-section">
   <div class="categories-container">
 
@@ -12,6 +13,9 @@
         <div class="category-icon">
           {% if categoria.icone_url %}
             <img src="{{ categoria.icone_url }}" alt="{{ categoria.nome }}">
+          {% endif %}
+          {% if not categoria.icone_url %}
+            <i class="fa-solid fa-tag"></i>
           {% endif %}
         </div>
 

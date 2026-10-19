@@ -1,1 +1,249 @@
-<h1>Ofertas</h1>
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="admin-offers">
+    <div class="offers-container">
+
+        <!-- Cabeçalho -->
+        <header class="offers-header">
+            <div>
+                <span class="offers-eyebrow">PAINEL ADMINISTRATIVO</span>
+                <h1>Gerenciar ofertas</h1>
+                <p>Consulte e edite as ofertas cadastradas na plataforma.</p>
+            </div>
+
+            <div>
+                <a href="{% url 'painel_adm' %}" class="oferta-btn-voltar">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Voltar
+                </a>
+                <a href="{% url 'cadastrar_oferta' %}" class="admin-ofertas-btn-nova">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Nova oferta</span>
+                </a>
+            </div>
+
+        </header>
+
+        <!-- Busca -->
+        <form method="get" class="offers-toolbar">
+            <div class="offers-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input
+                    type="search"
+                    name="q"
+                    placeholder="Buscar oferta pelo nome..."
+                    value="{{ request.GET.q|default:'' }}"
+                    aria-label="Buscar ofertas"
+                >
+            </div>
+
+            <button type="submit" class="offers-search-button">
+                Buscar
+            </button>
+
+            {% if request.GET.q %}
+                <a href="{% url 'ofertas_adm' %}" class="offers-clear">
+                    Limpar
+                </a>
+            {% endif %}
+        </form>
+
+        <!-- Listagem -->
+        <div class="offers-table-wrapper">
+            <table class="offers-table">
+                <thead>
+                    <tr>
+                        <th>Oferta</th>
+                        <th>Loja</th>
+                        <th>Status</th>
+                        <th class="actions-heading">Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for oferta in ofertas %}
+                    <tr>
+                        <td>
+                            <div class="offer-product">
+                                <div class="offer-image">
+                                    {% if oferta.image_url %}
+                                        <img
+                                            src="{{ oferta.image_url }}"
+                                            alt="{{ oferta.nome_produto }}"
+                                            loading="lazy"
+                                        >
+                                    {% else %}
+                                        <i class="fa-regular fa-image"></i>
+                                    {% endif %}
+                                </div>
+
+                                <div class="offer-product-info">
+                                    <span class="offer-name">
+                                        {{ oferta.nome_produto }}
+                                    </span>
+
+                                    {% if oferta.categoria %}
+                                        <span class="offer-category">
+                                            {{ oferta.categoria }}
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <span class="offer-store">
+                                {{ oferta.loja }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="offer-statuses">
+                                {% if oferta.is_destaque %}
+                                    <span class="status-badge status-featured">
+                                        <i class="fa-solid fa-star"></i>
+                                        Destaque
+                                    </span>
+                                {% endif %}
+
+                                {% if oferta.is_relampago %}
+                                    <span class="status-badge status-flash">
+                                        <i class="fa-solid fa-bolt"></i>
+                                        Relâmpago
+                                    </span>
+                                {% endif %}
+
+                                {% if not oferta.is_destaque and not oferta.is_relampago %}
+                                    <span class="status-badge status-normal">
+                                        Padrão
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="offer-actions">
+                                <a
+                                    href="{% url 'editar_oferta' oferta.id %}"
+                                    class="offer-edit-button"
+                                    aria-label="Editar {{ oferta.nome_produto }}"
+                                    title="Editar oferta"
+                                >
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    <span>Editar</span>
+                                </a>
+
+                                <a
+                                    href="{% url 'ofertas_adm' %}"
+                                    class="offer-delete-button"
+                                    aria-label="Deletar {{ oferta.nome_produto }}"
+                                    title="Deletar oferta"
+                                >
+                                    <i class="fa-solid fa-trash"></i>
+                                    <span>Deletar</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">
+                            <div class="offers-empty">
+                                <i class="fa-solid fa-box-open"></i>
+                                <h3>Nenhuma oferta encontrada</h3>
+                                <p>
+                                    {% if request.GET.q %}
+                                        Tente buscar usando outro nome.
+                                    {% else %}
+                                        Ainda não existem ofertas cadastradas.
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Rodapé e paginação -->
+        {% if page_obj.paginator.num_pages > 0 %}
+        <footer class="offers-footer">
+            <span class="offers-page-info">
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                <span class="offers-total">
+                    · {{ page_obj.paginator.count }} registros
+                </span>
+            </span>
+
+            {% if page_obj.has_other_pages %}
+            <nav class="offers-pagination" aria-label="Paginação das ofertas">
+
+                {% if page_obj.has_previous %}
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page=1"
+                        class="page-button"
+                        aria-label="Primeira página"
+                        title="Primeira página"
+                    >
+                        <i class="fa-solid fa-angles-left"></i>
+                    </a>
+
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}"
+                        class="page-button"
+                        aria-label="Página anterior"
+                    >
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+                {% else %}
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </span>
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </span>
+                {% endif %}
+
+                <span class="page-current">{{ page_obj.number }}</span>
+
+                {% if page_obj.has_next %}
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.next_page_number }}"
+                        class="page-button"
+                        aria-label="Próxima página"
+                    >
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.paginator.num_pages }}"
+                        class="page-button"
+                        aria-label="Última página"
+                        title="Última página"
+                    >
+                        <i class="fa-solid fa-angles-right"></i>
+                    </a>
+                {% else %}
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </span>
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </span>
+                {% endif %}
+
+            </nav>
+            {% endif %}
+        </footer>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}
+

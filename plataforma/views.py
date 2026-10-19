@@ -127,6 +127,15 @@ def ofertas_adm(request):
     )
     return render(request, "plataforma/adm/ofertas_adm.html", {"ofertas": lista})
 
+def cadastrar_oferta(request):
+    return render(request, "plataforma/adm/forms/form_oferta.html")
+
+def editar_oferta(request, id):
+    oferta = Oferta.objects.get(id=id)
+    return render(request, "plataforma/adm/forms/form_oferta.html", {"oferta": oferta})
+
+
+
 
 @staff_member_required
 def lojas_adm(request):

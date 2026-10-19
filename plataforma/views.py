@@ -113,38 +113,37 @@ def admin_dashboard(request):
 
 
 @staff_member_required
-def adm_usuarios(request):
+def usuarios_adm(request):
     usuarios = Usuario.objects.order_by("-date_joined")
-    return render(request, TEMPLATE_PAINEL, {"usuarios": usuarios})
+    return render(request, "plataforma/adm/usuarios_adm.html", {"usuarios": usuarios})
 
 
 @staff_member_required
-def adm_ofertas(request):
+def ofertas_adm(request):
     lista = (
         Oferta.objects
         .select_related("loja", "categoria", "cupom")
         .order_by("-criado_em")
     )
-    return render(request, TEMPLATE_PAINEL, {"ofertas": lista})
+    return render(request, "plataforma/adm/ofertas_adm.html", {"ofertas": lista})
 
 
 @staff_member_required
-def adm_lojas(request):
+def lojas_adm(request):
     lojas = LojaParceira.objects.order_by("nome")
-    return render(request, TEMPLATE_PAINEL, {"lojas": lojas})
+    return render(request, "plataforma/adm/lojas_adm.html", {"lojas": lojas})
 
 
 @staff_member_required
-def adm_categorias(request):
+def categorias_adm(request):
     categorias = Categoria.objects.order_by("nome")
-    return render(request, TEMPLATE_PAINEL, {"categorias": categorias})
+    return render(request, "plataforma/adm/categorias_adm.html", {"categorias": categorias})
 
 
 @staff_member_required
-def adm_cupons(request):
+def cupons_adm(request):
     cupons = Cupom.objects.select_related("loja").order_by("-data_validade")
-    return render(request, TEMPLATE_PAINEL, {"cupons": cupons})
-
+    return render(request, "plataforma/adm/cupons_adm.html", {"cupons": cupons})
 
 # =========================================================
 # CRUD DE OFERTAS

@@ -14,10 +14,11 @@ urlpatterns = [
 
     # Painel administrativo
     path("adm/", views.admin_dashboard, name="painel_adm"),
-    path("adm/usuarios/", views.adm_usuarios, name="adm_usuarios"),
-    path("adm/ofertas/", views.adm_ofertas, name="adm_ofertas"),
+    path("adm/usuarios/", views.usuarios_adm, name="usuarios_adm"),
+    path("adm/ofertas/", views.ofertas_adm, name="ofertas_adm"),
+
     path("adm/ofertas/<int:pk>/excluir/", views.excluir_oferta, name="excluir_oferta"),
-    path("adm/lojas/", views.adm_lojas, name="adm_lojas"),
-    path("adm/categorias/", views.adm_categorias, name="adm_categorias"),
-    path("adm/cupons/", views.adm_cupons, name="adm_cupons"),
+    path("adm/lojas/", views.lojas_adm, name="lojas_adm"),
+    path("adm/categorias/", views.categorias_adm, name="categorias_adm"),
+    path("adm/cupons/", views.cupons_adm, name="cupons_adm"),
 ]

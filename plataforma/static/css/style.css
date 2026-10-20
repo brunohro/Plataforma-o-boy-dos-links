@@ -46,7 +46,7 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: var(--background);
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
 a {
@@ -84,11 +84,11 @@ a {
 .logo-text strong {
     font-size: 17px;
     line-height: 18px;
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
 .logo-text strong span {
-    color: #f04b2f;
+    color: var(--primary);
 }
 
 .logo-text small {
@@ -97,218 +97,5 @@ a {
     font-size: 9px;
     letter-spacing: 0.5px;
 
-    color: #dddddd;
+    color: var(--text-primary);
 }
-
-/* =========================
-   SEARCH
-========================= */
-
-.search-form {
-    flex: 1;
-
-    height: 32px;
-
-    display: flex;
-    align-items: center;
-
-    background-color: #eeeeee;
-
-    border-radius: 18px;
-
-    overflow: hidden;
-}
-
-.search-form input {
-    flex: 1;
-
-    height: 100%;
-
-    border: none;
-    outline: none;
-
-    padding: 0 15px;
-
-    background: transparent;
-
-    color: #333;
-    font-size: 11px;
-}
-
-.search-form input::placeholder {
-    color: #777;
-}
-
-.search-form button {
-    height: 100%;
-
-    padding: 0 22px;
-
-    border: none;
-    border-radius: 18px;
-
-    background-color: #f04b2f;
-
-    color: #ffffff;
-
-    font-size: 10px;
-    font-weight: bold;
-
-    cursor: pointer;
-
-    transition: background-color 0.2s ease;
-}
-
-.search-form button:hover {
-    background-color: #d93e25;
-}
-
-
-/* =========================
-   HEADER ACTIONS
-========================= */
-
-.header-actions {
-    display: flex;
-    align-items: center;
-
-    gap: 20px;
-
-    white-space: nowrap;
-}
-
-.header-actions a {
-    display: flex;
-    align-items: center;
-
-    gap: 5px;
-
-    font-size: 11px;
-    color: #eeeeee;
-
-    transition: color 0.2s ease;
-}
-
-.header-actions a:hover {
-    color: #f04b2f;
-}
-
-
-/* =========================
-   NAVIGATION
-========================= */
-
-.header-nav {
-    max-width: 1100px;
-    height: 30px;
-    margin: 0 auto;
-
-    display: flex;
-    align-items: center;
-
-    padding: 0 16px;
-
-    gap: 55px;
-
-    border-bottom: 1px solid #3a3a3a;
-}
-
-.header-nav a {
-    font-size: 11px;
-    font-weight: 600;
-
-    color: #f0d0c8;
-
-    white-space: nowrap;
-
-    transition: color 0.2s ease;
-}
-
-.header-nav a:hover {
-    color: #f04b2f;
-}
-
-
-/* =========================
-   CATEGORIAS
-========================= */
-
-.header-nav .categories {
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    color: #eeeeee;
-}
-
-.menu-icon {
-    color: #f04b2f;
-    font-size: 15px;
-}
-
-/* =========================
-   RESPONSIVIDADE
-========================= */
-
-@media (max-width: 900px) {
-
-    .header-main {
-        gap: 15px;
-    }
-
-    .logo {
-        min-width: 150px;
-    }
-
-    .header-actions {
-        gap: 10px;
-    }
-
-    .header-nav {
-        gap: 25px;
-        overflow-x: auto;
-    }
-}
-
-
-@media (max-width: 700px) {
-
-    .header-top {
-        display: none;
-    }
-
-    .header-main {
-        height: auto;
-        padding: 12px 15px;
-
-        flex-wrap: wrap;
-    }
-
-    .logo {
-        width: 100%;
-    }
-
-    .search-form {
-        order: 2;
-        width: 100%;
-        flex-basis: 100%;
-    }
-
-    .header-actions {
-        display: none;
-    }
-
-    .header-nav {
-        height: 40px;
-
-        gap: 25px;
-
-        overflow-x: auto;
-    }
-
-    .header-nav a {
-        font-size: 10px;
-    }
-}
-

@@ -5,9 +5,9 @@
 
 .site-footer {
   margin-top: 64px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--text-primary);
   background: #0D0D0D;
-  color: #e5e7eb;
+  color: var(--text-primary);
 }
 
 
@@ -46,7 +46,7 @@
 
   width: fit-content;
 
-  color: #e5e7eb;
+  color: var(--text-primary);
   text-decoration: none;
 }
 
@@ -60,8 +60,8 @@
 
   border-radius: 8px;
 
-  background: #f04b2f;
-  color: #ffffff;
+  background: var(--primary);
+  color: var(--text-primary);
 }
 
 .footer-logo-icon svg {
@@ -81,7 +81,7 @@
 }
 
 .footer-logo-text span {
-  color: #f04b2f;
+  color: var(--primary);
 }
 
 
@@ -97,7 +97,7 @@
   font-size: 14px;
   line-height: 1.6;
 
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 
@@ -122,8 +122,8 @@
 
   border-radius: 8px;
 
-  background: #f3f4f6;
-  color: #6b7280;
+  background: var(--text-primary);
+  color: var(--text-muted);
 
   text-decoration: none;
 
@@ -135,7 +135,7 @@
 
 .social-link:hover {
   background: #f04b2f;
-  color: #ffffff;
+  color: var(--text-primary);
 
   transform: translateY(-2px);
 }
@@ -162,7 +162,7 @@
   font-size: 14px;
   font-weight: 600;
 
-  color: #e5e7eb;
+  color: var(--text-primary);
 }
 
 
@@ -184,28 +184,35 @@
 .footer-list a {
   font-size: 14px;
 
-  color: #6b7280;
+  color: var(--text-muted);
   text-decoration: none;
 
   transition: color 0.2s ease;
 }
 
 .footer-list a:hover {
-  color: #f04b2f;
+  color: var(--primary);
 }
-
 
 /* ========================================
    NEWSLETTER
 ======================================== */
 
-.newsletter-description {
-  margin: 0 0 12px;
+/* ========================================
+   NEWSLETTER
+======================================== */
 
+.footer-column .newsletter-description {
+  display: block;
+  margin: 0 0 12px;
+  padding: 0;
+
+  font-family: inherit;
   font-size: 14px;
+  font-weight: 400;
   line-height: 1.5;
 
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .newsletter-form {
@@ -220,12 +227,12 @@
 
   padding: 0 12px;
 
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   border-radius: 6px;
 
-  background: #f3f4f6;
+  background: var(--text-primary);
 
-  color: #e5e7eb;
+  color: var(--text-primary);
   font-size: 14px;
 
   outline: none;
@@ -234,11 +241,11 @@
 }
 
 .newsletter-form input::placeholder {
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .newsletter-form input:focus {
-  border-color: #f04b2f;
+  border-color: var(--primary);
 }
 .whatsapp-button {
   display: inline-flex;
@@ -250,11 +257,11 @@
   max-width: 240px;
   padding: 11px 18px;
 
-  border: 1px solid #25D366;
+  border: 1px solid var(--success);
   border-radius: 8px;
 
-  background: #25D366;
-  color: #fff;
+  background: var(--success);
+  color: var(--text-primary);
 
   font-size: 14px;
   font-weight: 600;
@@ -269,9 +276,9 @@
 }
 
 .whatsapp-button:hover {
-  background: #20bd5a;
-  border-color: #20bd5a;
-  color: #fff;
+  background: var(--success-hover);
+  border-color: var(--success-hover);
+  color: var(--text-primary);
   transform: translateY(-2px);
   box-shadow: 0 6px 14px rgba(37, 211, 102, 0.25);
 }
@@ -302,7 +309,7 @@
 ======================================== */
 
 .footer-bottom {
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--text-primary);
 }
 
 .footer-bottom-container {
@@ -321,7 +328,7 @@
 
   font-size: 12px;
 
-  color: #6b7280;
+  color: var(--text-primary);
 }
 
 

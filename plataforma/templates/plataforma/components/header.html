@@ -123,12 +123,6 @@
                         <i class="fa-solid fa-table-columns"></i>
                         Painel Admin
                     </a>
-
-                    <a href="/configuracoes">
-                        <i class="fa-solid fa-gear"></i>
-                        Configurações
-                    </a>
-
                 </div>
             </div>
 
@@ -177,9 +171,12 @@
 
 
             <div class="categories-links">
-                {% for categoria in categorias_header %}
-                <a href="/categoria/{{categoria.slug}}">{{categoria.nome}}</a>
-                {% endfor %}
+                <a href="#ofertasRelampago">Ofertas Relâmpago</a>
+                <a href="#AdicionadosRecentemente">Adicionados Recentemente</a>
+                <a href="#MaisAcessados">Mais Acessados</a>
+                <a href="#lojas">Lojas Parceiras</a>
+                <a href="#">Nosso time</a>
+                <a href="#">Área de Suporte</a>
             </div>
 
         </div>

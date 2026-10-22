@@ -1,0 +1,591 @@
+
+/* ========================================
+   PÁGINA DE OFERTAS
+======================================== */
+
+.offers-page {
+  background: var(--background);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+
+/* ========================================
+   CABEÇALHO E CATEGORIAS
+======================================== */
+
+.offers-header {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+
+  padding: 28px max(24px, calc((100% - 1440px) / 2));
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.offers-heading {
+  flex: 0 0 270px;
+}
+
+.offers-heading h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.offers-heading p,
+.offers-heading span {
+  display: block;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.offers-nav {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.offer-nav-item {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-width: 82px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  padding: 8px 10px 16px;
+
+  color: var(--text-muted);
+  text-decoration: none;
+  text-align: center;
+  font-size: 12px;
+
+  transition: color 0.2s ease;
+}
+
+.offer-nav-item i {
+  color: var(--primary);
+  font-size: 27px;
+}
+
+.offer-nav-item:hover,
+.offer-nav-item.active {
+  color: var(--text-primary);
+}
+
+.offer-nav-item.active::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -28px;
+  left: 0;
+
+  height: 3px;
+  border-radius: 4px 4px 0 0;
+  background: var(--primary);
+}
+
+
+/* ========================================
+   LAYOUT PRINCIPAL
+======================================== */
+
+.offers-layout {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  gap: 32px;
+
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+}
+
+
+/* ========================================
+   FILTROS LATERAIS
+======================================== */
+
+.offers-sidebar {
+  min-width: 0;
+}
+
+.filter-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 30px;
+}
+
+.filter-heading h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.filter-heading span {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.filter-section {
+  margin-bottom: 30px;
+}
+
+.filter-section h3 {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.filter-link {
+  display: block;
+  margin-bottom: 10px;
+
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+  text-decoration: none;
+
+  transition: color 0.2s ease;
+}
+
+.filter-link:hover {
+  color: var(--primary);
+}
+
+
+/* ========================================
+   BARRA DE FERRAMENTAS
+======================================== */
+
+.offers-content {
+  min-width: 0;
+}
+
+.offers-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.offers-toolbar h2 {
+  margin: 0 0 5px;
+  font-size: 21px;
+}
+
+.offers-toolbar p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.offers-sort {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.offers-sort select {
+  max-width: 190px;
+  padding: 10px 12px;
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  background: var(--card);
+  color: var(--text-primary);
+  font: inherit;
+  outline: none;
+}
+
+.offers-sort select:focus {
+  border-color: var(--primary);
+}
+
+
+/* ========================================
+   GRADE DE OFERTAS
+======================================== */
+
+.offers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 18px;
+}
+
+
+/* ========================================
+   CARD DO PRODUTO
+======================================== */
+
+.offer-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.offer-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.offer-image-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.offer-image {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  aspect-ratio: 1 / 0.95;
+  overflow: hidden;
+
+  background: var(--surface);
+}
+
+.offer-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+
+  transition: transform 0.3s ease;
+}
+
+.offer-card:hover .offer-image img {
+  transform: scale(1.04);
+}
+
+.offer-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+
+  padding: 5px 8px;
+  border-radius: 4px;
+
+  background: var(--primary);
+  color: #FFFFFF;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.offer-badge-flash {
+  top: 12px;
+  right: 12px;
+  bottom: auto;
+  left: auto;
+}
+
+
+/* ========================================
+   INFORMAÇÕES DO PRODUTO
+======================================== */
+
+.offer-info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding: 16px;
+}
+
+.offer-store {
+  margin-bottom: 6px;
+
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.offer-name {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  min-height: 42px;
+  margin: 0 0 10px;
+
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.offer-rating {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+
+  margin-bottom: 14px;
+  font-size: 11px;
+}
+
+.offer-rating i {
+  color: var(--primary);
+}
+
+.offer-muted {
+  color: var(--text-muted);
+}
+
+
+/* ========================================
+   PREÇOS E DESCONTOS
+======================================== */
+
+.offer-pricing {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+
+.offer-old-price {
+  color: var(--text-muted);
+  font-size: 12px;
+  text-decoration: line-through;
+}
+
+.offer-price-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.offer-price {
+  color: var(--text-primary);
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.offer-discount {
+  padding: 4px 6px;
+  border-radius: 4px;
+
+  background: var(--success);
+  color: #FFFFFF;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.offer-coupon {
+  color: var(--success);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* ========================================
+   ENTREGA
+======================================== */
+
+.offer-delivery {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-bottom: 14px;
+
+  color: var(--success);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+
+/* ========================================
+   BOTÃO DA OFERTA
+======================================== */
+
+.offer-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  width: 100%;
+  margin-top: auto;
+  padding: 11px 14px;
+
+  border: 1px solid var(--primary);
+  border-radius: 7px;
+
+  background: var(--primary);
+  color: #FFFFFF;
+
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.offer-button:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  color: #FFFFFF;
+}
+
+.offer-button:active {
+  transform: scale(0.98);
+}
+
+
+/* ========================================
+   RESPONSIVIDADE
+======================================== */
+
+@media (max-width: 1100px) {
+  .offers-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .offers-heading {
+    flex-basis: auto;
+  }
+
+  .offers-nav {
+    width: 100%;
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+
+  .offer-nav-item {
+    flex: 0 0 110px;
+  }
+
+  .offer-nav-item.active::after {
+    bottom: 0;
+  }
+
+  .offers-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .offers-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 24px 16px 40px;
+  }
+
+  .offers-header {
+    padding: 24px 16px;
+  }
+
+  .offers-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .filter-heading {
+    margin-bottom: 0;
+  }
+
+  .filter-section {
+    margin-bottom: 0;
+  }
+
+  .filter-section:not(:first-of-type) {
+    display: none;
+  }
+
+  .offers-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .offers-sort {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .offers-sort select {
+    flex: 1;
+  }
+
+  .offers-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .offer-info {
+    padding: 11px;
+  }
+
+  .offer-name {
+    font-size: 12px;
+    min-height: 36px;
+  }
+
+  .offer-price {
+    font-size: 19px;
+  }
+
+  .offer-discount {
+    font-size: 9px;
+  }
+
+  .offer-rating {
+    font-size: 10px;
+  }
+
+  .offer-button {
+    padding: 10px 6px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 360px) {
+  .offers-grid {
+    grid-template-columns: 1fr;
+  }
+}

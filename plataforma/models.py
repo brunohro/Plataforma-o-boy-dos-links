@@ -15,6 +15,7 @@ class UsuarioReal(AbstractUser):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     data_cadastro = models.DateTimeField(auto_now_add=True)
+    sexo = models.CharField(max_length=10, choices=[("M", "Masculino"), ("F", "Feminino"), ("O", "Outro")], blank=True)
 
     def __str__(self):
         return self.apelido
@@ -22,7 +23,7 @@ class UsuarioReal(AbstractUser):
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=100, unique=True)
-    icone_url = models.URLField(blank=True, null=True)
+    icone_imagem = models.ImageField(blank=True, null=True)
 
     def __str__(self):
         return self.nome
@@ -32,10 +33,15 @@ class Categoria(models.Model):
         verbose_name_plural = "Categorias"
         ordering = ["nome"]
 
+    @property
+    def contador_ofertas(self):
+        agora = timezone.now()
+        return self.ofertas.filter(data_inicio__lte=agora, data_fim__gte=agora).count()
+
 
 class LojaParceira(models.Model):
     nome = models.CharField(max_length=100, unique=True)
-    logo_url = models.URLField(blank=True, null=True)
+    logo_imagem = models.ImageField(blank=True, null=True)
     verificado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -45,6 +51,11 @@ class LojaParceira(models.Model):
         verbose_name = "Loja Parceira"
         verbose_name_plural = "Lojas Parceiras"
         ordering = ["nome"]
+
+    @property
+    def contador_ofertas(self):
+        agora = timezone.now()
+        return self.ofertas.filter(data_inicio__lte=agora, data_fim__gte=agora).count()
 
 
 class Cupom(models.Model):

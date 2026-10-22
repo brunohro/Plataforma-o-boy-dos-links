@@ -14,7 +14,9 @@
     <div class="cadastro-area">
 
         <h1 class="cadastro-titulo">
-            o Boy <span>Dos Links</span>
+                <a href="{% url 'index' %}">
+                    O Boy <span>Dos Links</span>
+                </a>
         </h1>
 
         <div class="cadastro-box">
@@ -22,8 +24,7 @@
             <h2 class="cadastro-subtitulo">Criar Conta</h2>
 
             <p class="cadastro-descricao">
-                Crie sua conta e acesse para salvar<br>
-                seus links e aproveitar recursos.
+                Crie sua conta e acesse para salvar
             </p>
 
             <form class="cadastro-form" method="post" novalidate>
@@ -52,7 +53,11 @@
                     {{ form.data_nascimento }}
                     {{ form.data_nascimento.errors }}
                 </div>
-
+                <div class="cadastro-campo">
+                    <label for="{{ form.sexo.id_for_label }}">Sexo</label>
+                    {{ form.sexo }}
+                    {{ form.sexo.errors }}
+                </div>
                 <div class="cadastro-campo cadastro-senha-area">
                     <div class="cadastro-senha-label">
                         <label for="{{ form.password1.id_for_label }}">Senha</label>

@@ -1,126 +1,77 @@
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro - O Boy Dos Links</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/cadastro.css' %}">
-</head>
-<body>
-    <main class="cadastro-container">
-        <div class="cadastro-area">
 
-            <h1 class="cadastro-titulo">
-                <a href="{% url 'index' %}">
-                    O Boy <span>Dos Links</span>
-                </a>
-            </h1>
+{% block content %}
+<main class="cadastro-container">
+    <div class="cadastro-area">
 
-            <div class="cadastro-box">
+        <h1 class="cadastro-titulo">
+            o Boy <span>Dos Links</span>
+        </h1>
 
-                <h2 class="cadastro-subtitulo">
-                    Criar Conta
-                </h2>
+        <div class="cadastro-box">
 
-                <p class="cadastro-descricao">
-                    Crie sua conta e acesse para salvar<br>
-                </p>
+            <h2 class="cadastro-subtitulo">Criar Conta</h2>
 
-                <form class="cadastro-form">
-
-                    <div class="cadastro-campo">
-
-                        <label for="name">
-                            Nome
-                        </label>
-
-                        <input
-                            type="name"
-                            id="name"
-                            placeholder="ex.: Renan"
-                        >
-
-                    </div>
-
-                    <div class="cadastro-campo">
-
-                        <label for="email">
-                            E-mail
-                        </label>
-
-                        <input
-                            type="email"
-                            id="email"
-                            placeholder="seu@email.com"
-                        >
-
-                    </div>
-
-                    <div class="cadastro-campo">
-
-                        <label for="telefone">
-                            Whatsapp
-                        </label>
-
-                        <input
-                            type="tel"
-                            id="telefone"
-                            placeholder="(00) 00000-0000"
-                        >
-                    </div>
-
-                    <div class="cadastro-campo cadastro-senha-area">
-
-                        <div class="cadastro-senha-label">
-
-                            <label for="senha">
-                                Senha
-                            </label>
-
-                        </div>
-
-                        <input
-                            type="password"
-                            id="senha"
-                            placeholder="••••••"
-                        >
-
-                    </div>
-
-                    <div class="cadastro-campo cadastro-senha-area">
-
-                        <div class="cadastro-senha-label">
-
-                            <label for="confirmar_senha">
-                                Confirmar senha
-                            </label>
-
-                        </div>
-
-                        <input
-                            type="password"
-                            id="confirmar_senha"
-                            placeholder="••••••"
-                        >
-                        
-                    </div>
-
-                    <button class="cadastro-botao" type="submit">
-                        Cadastrar
-                    </button>
-
-                </form>
-
-            </div>
-
-            <p class="cadastro-cadastro">
-                Já possui uma conta?
-                <a href="{% url 'login' %}">Entrar</a>
+            <p class="cadastro-descricao">
+                Crie sua conta e acesse para salvar<br>
+                seus links e aproveitar recursos.
             </p>
 
+            <form class="cadastro-form" method="post" novalidate>
+                {% csrf_token %}
+
+                <div class="cadastro-campo">
+                    <label for="{{ form.username.id_for_label }}">Apelido</label>
+                    {{ form.username }}
+                    {{ form.username.errors }}
+                </div>
+
+                <div class="cadastro-campo">
+                    <label for="{{ form.email.id_for_label }}">E-mail</label>
+                    {{ form.email }}
+                    {{ form.email.errors }}
+                </div>
+
+                <div class="cadastro-campo">
+                    <label for="{{ form.telefone.id_for_label }}">Telefone</label>
+                    {{ form.telefone }}
+                    {{ form.telefone.errors }}
+                </div>
+
+                <div class="cadastro-campo">
+                    <label for="{{ form.data_nascimento.id_for_label }}">Data de nascimento</label>
+                    {{ form.data_nascimento }}
+                    {{ form.data_nascimento.errors }}
+                </div>
+
+                <div class="cadastro-campo cadastro-senha-area">
+                    <div class="cadastro-senha-label">
+                        <label for="{{ form.password1.id_for_label }}">Senha</label>
+                    </div>
+                    {{ form.password1 }}
+                    {{ form.password1.errors }}
+                </div>
+
+                <div class="cadastro-campo cadastro-senha-area">
+                    <div class="cadastro-senha-label">
+                        <label for="{{ form.password2.id_for_label }}">Confirmar senha</label>
+                    </div>
+                    {{ form.password2 }}
+                    {{ form.password2.errors }}
+                </div>
+
+                {{ form.non_field_errors }}
+
+                <button class="cadastro-botao" type="submit">Cadastrar</button>
+            </form>
+
         </div>
-    </main>
-</body>
-</html>
+
+        <p class="cadastro-cadastro">
+            Já possui uma conta?
+            <a href="{% url 'login' %}">Entrar</a>
+        </p>
+
+    </div>
+</main>
+{% endblock %}

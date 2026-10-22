@@ -1,86 +1,58 @@
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - O Boy Dos Links</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-</head>
-<body>
-    <main class="login-container">
-        <div class="login-area">
 
-            <h1 class="login-titulo">
-                <a href="{% url 'index' %}">
-                    O Boy <span>Dos Links</span>
-                </a>
-            </h1>
+{% block content %}
+<main class="login-container">
+    <div class="login-area">
 
-            <div class="login-box">
+        <h1 class="login-titulo">
+            o Boy <span>Dos Links</span>
+        </h1>
 
-                <h2 class="login-subtitulo">
-                    Entrar
-                </h2>
+        <div class="login-box">
 
-                <p class="login-descricao">
-                    Acesse sua conta para salvar<br>
-                    seus links e aproveitar recursos.
-                </p>
+            <h2 class="login-subtitulo">Entrar</h2>
 
-                <form class="login-form">
-
-                    <div class="login-campo">
-
-                        <label for="email">
-                            E-mail
-                        </label>
-
-                        <input
-                            type="email"
-                            id="email"
-                            placeholder="seu@email.com"
-                        >
-
-                    </div>
-
-                    <div class="login-campo login-senha-area">
-
-                        <div class="login-senha-label">
-
-                            <label for="senha">
-                                Senha
-                            </label>
-
-                            <a href="#">
-                                Esqueceu?
-                            </a>
-
-                        </div>
-
-                        <input
-                            type="password"
-                            id="senha"
-                            placeholder="••••••"
-                        >
-
-                    </div>
-
-                    <button class="login-botao" type="submit">
-                        Entrar
-                    </button>
-
-                </form>
-
-            </div>
-
-            <p class="login-cadastro">
-                Não tem uma conta?
-                <a href="{% url 'cadastro' %}">Cadastre-se</a>
+            <p class="login-descricao">
+                Acesse sua conta para salvar<br>
+                seus links e aproveitar recursos.
             </p>
 
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="login-mensagem">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+
+            <form class="login-form" method="post" novalidate>
+                {% csrf_token %}
+
+                <div class="login-campo">
+                    <label for="{{ form.username.id_for_label }}">Apelido</label>
+                    {{ form.username }}
+                    {{ form.username.errors }}
+                </div>
+
+                <div class="login-campo login-senha-area">
+                    <div class="login-senha-label">
+                        <label for="{{ form.password.id_for_label }}">Senha</label>
+                        <a href="#">Esqueceu?</a>
+                    </div>
+                    {{ form.password }}
+                    {{ form.password.errors }}
+                </div>
+
+                {{ form.non_field_errors }}
+
+                <button class="login-botao" type="submit">Entrar</button>
+            </form>
+
         </div>
-    </main>
-</body>
-</html>
+
+        <p class="login-cadastro">
+            Não tem uma conta?
+            <a href="{% url 'cadastro' %}">Cadastre-se</a>
+        </p>
+
+    </div>
+</main>
+{% endblock %}

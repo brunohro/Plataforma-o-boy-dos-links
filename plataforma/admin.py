@@ -11,11 +11,26 @@ from .models import (
     Favorito,
     LojaParceira,
     Oferta,
-    Usuario,
+    UsuarioReal,
     Voto,
 )
 
+from django import forms
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
+
+
+@admin.register(UsuarioReal)
+class UsuarioAdmin(UserAdmin):
+    fieldsets = UserAdmin.fieldsets + (
+        ("Dados extras", {"fields": ("telefone", "data_nascimento")}),
+    )
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        ("Dados extras", {"fields": ("email", "telefone", "data_nascimento")}),
+    )
+    list_display = ("username", "email", "telefone", "is_staff")
+    
 class DescontoAdminMixin:
     """Mostra o desconto calculado e permite ordenar por ele na listagem."""
 
@@ -35,22 +50,6 @@ class DescontoAdminMixin:
     @admin.display(description="Ativa?", boolean=True)
     def ativa(self, obj):
         return obj.esta_ativa
-
-
-@admin.register(Usuario)
-class UsuarioAdmin(admin.ModelAdmin):
-    list_display = (
-        "username",
-        "email",
-        "first_name",
-        "last_name",
-        "data_nascimento",
-        "is_staff",
-        "is_active",
-    )
-    list_filter = ("is_staff", "is_superuser", "is_active")
-    search_fields = ("username", "email", "first_name", "last_name")
-
 
 @admin.register(Categoria)
 class CategoriaAdmin(admin.ModelAdmin):
@@ -148,7 +147,7 @@ class OfertaAdmin(DescontoAdminMixin, admin.ModelAdmin):
 class FavoritoAdmin(admin.ModelAdmin):
     list_display = ("usuario", "oferta", "criado_em")
     list_filter = ("criado_em",)
-    search_fields = ("usuario__username", "usuario__email", "oferta__nome_produto")
+    search_fields = ("usuario__apelido", "usuario__email", "oferta__nome_produto")
     readonly_fields = ("criado_em",)
 
 

@@ -67,8 +67,8 @@ class CategoriaAdmin(admin.ModelAdmin):
 
     @admin.display(description="Ícone")
     def miniatura(self, obj):
-        if obj.icone_url:
-            return format_html('<img src="{}" style="height:32px;">', obj.icone_url)
+        if obj.icone_imagem:
+            return format_html('<img src="{}" style="height:32px;">', obj.icone_imagem.url)
         return "-"
 
     @admin.display(description="Ofertas ativas", ordering="_ativas")

@@ -53,7 +53,11 @@
                     {{ form.data_nascimento }}
                     {{ form.data_nascimento.errors }}
                 </div>
-
+                <div class="cadastro-campo">
+                    <label for="{{ form.sexo.id_for_label }}">Sexo</label>
+                    {{ form.sexo }}
+                    {{ form.sexo.errors }}
+                </div>
                 <div class="cadastro-campo cadastro-senha-area">
                     <div class="cadastro-senha-label">
                         <label for="{{ form.password1.id_for_label }}">Senha</label>

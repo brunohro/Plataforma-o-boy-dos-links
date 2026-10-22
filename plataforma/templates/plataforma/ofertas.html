@@ -1,0 +1,286 @@
+
+{% extends 'plataforma/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="offers-page">
+
+  <!-- Cabeçalho das categorias -->
+  <header class="offers-header">
+    <div class="offers-heading">
+      <h1>Ofertas</h1>
+      <p>Aproveite esses preços agora mesmo!</p>
+      <span>Novas ofertas todos os dias.</span>
+    </div>
+
+    <nav class="offers-nav" aria-label="Categorias de ofertas">
+      <a href="?tipo=todas" class="offer-nav-item active">
+        <i class="fa-solid fa-tags"></i>
+        <span>Todas as ofertas</span>
+      </a>
+
+      <a href="?tipo=relampago" class="offer-nav-item">
+        <i class="fa-solid fa-bolt"></i>
+        <span>Ofertas relâmpago</span>
+      </a>
+
+      <a href="?tipo=desconto" class="offer-nav-item">
+        <i class="fa-solid fa-award"></i>
+        <span>Preços imbatíveis</span>
+      </a>
+
+      <a href="?tipo=outlet" class="offer-nav-item">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span>Outlet</span>
+      </a>
+
+      <a href="?categoria=celulares" class="offer-nav-item">
+        <i class="fa-solid fa-mobile-screen-button"></i>
+        <span>Celulares</span>
+      </a>
+
+      <a href="?categoria=informatica" class="offer-nav-item">
+        <i class="fa-solid fa-laptop"></i>
+        <span>Notebooks</span>
+      </a>
+    </nav>
+  </header>
+
+  <div class="offers-layout">
+
+    <!-- Barra lateral de filtros -->
+    <aside class="offers-sidebar">
+
+      <div class="filter-heading">
+        <h2>Todas</h2>
+        <span>Confira nossas ofertas</span>
+      </div>
+
+      <section class="filter-section">
+        <h3>Tipo de promoção</h3>
+
+        <a href="?tipo=oferta-do-dia" class="filter-link">
+          Oferta do dia
+        </a>
+
+        <a href="?tipo=relampago" class="filter-link">
+          Oferta relâmpago
+        </a>
+      </section>
+
+      <section class="filter-section">
+        <h3>Categorias</h3>
+
+        <a href="?categoria=eletronicos" class="filter-link">
+          Eletrônicos
+        </a>
+
+        <a href="?categoria=moda" class="filter-link">
+          Moda
+        </a>
+
+        <a href="?categoria=casa" class="filter-link">
+          Casa e decoração
+        </a>
+
+        <a href="?categoria=esportes" class="filter-link">
+          Esportes
+        </a>
+
+        <a href="?categoria=beleza" class="filter-link">
+          Beleza e cuidados pessoais
+        </a>
+
+        <a href="?categoria=informatica" class="filter-link">
+          Informática
+        </a>
+
+        <a href="?categoria=agro" class="filter-link">
+          Agro
+        </a>
+
+        <a href="?categoria=calcados" class="filter-link">
+          Calçados e bolsas
+        </a>
+      </section>
+
+    </aside>
+
+    <!-- Área de produtos -->
+    <main class="offers-content">
+
+      <div class="offers-toolbar">
+        <div>
+          <h2>Ofertas para você</h2>
+          <p>Produtos selecionados com ótimos preços.</p>
+        </div>
+
+        <label class="offers-sort">
+          <span>Ordenar:</span>
+          <select name="ordenacao">
+            <option value="recentes">Mais recentes</option>
+            <option value="menor-preco">Menor preço</option>
+            <option value="maior-desconto">Maior desconto</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="offers-grid">
+
+        <!-- Produto 1 -->
+        <article class="offer-card">
+          <a href="#" class="offer-image-link">
+            <div class="offer-image">
+              <img
+                src="https://placehold.co/500x400/252525/F5F5F5?text=Camiseta"
+                alt="Camiseta preta"
+                loading="lazy"
+              >
+              <span class="offer-badge">MAIS VENDIDO</span>
+            </div>
+          </a>
+
+          <div class="offer-info">
+            <span class="offer-store">DARK LAB</span>
+
+            <h3 class="offer-name">
+              Camiseta Dry-fit Preta Unissex
+            </h3>
+
+            <div class="offer-rating">
+              <i class="fa-solid fa-star"></i>
+              <span>4,8</span>
+              <span class="offer-muted">| Produto em destaque</span>
+            </div>
+
+            <div class="offer-pricing">
+              <span class="offer-old-price">R$ 69,90</span>
+
+              <div class="offer-price-row">
+                <span class="offer-price">
+                  R$ 29,90
+                </span>
+                <span class="offer-discount">56% OFF</span>
+              </div>
+
+              <span class="offer-coupon">
+                <i class="fa-solid fa-ticket"></i>
+                Oferta com desconto
+              </span>
+            </div>
+
+            <div class="offer-delivery">
+              <i class="fa-solid fa-truck-fast"></i>
+              Confira as condições de entrega
+            </div>
+
+            <a href="#" class="offer-button">
+              Ver oferta
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </div>
+        </article>
+
+        <!-- Produto 2 -->
+        <article class="offer-card">
+          <a href="#" class="offer-image-link">
+            <div class="offer-image">
+              <img
+                src="https://placehold.co/500x400/252525/F5F5F5?text=Mangueira"
+                alt="Mangueira de irrigação"
+                loading="lazy"
+              >
+              <span class="offer-badge offer-badge-flash">
+                <i class="fa-solid fa-bolt"></i> RELÂMPAGO
+              </span>
+            </div>
+          </a>
+
+          <div class="offer-info">
+            <span class="offer-store">LOJA DO PRODUTOR</span>
+
+            <h3 class="offer-name">
+              Mangueira de Irrigação Perfurada 100 Metros
+            </h3>
+
+            <div class="offer-rating">
+              <i class="fa-solid fa-star"></i>
+              <span>4,7</span>
+              <span class="offer-muted">| Oferta selecionada</span>
+            </div>
+
+            <div class="offer-pricing">
+              <span class="offer-old-price">R$ 78,00</span>
+
+              <div class="offer-price-row">
+                <span class="offer-price">R$ 70,00</span>
+                <span class="offer-discount">10% OFF</span>
+              </div>
+            </div>
+
+            <div class="offer-delivery">
+              <i class="fa-solid fa-truck-fast"></i>
+              Consulte o prazo de entrega
+            </div>
+
+            <a href="#" class="offer-button">
+              Ver oferta
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </div>
+        </article>
+
+        <!-- Produto 3 -->
+        <article class="offer-card">
+          <a href="#" class="offer-image-link">
+            <div class="offer-image">
+              <img
+                src="https://placehold.co/500x400/252525/F5F5F5?text=Power+Bank"
+                alt="Carregador portátil"
+                loading="lazy"
+              >
+            </div>
+          </a>
+
+          <div class="offer-info">
+            <span class="offer-store">ELETRÔNICOS</span>
+
+            <h3 class="offer-name">
+              Power Bank 20.000 mAh com Carregamento Rápido
+            </h3>
+
+            <div class="offer-rating">
+              <i class="fa-solid fa-star"></i>
+              <span>4,5</span>
+              <span class="offer-muted">| Produto em destaque</span>
+            </div>
+
+            <div class="offer-pricing">
+              <span class="offer-old-price">R$ 109,90</span>
+
+              <div class="offer-price-row">
+                <span class="offer-price">R$ 72,90</span>
+                <span class="offer-discount">33% OFF</span>
+              </div>
+            </div>
+
+            <div class="offer-delivery">
+              <i class="fa-solid fa-truck-fast"></i>
+              Consulte o prazo de entrega
+            </div>
+
+            <a href="#" class="offer-button">
+              Ver oferta
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </div>
+        </article>
+
+      </div>
+
+    </main>
+  </div>
+</section>
+
+{% endblock %}

@@ -151,9 +151,26 @@ def cupons_adm(request):
 # CRUD DE OFERTAS
 # =========================================================
 
-def ofertas(request):
+def ofertas(request, tipo="todas"):
     lista = ofertas_ativas_qs().order_by("data_fim")
-    return render(request, "plataforma/ofertas.html", {"ofertas": lista})
+    categorias = Categoria.objects.all()
+
+    categoria_atual = request.GET.get("categoria", "")
+
+    if tipo == "relampago":
+        lista = lista.filter(is_relampago=True)
+
+    if categoria_atual:
+        lista = lista.filter(categoria__id=categoria_atual)
+
+    context = {
+        "ofertas": lista,
+        "categorias": categorias,
+        "tipo_pagina": tipo,
+        "categoria_atual": categoria_atual,
+    }
+
+    return render(request, "plataforma/ofertas.html", context)
 
 @staff_member_required
 @require_POST

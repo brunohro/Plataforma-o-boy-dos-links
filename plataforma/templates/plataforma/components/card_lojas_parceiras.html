@@ -1,0 +1,45 @@
+{% load static %}
+<section class="partner-stores" id="lojas">
+    <div class="partner-stores__container">
+
+        <h2 class="partner-stores__title">Lojas parceiras</h2>
+
+        <div class="partner-stores__grid">
+
+            {% for loja in lojas_parceiras %}
+                <a href="#" class="partner-store">
+                    <div class="partner-store__icon">
+                        {% if loja.logo_url %}
+                            <img
+                                src="{{ loja.logo_url }}"
+                                alt="Logo da {{ loja.nome }}"
+                                loading="lazy"
+                            >
+                        {% else %}
+                            <i class="fa-solid fa-shop"></i>
+                        {% endif %}
+                    </div>
+                    <h3 class="partner-store__name">
+                        {{ loja.nome }}
+                    </h3>
+
+                    <div class="partner-store__rating">
+                        <span class="partner-store__stars">★★★★★</span>
+                        <span class="partner-store__score">5.0</span>
+                    </div>
+
+                    <p class="partner-store__coupons">
+                        {{ loja.cupons.count }} cupons
+                    </p>
+
+                </a>
+            {% empty %}
+                <p class="partner-stores__empty">
+                    Nenhuma loja parceira cadastrada no momento.
+                </p>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+

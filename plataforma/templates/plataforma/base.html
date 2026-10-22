@@ -17,17 +17,21 @@
     >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"> 
 
+    <link rel="stylesheet" type="text/css" href="{% static 'css/adm/adm.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/adm/ofertas.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/adm/forms/form-oferta.css' %}">
+
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/adm.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/categorias.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/cards-main.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/cadastro.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/lojas-parceiras.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/cupons.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/banner.css' %}">
 
-    <script src="{% static 'js/banner.js' %}"></script>
-    <script src="{% static 'js/tab-animacao.js' %}"></script>
+
 </head>
 <body>
     {% include 'plataforma/components/header.html' %}
@@ -38,3 +42,6 @@
     {% include 'plataforma/components/footer.html' %}
 </body>
 </html>
+    <script src="{% static 'js/banner.js' %}"></script>
+    <script src="{% static 'js/tab-animacao.js' %}"></script>
+    <script src="{% static 'js/cupons.js' %}"></script>

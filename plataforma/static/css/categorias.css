@@ -1,196 +1,240 @@
+
 /* ========================================
    CATEGORIAS POPULARES
 ======================================== */
 
 .categories-section {
-  width: 100%;
-  padding: 48px 0 56px;
-  background: var(--background);
+    width: 100%;
+    padding: 28px 0 36px;
+    background: var(--background);
 }
 
 .categories-container {
-  width: 1216px;
-  margin: 0 auto;
+    width: min(100% - 48px, 1216px);
+    margin: 0 auto;
 }
 
 /* Título */
 
 .section-header {
-  margin-bottom: 24px;
+    margin-bottom: 18px;
 }
 
 .section-title {
-  margin: 0;
-
-  color: var(--foreground);
-
-  font-size: 28px;
-  line-height: 1.2;
-  font-weight: 700;
-  letter-spacing: -0.6px;
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 24px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 /* Grid */
 
 .categories-grid {
-  display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-  gap: 14px;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 10px;
 }
 
 /* Card */
 
 .category-card {
-  position: relative;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    min-height: 125px;
+    padding: 14px 8px;
 
-  min-height: 160px;
-  padding: 20px 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
 
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
+    color: var(--text-primary);
+    text-decoration: none;
 
-  color: var(--foreground);
-  text-decoration: none;
-
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    background-color 0.2s ease,
-    box-shadow 0.2s ease;
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 /* Hover */
 
 .category-card:hover {
-  transform: translateY(-4px);
-
-  background: var(--card);
-  border-color: var(--primary);
-
-  box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.25),
-    0 0 0 1px rgba(240, 75, 47, 0.08);
+    transform: translateY(-3px);
+    background: var(--card-hover);
+    border-color: var(--primary);
+    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
 }
 
 /* Ícone */
 
 .category-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  width: 58px;
-  height: 58px;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 10px;
 
-  margin-bottom: 14px;
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--primary);
 
-  border-radius: 50%;
-
-  background: var(--muted);
-  color: var(--primary);
-
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .category-icon svg {
-  width: 27px;
-  height: 27px;
-
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+    width: 23px;
+    height: 23px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .category-card:hover .category-icon {
-  background: var(--primary);
-  color: var(--primary-foreground);
-  transform: scale(1.06);
+    background: var(--primary);
+    color: #FFFFFF;
+    transform: scale(1.05);
 }
 
 /* Informações */
 
 .category-info {
-  text-align: center;
+    text-align: center;
 }
 
 .category-info h3 {
-  margin: 0 0 7px;
-
-  color: var(--foreground);
-
-  font-size: 16px;
-  line-height: 1.2;
-  font-weight: 600;
+    margin: 0 0 5px;
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.25;
+    font-weight: 600;
 }
 
 .category-info span {
-  color: var(--muted-foreground);
-
-  font-size: 13px;
-  line-height: 1;
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.2;
 }
+
+/* ========================================
+   NOTEBOOKS E TELAS MÉDIAS
+======================================== */
 
 @media (max-width: 1200px) {
-  .categories-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
+    .categories-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
 }
+
+/* ========================================
+   TABLETS E CELULARES
+======================================== */
 
 @media (max-width: 768px) {
-  .categories-section {
-    padding: 36px 0 44px;
-  }
+    .categories-section {
+        padding: 24px 0 30px;
+    }
 
-  .categories-container {
-    width: min(100% - 24px, 600px);
-  }
+    .categories-container {
+        width: calc(100% - 32px);
+    }
 
-  .section-title {
-    font-size: 24px;
-  }
+    .section-header {
+        margin-bottom: 14px;
+    }
 
-  .categories-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
+    .section-title {
+        font-size: 21px;
+    }
 
-  .category-card {
-    min-height: 145px;
-    border-radius: 14px;
-  }
+    .categories-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .category-card {
+        min-height: 112px;
+        padding: 12px 8px;
+        border-radius: 10px;
+    }
+
+    .category-icon {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 8px;
+    }
+
+    .category-icon svg {
+        width: 21px;
+        height: 21px;
+    }
+
+    .category-info h3 {
+        font-size: 13px;
+    }
+
+    .category-info span {
+        font-size: 11px;
+    }
 }
+
+/* ========================================
+   CELULARES PEQUENOS
+======================================== */
 
 @media (max-width: 420px) {
-  .categories-grid {
-    gap: 8px;
-  }
+    .categories-container {
+        width: calc(100% - 24px);
+    }
 
-  .category-card {
-    min-height: 135px;
-    padding: 16px 8px;
-  }
+    .categories-grid {
+        gap: 7px;
+    }
 
-  .category-icon {
-    width: 52px;
-    height: 52px;
-    margin-bottom: 12px;
-  }
+    .category-card {
+        min-height: 105px;
+        padding: 10px 6px;
+    }
 
-  .category-info h3 {
-    font-size: 14px;
-  }
+    .category-icon {
+        width: 36px;
+        height: 36px;
+        margin-bottom: 7px;
+    }
 
-  .category-info span {
-    font-size: 12px;
-  }
+    .category-icon svg {
+        width: 19px;
+        height: 19px;
+    }
+
+    .category-info h3 {
+        font-size: 12px;
+    }
+
+    .category-info span {
+        font-size: 10px;
+    }
 }
+
+/* Acessibilidade */
+
+@media (prefers-reduced-motion: reduce) {
+    .category-card,
+    .category-icon {
+        transition: none;
+    }
+}
+

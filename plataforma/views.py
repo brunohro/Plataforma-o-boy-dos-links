@@ -35,6 +35,10 @@ def home(request):
     recentes = ativas.filter(is_destaque=True, is_relampago=False).order_by("-criado_em")[:8] ### Adicionado apenas 8 campos de ofertas recentes
     ofertas_relampago = ativas.filter(is_relampago=True).order_by("data_fim")[:4]
 
+    lojas_parceiras = (
+        LojaParceira.objects.all().order_by("nome")
+    )
+
     categorias = (
         Categoria.objects
         .annotate(
@@ -46,18 +50,21 @@ def home(request):
         .order_by("-total_ativas", "nome")[:12]
     )
 
-    cupons = (
-        Cupom.objects
-        .filter(ativo=True, data_validade__gte=agora)
-        .select_related("loja")
-        .order_by("data_validade")[:6]
-    )
+    # cupons2 = (
+    #     Cupom.objects
+    #     .filter(ativo=True, data_validade__gte=agora)
+    #     .select_related("loja")
+    #     .order_by("data_validade")[:6]
+    # )
+
+    cupons = Cupom.objects.all()
 
     return render(request, TEMPLATE_INDEX, {
         "offers": recentes,
         "categorias": categorias,
-        "coupons": cupons,
+        "cupons": cupons,
         "ofertas_relampago": ofertas_relampago,
+        "lojas_parceiras": lojas_parceiras,
     })
 
 
@@ -105,32 +112,40 @@ def adm_usuarios(request):
 
 
 @staff_member_required
-def adm_ofertas(request):
+def ofertas_adm(request):
     lista = (
         Oferta.objects
         .select_related("loja", "categoria", "cupom")
         .order_by("-criado_em")
     )
-    return render(request, TEMPLATE_PAINEL, {"ofertas": lista})
+    return render(request, "plataforma/adm/ofertas_adm.html", {"ofertas": lista})
+
+def cadastrar_oferta(request):
+    return render(request, "plataforma/adm/forms/form_oferta.html")
+
+def editar_oferta(request, id):
+    oferta = Oferta.objects.get(id=id)
+    return render(request, "plataforma/adm/forms/form_oferta.html", {"oferta": oferta})
+
+
 
 
 @staff_member_required
-def adm_lojas(request):
+def lojas_adm(request):
     lojas = LojaParceira.objects.order_by("nome")
-    return render(request, TEMPLATE_PAINEL, {"lojas": lojas})
+    return render(request, "plataforma/adm/lojas_adm.html", {"lojas": lojas})
 
 
 @staff_member_required
-def adm_categorias(request):
+def categorias_adm(request):
     categorias = Categoria.objects.order_by("nome")
-    return render(request, TEMPLATE_PAINEL, {"categorias": categorias})
+    return render(request, "plataforma/adm/categorias_adm.html", {"categorias": categorias})
 
 
 @staff_member_required
-def adm_cupons(request):
+def cupons_adm(request):
     cupons = Cupom.objects.select_related("loja").order_by("-data_validade")
-    return render(request, TEMPLATE_PAINEL, {"cupons": cupons})
-
+    return render(request, "plataforma/adm/cupons_adm.html", {"cupons": cupons})
 
 # =========================================================
 # CRUD DE OFERTAS

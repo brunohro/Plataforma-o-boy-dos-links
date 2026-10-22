@@ -1,0 +1,189 @@
+
+{% extends '../../base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin/formulario_oferta.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="oferta-form-page">
+    <div class="oferta-form-container">
+
+        <div class="oferta-form-header">
+            <div>
+                <span class="oferta-form-eyebrow">ADMINISTRAÇÃO</span>
+                <h1>Cadastrar nova oferta</h1>
+                <p>Preencha os dados para adicionar uma oferta ao site.</p>
+            </div>
+
+            <a href="{% url 'ofertas_adm' %}" class="oferta-btn-voltar">
+                <i class="fa-solid fa-arrow-left"></i>
+                Voltar
+            </a>
+        </div>
+
+        <form class="oferta-form" action="#" method="get"
+              onsubmit="return false;">
+
+            <section class="oferta-form-section">
+                <div class="oferta-section-heading">
+                    <i class="fa-solid fa-box-open"></i>
+                    <div>
+                        <h2>Informações do produto</h2>
+                        <p>Nome, categoria e loja responsável.</p>
+                    </div>
+                </div>
+
+                <div class="oferta-form-grid">
+                    <div class="oferta-field oferta-field-full">
+                        <label for="nome_produto">Nome do produto *</label>
+                        <input
+                            type="text"
+                            id="nome_produto"
+                            name="nome_produto"
+                            class="oferta-input"
+                            placeholder="Ex.: Tênis esportivo masculino"
+                        >
+                    </div>
+
+                    <div class="oferta-field">
+                        <label for="loja">Loja parceira *</label>
+                        <select id="loja" name="loja" class="oferta-input">
+                            <option value="">Selecione uma loja</option>
+                            <option>Mercado Livre</option>
+                            <option>Amazon</option>
+                            <option>Shopee</option>
+                        </select>
+                    </div>
+
+                    <div class="oferta-field">
+                        <label for="categoria">Categoria</label>
+                        <select id="categoria" name="categoria" class="oferta-input">
+                            <option value="">Selecione uma categoria</option>
+                            <option>Eletrônicos</option>
+                            <option>Moda</option>
+                            <option>Casa e decoração</option>
+                            <option>Esportes</option>
+                        </select>
+                    </div>
+
+                    <div class="oferta-field oferta-field-full">
+                        <label for="descricao">Descrição da oferta</label>
+                        <textarea
+                            id="descricao"
+                            name="descricao"
+                            class="oferta-input oferta-textarea"
+                            rows="4"
+                            placeholder="Descreva os detalhes do produto..."
+                        ></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <section class="oferta-form-section">
+                <div class="oferta-section-heading">
+                    <i class="fa-solid fa-link"></i>
+                    <div>
+                        <h2>Links e cupom</h2>
+                        <p>Configure o acesso ao produto e o desconto.</p>
+                    </div>
+                </div>
+
+                <div class="oferta-form-grid">
+                    <div class="oferta-field oferta-field-full">
+                        <label for="link_afiliado">Link de afiliado *</label>
+                        <input
+                            type="url"
+                            id="link_afiliado"
+                            name="link_afiliado"
+                            class="oferta-input"
+                            placeholder="https://..."
+                        >
+                    </div>
+
+                    <div class="oferta-field oferta-field-full">
+                        <label for="image_url">URL da imagem</label>
+                        <input
+                            type="url"
+                            id="image_url"
+                            name="image_url"
+                            class="oferta-input"
+                            placeholder="https://.../imagem.jpg"
+                        >
+                    </div>
+
+                    <div class="oferta-field oferta-field-full">
+                        <label for="cupom">Cupom de desconto</label>
+                        <select id="cupom" name="cupom" class="oferta-input">
+                            <option value="">Nenhum cupom</option>
+                            <option>DESCONTO10</option>
+                            <option>OFERTA20</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <section class="oferta-form-section">
+                <div class="oferta-section-heading">
+                    <i class="fa-solid fa-tags"></i>
+                    <div>
+                        <h2>Exibição da oferta</h2>
+                        <p>Escolha como o produto será destacado.</p>
+                    </div>
+                </div>
+
+                <div class="oferta-options">
+                    <label class="oferta-option" for="is_destaque">
+                        <input
+                            type="checkbox"
+                            id="is_destaque"
+                            name="is_destaque"
+                            class="oferta-checkbox"
+                        >
+                        <span class="oferta-option-icon destaque">
+                            <i class="fa-solid fa-star"></i>
+                        </span>
+                        <span class="oferta-option-text">
+                            <strong>Oferta em destaque</strong>
+                            <small>Dar maior visibilidade ao produto.</small>
+                        </span>
+                    </label>
+
+                    <label class="oferta-option" for="is_relampago">
+                        <input
+                            type="checkbox"
+                            id="is_relampago"
+                            name="is_relampago"
+                            class="oferta-checkbox"
+                        >
+                        <span class="oferta-option-icon relampago">
+                            <i class="fa-solid fa-bolt"></i>
+                        </span>
+                        <span class="oferta-option-text">
+                            <strong>Oferta relâmpago</strong>
+                            <small>Identificar como uma promoção relâmpago.</small>
+                        </span>
+                    </label>
+                </div>
+            </section>
+
+            <div class="oferta-form-footer">
+                <a href="{% url 'ofertas_adm' %}" class="oferta-btn-cancelar">
+                    Cancelar
+                </a>
+
+                <button type="submit" class="oferta-btn-salvar">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    {% if modo_edicao %}
+                        Salvar alterações
+                    {% else %}
+                        Cadastrar oferta
+                    {% endif %}
+                </button>
+            </div>
+
+        </form>
+    </div>
+</main>
+{% endblock %}

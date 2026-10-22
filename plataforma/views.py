@@ -60,7 +60,7 @@ def home(request):
     cupons = Cupom.objects.all()
 
     return render(request, TEMPLATE_INDEX, {
-        "offers": recentes,
+        "recentes": recentes,
         "categorias": categorias,
         "cupons": cupons,
         "ofertas_relampago": ofertas_relampago,

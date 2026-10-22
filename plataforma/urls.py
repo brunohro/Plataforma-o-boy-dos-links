@@ -7,6 +7,7 @@ urlpatterns = [
     # Público
     path("", views.home, name="index"),
     path("ofertas/", views.ofertas, name="ofertas"),
+    path("ofertas/relampago/",views.ofertas,{"tipo": "relampago"}, name="ofertas_relampago",),
     path("promocoes/", RedirectView.as_view(pattern_name="ofertas", permanent=True)),
     path("login/", views.login_view, name="login"),
     path("cadastro/", views.cadastro, name="cadastro"),

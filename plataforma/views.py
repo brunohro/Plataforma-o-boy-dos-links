@@ -32,8 +32,9 @@ def ofertas_ativas_qs():
 def home(request):
     agora = timezone.now()
     ativas = ofertas_ativas_qs()
-    recentes = ativas.filter(is_destaque=True, is_relampago=False).order_by("-criado_em")[:8] ### Adicionado apenas 8 campos de ofertas recentes
+    recentes = ativas.filter(is_destaque=False, is_relampago=False).order_by("-criado_em")[:8] ### Adicionado apenas 8 campos de ofertas recentes
     ofertas_relampago = ativas.filter(is_relampago=True).order_by("data_fim")[:4]
+    ofertas_destaque = ativas.filter(is_destaque=True, is_relampago=False).order_by("-criado_em")[:8]
 
     lojas_parceiras = (
         LojaParceira.objects.all().order_by("nome")
@@ -64,6 +65,7 @@ def home(request):
         "categorias": categorias,
         "cupons": cupons,
         "ofertas_relampago": ofertas_relampago,
+        "ofertas_destaque": ofertas_destaque,
         "lojas_parceiras": lojas_parceiras,
     })
 

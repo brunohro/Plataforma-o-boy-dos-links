@@ -1,67 +1,64 @@
-
 /* ========================================
    PÁGINA DE OFERTAS
    O BOY DOS LINKS
 ======================================== */
 
-.offers-page {
-  width: 100%;
-  min-height: 100vh;
-  background: var(--background);
-  color: var(--text-primary);
+.page-offers {
+    width: 100%;
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--text-primary);
 }
 
 
 /* ========================================
-   CABEÇALHO — FUNDO EM LARGURA TOTAL
+   CABEÇALHO
 ======================================== */
 
-.offers-header {
-  width: 100%;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
+.page-offers-header {
+    width: 100%;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
 }
 
-.offers-header-container {
-  display: flex;
-  align-items: center;
-  gap: 32px;
+.page-offers-header-container {
+    display: flex;
+    align-items: center;
+    gap: 32px;
 
-  width: 100%;
-  max-width: 1216px;
-  min-height: 140px;
+    width: 100%;
+    max-width: 1216px;
+    min-height: 140px;
 
-  margin: 0 auto;
-  padding: 20px 16px;
+    margin: 0 auto;
+    padding: 20px 16px;
 }
 
 
 /* ========================================
-   TÍTULO DO CABEÇALHO
+   TÍTULO
 ======================================== */
 
-.offers-heading {
-  flex: 0 0 260px;
-  min-width: 0;
+.page-offers-heading {
+    flex: 0 0 260px;
+    min-width: 0;
 }
 
-.offers-heading h1 {
-  margin: 0 0 8px;
-
-  color: var(--text-primary);
-  font-size: 28px;
-  font-weight: 800;
-  line-height: 1.2;
+.page-offers-heading h1 {
+    margin: 0 0 8px;
+    color: var(--text-primary);
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.2;
 }
 
-.offers-heading p,
-.offers-heading span {
-  display: block;
-  margin: 0;
-
-  color: var(--text-muted);
-  font-size: 14px;
-  line-height: 1.7;
+.page-offers-heading p,
+.page-offers-heading span {
+    display: block;
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.7;
 }
 
 
@@ -69,71 +66,66 @@
    NAVEGAÇÃO DE CATEGORIAS
 ======================================== */
 
-.offers-nav {
-  display: flex;
-  flex: 1;
-  align-items: stretch;
-  justify-content: space-between;
-  gap: 8px;
-
-  min-width: 0;
+.page-offers-nav {
+    display: flex;
+    flex: 1;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 0;
 }
 
-.offer-nav-item {
-  position: relative;
+.page-offers-nav-item {
+    position: relative;
 
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
 
-  min-width: 0;
-  padding: 12px 6px;
+    min-width: 0;
+    padding: 12px 6px;
 
-  color: var(--text-muted);
-  font-size: 12px;
-  line-height: 1.4;
-  text-align: center;
-  text-decoration: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: center;
+    text-decoration: none;
 
-  transition:
-    color 0.2s ease,
-    background-color 0.2s ease;
+    transition: color 0.2s ease, background-color 0.2s ease;
 }
 
-.offer-nav-item i {
-  color: var(--primary);
-  font-size: 26px;
-  transition: transform 0.2s ease;
+.page-offers-nav-item i {
+    color: var(--primary);
+    font-size: 26px;
+    transition: transform 0.2s ease;
 }
 
-.offer-nav-item:hover {
-  color: var(--text-primary);
+.page-offers-nav-item:hover {
+    color: var(--text-primary);
 }
 
-.offer-nav-item:hover i {
-  transform: translateY(-2px);
+.page-offers-nav-item:hover i {
+    transform: translateY(-2px);
 }
 
-.offer-nav-item.active {
-  color: var(--text-primary);
-  font-weight: 600;
+.page-offers-nav-item.active {
+    color: var(--text-primary);
+    font-weight: 600;
 }
 
-.offer-nav-item.active::after {
-  content: "";
+.page-offers-nav-item.active::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: -20px;
+    left: 0;
 
-  position: absolute;
-  right: 0;
-  bottom: -20px;
-  left: 0;
-
-  height: 3px;
-
-  border-radius: 4px 4px 0 0;
-  background: var(--primary);
+    height: 3px;
+    border-radius: 4px 4px 0 0;
+    background: var(--primary);
 }
 
 
@@ -141,17 +133,17 @@
    LAYOUT PRINCIPAL
 ======================================== */
 
-.offers-layout {
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  align-items: start;
-  gap: 28px;
+.page-offers-layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    align-items: start;
+    gap: 28px;
 
-  width: 100%;
-  max-width: 1216px;
+    width: 100%;
+    max-width: 1216px;
 
-  margin: 0 auto;
-  padding: 32px 16px 60px;
+    margin: 0 auto;
+    padding: 32px 16px 60px;
 }
 
 
@@ -159,61 +151,55 @@
    BARRA LATERAL
 ======================================== */
 
-.offers-sidebar {
-  min-width: 0;
+.page-offers-sidebar {
+    min-width: 0;
 }
 
-.filter-heading {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  margin-bottom: 30px;
+.page-offers-filter-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 30px;
 }
 
-.filter-heading h2 {
-  margin: 0;
-
-  color: var(--text-primary);
-  font-size: 20px;
-  font-weight: 700;
+.page-offers-filter-heading h2 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 20px;
+    font-weight: 700;
 }
 
-.filter-heading span {
-  color: var(--text-muted);
-  font-size: 13px;
+.page-offers-filter-heading span {
+    color: var(--text-muted);
+    font-size: 13px;
 }
 
-.filter-section {
-  margin-bottom: 30px;
+.page-offers-filter-section {
+    margin-bottom: 30px;
 }
 
-.filter-section h3 {
-  margin: 0 0 12px;
-
-  color: var(--text-primary);
-  font-size: 15px;
-  font-weight: 700;
+.page-offers-filter-section h3 {
+    margin: 0 0 12px;
+    color: var(--text-primary);
+    font-size: 15px;
+    font-weight: 700;
 }
 
-.filter-link {
-  display: block;
+.page-offers-filter-link {
+    display: block;
+    margin-bottom: 10px;
 
-  margin-bottom: 10px;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+    text-decoration: none;
 
-  color: var(--text-muted);
-  font-size: 13px;
-  line-height: 1.5;
-  text-decoration: none;
-
-  transition:
-    color 0.2s ease,
-    padding-left 0.2s ease;
+    transition: color 0.2s ease, padding-left 0.2s ease;
 }
 
-.filter-link:hover {
-  padding-left: 4px;
-  color: var(--primary);
+.page-offers-filter-link:hover {
+    padding-left: 4px;
+    color: var(--primary);
 }
 
 
@@ -221,34 +207,31 @@
    CONTEÚDO DAS OFERTAS
 ======================================== */
 
-.offers-content {
-  min-width: 0;
+.page-offers-content {
+    min-width: 0;
 }
 
-.offers-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-
-  margin-bottom: 22px;
+.page-offers-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 22px;
 }
 
-.offers-toolbar h2 {
-  margin: 0 0 5px;
-
-  color: var(--text-primary);
-  font-size: 21px;
-  font-weight: 700;
+.page-offers-toolbar h2 {
+    margin: 0 0 5px;
+    color: var(--text-primary);
+    font-size: 21px;
+    font-weight: 700;
 }
 
-.offers-toolbar p {
-  margin: 0;
-
-  color: var(--text-muted);
-  font-size: 13px;
-  line-height: 1.5;
+.page-offers-toolbar p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
 }
 
 
@@ -256,33 +239,33 @@
    ORDENAÇÃO
 ======================================== */
 
-.offers-sort {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.page-offers-sort {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
-  color: var(--text-muted);
-  font-size: 13px;
+    color: var(--text-muted);
+    font-size: 13px;
 }
 
-.offers-sort select {
-  max-width: 190px;
-  padding: 10px 12px;
+.page-offers-sort select {
+    max-width: 190px;
+    padding: 10px 12px;
 
-  border: 1px solid var(--border);
-  border-radius: 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
 
-  outline: none;
-  background: var(--card);
-  color: var(--text-primary);
-  font-family: inherit;
-  font-size: 13px;
+    background: var(--card);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 13px;
 
-  transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease;
 }
 
-.offers-sort select:focus {
-  border-color: var(--primary);
+.page-offers-sort select:focus {
+    border-color: var(--primary);
 }
 
 
@@ -290,11 +273,11 @@
    GRADE DE PRODUTOS
 ======================================== */
 
-.offers-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: stretch;
-  gap: 18px;
+.page-offers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 18px;
 }
 
 
@@ -302,28 +285,27 @@
    CARD DA OFERTA
 ======================================== */
 
-.offer-card {
-  display: flex;
-  flex-direction: column;
+.page-offers-card {
+    display: flex;
+    flex-direction: column;
 
-  min-width: 0;
-  overflow: hidden;
+    min-width: 0;
+    overflow: hidden;
 
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
 
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.offer-card:hover {
-  transform: translateY(-3px);
-
-  border-color: var(--primary);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+.page-offers-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -331,67 +313,105 @@
    IMAGEM DO PRODUTO
 ======================================== */
 
-.offer-image-link {
-  display: block;
-  color: inherit;
-  text-decoration: none;
+.page-offers-product-image {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    aspect-ratio: 1 / 0.95;
+    overflow: hidden;
+
+    background: var(--surface);
 }
 
-.offer-image {
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  aspect-ratio: 1 / 0.95;
-  overflow: hidden;
-
-  background: var(--surface);
+.page-offers-product-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
 }
 
-.offer-image img {
-  display: block;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: contain;
-
-  transition: transform 0.3s ease;
+.page-offers-card:hover .page-offers-product-image img {
+    transform: scale(1.04);
 }
 
-.offer-card:hover .offer-image img {
-  transform: scale(1.04);
+.page-offers-image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    color: var(--text-muted);
+    font-size: 13px;
 }
 
 
 /* ========================================
-   ETIQUETAS DAS OFERTAS
+   ETIQUETA DE DESCONTO
 ======================================== */
 
-.offer-badge {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
+.page-offers-discount-badge {
+    position: absolute;
+    z-index: 2;
+    top: 12px;
+    left: 12px;
 
-  padding: 5px 8px;
+    padding: 5px 8px;
+    border-radius: 4px;
 
-  border-radius: 4px;
-  background: var(--primary);
-  color: #FFFFFF;
+    background: var(--primary);
+    color: #FFFFFF;
 
-  font-size: 10px;
-  font-weight: 800;
-  line-height: 1.3;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.3;
 }
 
-.offer-badge-flash {
-  top: 12px;
-  right: 12px;
-  bottom: auto;
-  left: auto;
+
+/* ========================================
+   BOTÃO DE FAVORITOS
+======================================== */
+
+.page-offers-favorite-button {
+    position: absolute;
+    z-index: 3;
+    top: 10px;
+    right: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+    padding: 0;
+
+    border: 1px solid var(--border);
+    border-radius: 50%;
+
+    background: var(--card);
+    color: var(--text-primary);
+
+    font-size: 25px;
+    line-height: 1;
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.page-offers-favorite-button:hover {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: #FFFFFF;
 }
 
 
@@ -399,67 +419,56 @@
    INFORMAÇÕES DO PRODUTO
 ======================================== */
 
-.offer-info {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: flex-start;
+.page-offers-product-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
 
-  min-width: 0;
-  padding: 16px;
+    min-width: 0;
+    padding: 16px;
 }
 
-.offer-store {
-  margin-bottom: 6px;
+.page-offers-product-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
 
-  color: var(--text-muted);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+    width: 100%;
+    margin-bottom: 8px;
 }
 
-.offer-name {
-  display: -webkit-box;
-  overflow: hidden;
-
-  width: 100%;
-  min-height: 42px;
-  margin: 0 0 10px;
-
-  color: var(--text-primary);
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.5;
-
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow-wrap: anywhere;
+.page-offers-store-name {
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
-
-/* ========================================
-   AVALIAÇÃO
-======================================== */
-
-.offer-rating {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 5px;
-
-  margin-bottom: 14px;
-
-  color: var(--text-primary);
-  font-size: 11px;
+.page-offers-product-timer {
+    color: var(--text-muted);
+    font-size: 10px;
 }
 
-.offer-rating i {
-  color: var(--primary);
-}
+.page-offers-product-title {
+    display: -webkit-box;
+    overflow: hidden;
 
-.offer-muted {
-  color: var(--text-muted);
+    width: 100%;
+    min-height: 42px;
+    margin: 0 0 12px;
+
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow-wrap: anywhere;
 }
 
 
@@ -467,73 +476,49 @@
    PREÇOS
 ======================================== */
 
-.offer-pricing {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 5px;
+.page-offers-price-area {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
 
-  margin-bottom: 12px;
+    width: 100%;
+    margin-bottom: 12px;
 }
 
-.offer-old-price {
-  color: var(--text-muted);
-  font-size: 12px;
-  text-decoration: line-through;
+.page-offers-old-price {
+    color: var(--text-muted);
+    font-size: 12px;
+    text-decoration: line-through;
 }
 
-.offer-price-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
+.page-offers-current-price {
+    color: var(--text-primary);
+    font-size: 25px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
 }
 
-.offer-price {
-  color: var(--text-primary);
-  font-size: 25px;
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -0.5px;
-}
-
-.offer-discount {
-  padding: 4px 6px;
-
-  border-radius: 4px;
-  background: var(--success);
-  color: #FFFFFF;
-
-  font-size: 11px;
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.offer-coupon {
-  color: var(--success);
-  font-size: 12px;
-  font-weight: 600;
+.page-offers-saving {
+    color: var(--success);
+    font-size: 11px;
+    font-weight: 600;
 }
 
 
 /* ========================================
-   ENTREGA
+   CUPOM
 ======================================== */
 
-.offer-delivery {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
+.page-offers-coupon {
+    width: 100%;
+    margin-bottom: 14px;
 
-  margin-bottom: 14px;
-
-  color: var(--success);
-  font-size: 11px;
-  line-height: 1.5;
-}
-
-.offer-delivery i {
-  margin-top: 2px;
+    color: var(--success);
+    font-size: 12px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
 }
 
 
@@ -541,41 +526,41 @@
    BOTÃO DA OFERTA
 ======================================== */
 
-.offer-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+.page-offers-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 
-  width: 100%;
-  margin-top: auto;
-  padding: 11px 14px;
+    width: 100%;
+    margin-top: auto;
+    padding: 11px 14px;
 
-  border: 1px solid var(--primary);
-  border-radius: 7px;
+    border: 1px solid var(--primary);
+    border-radius: 7px;
 
-  background: var(--primary);
-  color: #FFFFFF;
+    background: var(--primary);
+    color: #FFFFFF;
 
-  font-size: 13px;
-  font-weight: 700;
-  text-align: center;
-  text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
 
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
 }
 
-.offer-button:hover {
-  background: var(--primary-hover);
-  border-color: var(--primary-hover);
-  color: #FFFFFF;
+.page-offers-button:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+    color: #FFFFFF;
 }
 
-.offer-button:active {
-  transform: scale(0.98);
+.page-offers-button:active {
+    transform: scale(0.98);
 }
 
 
@@ -584,39 +569,39 @@
 ======================================== */
 
 @media (max-width: 1100px) {
-  .offers-header-container {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 20px;
-  }
+    .page-offers-header-container {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 20px;
+    }
 
-  .offers-heading {
-    flex-basis: auto;
-  }
+    .page-offers-heading {
+        flex-basis: auto;
+    }
 
-  .offers-nav {
-    width: 100%;
-    justify-content: flex-start;
-    overflow-x: auto;
-    scrollbar-width: thin;
-  }
+    .page-offers-nav {
+        width: 100%;
+        justify-content: flex-start;
+        overflow-x: auto;
+        scrollbar-width: thin;
+    }
 
-  .offer-nav-item {
-    flex: 0 0 110px;
-  }
+    .page-offers-nav-item {
+        flex: 0 0 110px;
+    }
 
-  .offer-nav-item.active::after {
-    bottom: 0;
-  }
+    .page-offers-nav-item.active::after {
+        bottom: 0;
+    }
 
-  .offers-layout {
-    grid-template-columns: 190px minmax(0, 1fr);
-    gap: 20px;
-  }
+    .page-offers-layout {
+        grid-template-columns: 190px minmax(0, 1fr);
+        gap: 20px;
+    }
 
-  .offers-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+    .page-offers-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 
@@ -625,101 +610,96 @@
 ======================================== */
 
 @media (max-width: 700px) {
-  .offers-header-container {
-    min-height: auto;
-    padding: 24px 16px;
-  }
+    .page-offers-header-container {
+        min-height: auto;
+        padding: 24px 16px;
+    }
 
-  .offers-heading h1 {
-    font-size: 24px;
-  }
+    .page-offers-heading h1 {
+        font-size: 24px;
+    }
 
-  .offers-nav {
-    gap: 4px;
-  }
+    .page-offers-nav {
+        gap: 4px;
+    }
 
-  .offer-nav-item {
-    flex-basis: 100px;
-    gap: 9px;
-    padding: 12px 5px;
-    font-size: 11px;
-  }
+    .page-offers-nav-item {
+        flex-basis: 100px;
+        gap: 9px;
+        padding: 12px 5px;
+        font-size: 11px;
+    }
 
-  .offer-nav-item i {
-    font-size: 23px;
-  }
+    .page-offers-nav-item i {
+        font-size: 23px;
+    }
 
-  .offers-layout {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
+    .page-offers-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 24px;
+        padding: 24px 16px 40px;
+    }
 
-    padding: 24px 16px 40px;
-  }
+    .page-offers-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
 
-  .offers-sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
+    .page-offers-filter-heading {
+        margin-bottom: 0;
+    }
 
-  .filter-heading {
-    margin-bottom: 0;
-  }
+    .page-offers-filter-section {
+        margin-bottom: 0;
+    }
 
-  .filter-section {
-    margin-bottom: 0;
-  }
+    .page-offers-filter-section:not(:first-of-type) {
+        display: none;
+    }
 
-  .filter-section:not(:first-of-type) {
-    display: none;
-  }
+    .page-offers-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
 
-  .offers-toolbar {
-    align-items: flex-start;
-    flex-direction: column;
-  }
+    .page-offers-sort {
+        justify-content: space-between;
+        width: 100%;
+    }
 
-  .offers-sort {
-    justify-content: space-between;
-    width: 100%;
-  }
+    .page-offers-sort select {
+        flex: 1;
+        max-width: none;
+    }
 
-  .offers-sort select {
-    flex: 1;
-    max-width: none;
-  }
+    .page-offers-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
 
-  .offers-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
+    .page-offers-product-content {
+        padding: 11px;
+    }
 
-  .offer-info {
-    padding: 11px;
-  }
+    .page-offers-product-title {
+        min-height: 36px;
+        font-size: 12px;
+    }
 
-  .offer-name {
-    min-height: 36px;
-    font-size: 12px;
-  }
+    .page-offers-current-price {
+        font-size: 19px;
+    }
 
-  .offer-price {
-    font-size: 19px;
-  }
+    .page-offers-saving {
+        font-size: 10px;
+    }
 
-  .offer-discount {
-    font-size: 9px;
-  }
-
-  .offer-rating {
-    font-size: 10px;
-  }
-
-  .offer-button {
-    gap: 5px;
-    padding: 10px 6px;
-    font-size: 11px;
-  }
+    .page-offers-button {
+        gap: 5px;
+        padding: 10px 6px;
+        font-size: 11px;
+    }
 }
 
 
@@ -728,27 +708,27 @@
 ======================================== */
 
 @media (max-width: 360px) {
-  .offers-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
+    .page-offers-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
 
-  .offer-image {
-    aspect-ratio: 1 / 0.8;
-  }
+    .page-offers-product-image {
+        aspect-ratio: 1 / 0.8;
+    }
 
-  .offer-info {
-    padding: 14px;
-  }
+    .page-offers-product-content {
+        padding: 14px;
+    }
 
-  .offer-name {
-    font-size: 14px;
-  }
+    .page-offers-product-title {
+        font-size: 14px;
+    }
 
-  .offer-price {
-    font-size: 22px;
-  }
+    .page-offers-current-price {
+        font-size: 22px;
+    }
 
-  .offer-button {
-    font-size: 13px;
-  }
+    .page-offers-button {
+        font-size: 13px;
+    }
 }

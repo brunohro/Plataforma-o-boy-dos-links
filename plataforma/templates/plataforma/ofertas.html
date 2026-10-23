@@ -1,224 +1,210 @@
-
 {% extends 'plataforma/base.html' %}
 {% load static %}
 
 {% block content %}
 
-<section class="offers-page">
+<section class="page-offers">
 
-  <!-- Cabeçalho das categorias -->
+    <header class="page-offers-header">
+        <div class="page-offers-header-container">
 
-<header class="offers-header">
-    <div class="offers-header-container">
+            <div class="page-offers-heading">
+                <h1>Ofertas</h1>
+                <p>Aproveite esses preços agora mesmo!</p>
+                <span>Novas ofertas todos os dias.</span>
+            </div>
 
-        <div class="offers-heading">
-        <h1>Ofertas</h1>
-        <p>Aproveite esses preços agora mesmo!</p>
-        <span>Novas ofertas todos os dias.</span>
-        </div>
+            <nav class="page-offers-nav" aria-label="Categorias de ofertas">
 
-
-<nav class="offers-nav" aria-label="Categorias de ofertas">
-
-    <a href="{% url 'ofertas' %}"
-       class="offer-nav-item {% if tipo_pagina == 'todas' %}active{% endif %}">
-        <i class="fa-solid fa-tags"></i>
-        <span>Todas as ofertas</span>
-    </a>
-
-    <a href="{% url 'ofertas_relampago' %}"
-       class="offer-nav-item {% if tipo_pagina == 'relampago' %}active{% endif %}">
-        <i class="fa-solid fa-bolt"></i>
-        <span>Relâmpago</span>
-    </a>
-
-    <a href="?categoria=eletronicos"
-       class="offer-nav-item {% if categoria_atual == 'eletronicos' %}active{% endif %}">
-        <i class="fa-solid fa-mobile-screen-button"></i>
-        <span>Eletrônicos</span>
-    </a>
-
-    <a href="?categoria=perfumes"
-       class="offer-nav-item {% if categoria_atual == 'perfumes' %}active{% endif %}">
-        <i class="fa-solid fa-spray-can-sparkles"></i>
-        <span>Perfumes</span>
-    </a>
-
-    <a href="?categoria=fitness"
-       class="offer-nav-item {% if categoria_atual == 'fitness' %}active{% endif %}">
-        <i class="fa-solid fa-dumbbell"></i>
-        <span>Fitness</span>
-    </a>
-
-    <a href="?categoria=casa"
-       class="offer-nav-item {% if categoria_atual == 'casa' %}active{% endif %}">
-        <i class="fa-solid fa-house"></i>
-        <span>Casa</span>
-    </a>
-
-    <a href="?categoria=moda"
-       class="offer-nav-item {% if categoria_atual == 'moda' %}active{% endif %}">
-        <i class="fa-solid fa-shirt"></i>
-        <span>Moda</span>
-    </a>
-
-</nav>
-
-
-    </div>
-    </header>
-
-
-  <div class="offers-layout">
-
-    <!-- Barra lateral de filtros -->
-    <aside class="offers-sidebar">
-
-      <div class="filter-heading">
-        <h2>Todas</h2>
-        <span>Confira as ofertas disponíveis</span>
-      </div>
-
-      <section class="filter-section">
-        <h3>Tipo de promoção</h3>
-
-        <a href="?tipo=oferta-do-dia" class="filter-link">
-          Oferta do dia
-        </a>
-
-        <a href="?tipo=relampago" class="filter-link">
-          Oferta relâmpago
-        </a>
-      </section>
-
-      <section class="filter-section">
-        <h3>Categorias</h3>
-
-            {% for categoria in categorias %}
-                <a href="?categoria={{categoria.nome}}" class="filter-link">
-                {{categoria.nome}}
+                <a href="{% url 'ofertas' %}"
+                   class="page-offers-nav-item {% if tipo_pagina == 'todas' %}active{% endif %}">
+                    <i class="fa-solid fa-tags"></i>
+                    <span>Todas as ofertas</span>
                 </a>
 
-                {% endfor %}
-      </section>
-    </aside>
-        
+                <a href="{% url 'ofertas_relampago' %}"
+                   class="page-offers-nav-item {% if tipo_pagina == 'relampago' %}active{% endif %}">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>Relâmpago</span>
+                </a>
 
-    <!-- Área de produtos -->
-    <main class="offers-content">
+                <a href="?categoria=eletronicos"
+                   class="page-offers-nav-item {% if categoria_atual == 'eletronicos' %}active{% endif %}">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                    <span>Eletrônicos</span>
+                </a>
 
-      <div class="offers-toolbar">
-        <div>
-          <h2>Ofertas para você</h2>
-          <p>Produtos selecionados com ótimos preços.</p>
+                <a href="?categoria=perfumes"
+                   class="page-offers-nav-item {% if categoria_atual == 'perfumes' %}active{% endif %}">
+                    <i class="fa-solid fa-spray-can-sparkles"></i>
+                    <span>Perfumes</span>
+                </a>
+
+                <a href="?categoria=fitness"
+                   class="page-offers-nav-item {% if categoria_atual == 'fitness' %}active{% endif %}">
+                    <i class="fa-solid fa-dumbbell"></i>
+                    <span>Fitness</span>
+                </a>
+
+                <a href="?categoria=casa"
+                   class="page-offers-nav-item {% if categoria_atual == 'casa' %}active{% endif %}">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Casa</span>
+                </a>
+
+                <a href="?categoria=moda"
+                   class="page-offers-nav-item {% if categoria_atual == 'moda' %}active{% endif %}">
+                    <i class="fa-solid fa-shirt"></i>
+                    <span>Moda</span>
+                </a>
+
+            </nav>
+
         </div>
+    </header>
 
-        <label class="offers-sort">
-          <span>Ordenar:</span>
-          <select name="ordenacao">
-            <option value="recentes">Mais recentes</option>
-            <option value="mais-acessados">Mais Acessados</option>
-          </select>
-        </label>
-      </div>
+    <div class="page-offers-layout">
 
-      <div class="offers-grid">
+        <aside class="page-offers-sidebar">
 
-        {% for oferta in ofertas %}
-                    <article class="flash-card">
+            <div class="page-offers-filter-heading">
+                <h2>Todas</h2>
+                <span>Confira as ofertas disponíveis</span>
+            </div>
 
-                <div class="product-image">
+            <section class="page-offers-filter-section">
+                <h3>Tipo de promoção</h3>
 
-                    <span class="discount-badge">
-                        -{{ oferta.desconto|floatformat:0 }}%
-                    </span>
+                <a href="?tipo=oferta-do-dia" class="page-offers-filter-link">
+                    Oferta do dia
+                </a>
 
-                    <button
-                        type="button"
-                        class="favorite-button"
-                        aria-label="Adicionar aos favoritos"
-                    >
-                        ♡
-                    </button>
+                <a href="?tipo=relampago" class="page-offers-filter-link">
+                    Oferta relâmpago
+                </a>
+            </section>
 
-                    {% if oferta.image_url %}
-                        <img
-                            src="{{ oferta.image_url }}"
-                            alt="{{ oferta.nome_produto }}"
-                        >
-                    {% else %}
-                        <div class="product-image-placeholder">
-                            Sem imagem
-                        </div>
-                    {% endif %}
+            <section class="page-offers-filter-section">
+                <h3>Categorias</h3>
 
-                </div>
-
-
-                <div class="product-content">
-
-                    <div class="product-meta">
-
-                        <span class="store-name">
-                            {{ oferta.loja.nome }}
-                        </span>
-
-                        <span class="product-timer">
-                            Até {{ oferta.data_fim|date:"d/m/Y" }}
-                        </span>
-
-                    </div>
-
-
-                    <h3 class="product-title">
-                        {{ oferta.nome_produto }}
-                    </h3>
-
-
-                    <div class="price-area">
-
-                        <span class="old-price">
-                            R$ {{ oferta.preco_anterior|floatformat:2 }}
-                        </span>
-
-                        <strong class="current-price">
-                            R$ {{ oferta.preco_atual|floatformat:2 }}
-                        </strong>
-
-                        <span class="saving">
-                            Economize R$ {{ oferta.economia|floatformat:2 }}
-                        </span>
-
-                    </div>
-
-
-                    {% if oferta.cupom %}
-
-                    <div class="coupon">
-                        🏷
-                        Cupom {{ oferta.cupom.codigo }}
-                    </div>
-
-                    {% endif %}
-
-
-                    <a
-                        href="{{ oferta.link_afiliado }}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="offer-button"
-                    >
-                        Ver oferta
+                {% for categoria in categorias %}
+                    <a href="?categoria={{ categoria.nome }}"
+                       class="page-offers-filter-link">
+                        {{ categoria.nome }}
                     </a>
+                {% endfor %}
+            </section>
 
+        </aside>
+
+        <main class="page-offers-content">
+
+            <div class="page-offers-toolbar">
+                <div>
+                    <h2>Ofertas para você</h2>
+                    <p>Produtos selecionados com ótimos preços.</p>
                 </div>
 
-            </article>
-            {% endfor %}
-      </div>
+                <label class="page-offers-sort">
+                    <span>Ordenar:</span>
+                    <select name="ordenacao">
+                        <option value="recentes">Mais recentes</option>
+                        <option value="mais-acessados">Mais acessados</option>
+                    </select>
+                </label>
+            </div>
 
-    </main>
-  </div>
+            <div class="page-offers-grid">
+
+                {% for oferta in ofertas %}
+
+                    <article class="page-offers-card">
+
+                        <div class="page-offers-product-image">
+
+                            <span class="page-offers-discount-badge">
+                                -{{ oferta.desconto|floatformat:0 }}%
+                            </span>
+
+                            <button
+                                type="button"
+                                class="page-offers-favorite-button"
+                                aria-label="Adicionar aos favoritos">
+                                ♡
+                            </button>
+
+                            {% if oferta.image_url %}
+                                <img
+                                    src="{{ oferta.image_url }}"
+                                    alt="{{ oferta.nome_produto }}">
+                            {% else %}
+                                <div class="page-offers-image-placeholder">
+                                    Sem imagem
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                        <div class="page-offers-product-content">
+
+                            <div class="page-offers-product-meta">
+
+                                <span class="page-offers-store-name">
+                                    {{ oferta.loja.nome }}
+                                </span>
+
+                                <span class="page-offers-product-timer">
+                                    Até {{ oferta.data_fim|date:"d/m/Y" }}
+                                </span>
+
+                            </div>
+
+                            <h3 class="page-offers-product-title">
+                                {{ oferta.nome_produto }}
+                            </h3>
+
+                            <div class="page-offers-price-area">
+
+                                <span class="page-offers-old-price">
+                                    R$ {{ oferta.preco_anterior|floatformat:2 }}
+                                </span>
+
+                                <strong class="page-offers-current-price">
+                                    R$ {{ oferta.preco_atual|floatformat:2 }}
+                                </strong>
+
+                                <span class="page-offers-saving">
+                                    Economize R$ {{ oferta.economia|floatformat:2 }}
+                                </span>
+
+                            </div>
+
+                            {% if oferta.cupom %}
+                                <div class="page-offers-coupon">
+                                    🏷 Cupom {{ oferta.cupom.codigo }}
+                                </div>
+                            {% endif %}
+
+                            <a
+                                href="{{ oferta.link_afiliado }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="page-offers-button">
+                                Ver oferta
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+        </main>
+
+    </div>
+
 </section>
 
 {% endblock %}

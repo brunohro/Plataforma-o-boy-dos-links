@@ -108,6 +108,27 @@
     color: #F5F5F5;
 }
 
+/* LOGOUT */ 
+
+.account-menu-logout {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.account-menu-logout:hover {
+    background: var(--card-hover);
+    color: var(--primary);
+}
+
 /* =========================================================
    LINK DO WHATSAPP
 ========================================================= */

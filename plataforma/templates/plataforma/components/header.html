@@ -81,50 +81,82 @@
             </a>
     
             <!-- CONTA -->
-            <div class="account-dropdown">
+        <div class="account-dropdown">
 
-                <button class="account-button">
-                    <i class="fa-solid fa-user"></i>
+            <button class="account-button">
+                <i class="fa-solid fa-user"></i>
+
+                {% if user.is_authenticated %}
+                    <span>Olá, {{ user.username }}</span>
+                {% else %}
                     <span>Entrar</span>
-                    <i class="fa-solid fa-chevron-down"></i>
+                {% endif %}
+
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+
+        <div class="account-menu">
+
+            {% if user.is_authenticated %}
+
+                <strong>Olá, {{ user.username }}!</strong>
+
+                <div class="menu-divider"></div>
+
+                <a href="#">
+                    <i class="fa-solid fa-user-gear"></i>
+                    Minha conta
+                </a>
+
+                <a href="/favoritos/">
+                    <i class="fa-regular fa-heart"></i>
+                    Favoritos
+                </a>
+
+            <a href="/cupons/">
+                <i class="fa-solid fa-ticket"></i>
+                Meus cupons
+            </a>
+
+            {% if user.is_staff %}
+                <div class="menu-divider"></div>
+
+                <a href="/adm/">
+                    <i class="fa-solid fa-table-columns"></i>
+                    Painel Admin
+                </a>
+            {% endif %}
+
+            <div class="menu-divider"></div>
+
+            <form method="post" action="#">
+                {% csrf_token %}
+                <button type="submit" class="account-menu-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Sair
                 </button>
+            </form>
 
-                <div class="account-menu">
+        {% else %}
 
-                    <strong>Minha Conta</strong>
+            <strong>Minha Conta</strong>
 
-                    <div class="menu-divider"></div>
+            <div class="menu-divider"></div>
 
-                    <a href="{% url 'login' %}">
-                        <i class="fa-solid fa-right-to-bracket"></i>
-                        Entrar
-                    </a>
+            <a href="{% url 'login' %}">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                Entrar
+            </a>
 
-                    <a href="/cadastro">
-                        <i class="fa-solid fa-user-plus"></i>
-                        Criar conta
-                    </a>
+            <a href="/cadastro/">
+                <i class="fa-solid fa-user-plus"></i>
+                Criar conta
+            </a>
 
-                    <div class="menu-divider"></div>
+        {% endif %}
 
-                    <a href="/cupons">
-                        <i class="fa-regular fa-heart"></i>
-                        Favoritos
-                    </a>
-
-                    <a href="/cupons">
-                        <i class="fa-solid fa-ticket"></i>
-                        Meus cupons
-                    </a>
-
-                    <div class="menu-divider"></div>
-
-                    <a href="/adm/">
-                        <i class="fa-solid fa-table-columns"></i>
-                        Painel Admin
-                    </a>
-                </div>
-            </div>
+    </div>
+</div>
 
         </div>
 

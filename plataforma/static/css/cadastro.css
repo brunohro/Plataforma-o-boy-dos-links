@@ -7,7 +7,7 @@
 /* Container principal */
 
 .cadastro-container {
-    padding: 20px;
+    padding: 50px;
     width: 100%;
     min-height: 100vh;
 
@@ -114,7 +114,8 @@
 
 /* Inputs */
 
-.cadastro-campo input {
+.cadastro-campo input,
+.cadastro-campo select {
     width: 100%;
     height: 40px;
     margin-bottom: 15px;
@@ -131,6 +132,8 @@
 
     font-size: 14px;
 }
+
+
 
 .cadastro-campo input::placeholder {
     color: var(--text-muted);

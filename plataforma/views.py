@@ -203,21 +203,17 @@ def cadastro_etapa1(request):
     if request.method == "POST":
         form = CadastroForm(request.POST)
         
-        # Remove temporariamente a validação dos campos que ficaram na etapa 2
         form.errors.pop('sexo', None)
         form.errors.pop('password1', None)
         form.errors.pop('password2', None)
 
-        # Se os campos da primeira etapa estiverem corretos, avança
         campos_etapa1 = ['username', 'email', 'telefone', 'data_nascimento']
         if not any(campo in form.errors for campo in campos_etapa1):
-            # Guarda os dados digitados na sessão para usar depois
             request.session['cadastro'] = {
                 campo: request.POST.get(campo) for campo in campos_etapa1
             }
             return redirect("cadastro_etapa2")
     else:
-        # Se o usuário voltar da etapa 2, os dados continuam preenchidos
         dados_salvos = request.session.get('cadastro', None)
         form = CadastroForm(initial=dados_salvos)
         
@@ -225,13 +221,10 @@ def cadastro_etapa1(request):
 
 def cadastro_etapa2(request):
     if request.method == "POST":
-        # 1. Pega os dados que guardamos na sessão (etapa 1)
         dados_completos = request.session['cadastro'].copy()
         
-        # 2. Junta com os dados enviados agora (sexo, senha1, senha2)
         dados_completos.update(request.POST.dict())
 
-        # 3. Alimenta o formulário com TODOS os dados juntos
         form = CadastroForm(dados_completos)
         if form.is_valid():
             form.save()

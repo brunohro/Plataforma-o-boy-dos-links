@@ -10,7 +10,8 @@ urlpatterns = [
     path("ofertas/relampago/",views.ofertas,{"tipo": "relampago"}, name="ofertas_relampago",),
     path("promocoes/", RedirectView.as_view(pattern_name="ofertas", permanent=True)),
     path("login/", views.login_view, name="login"),
-    path("cadastro/", views.cadastro, name="cadastro"),
+    path("cadastro/", views.cadastro_etapa1, name="cadastro"),
+    path('cadastro/etapa2/', views.cadastro_etapa2, name='cadastro_etapa2'),
 
     # Painel administrativo
     path("adm/", views.admin_dashboard, name="painel_adm"),

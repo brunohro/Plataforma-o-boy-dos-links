@@ -21,7 +21,7 @@
 
         <div class="cadastro-box">
 
-            <h2 class="cadastro-subtitulo">Criar Conta</h2>
+            <h2 class="cadastro-subtitulo">Criar Conta - Passo 1</h2>
 
             <p class="cadastro-descricao">
                 Crie sua conta e acesse para salvar
@@ -58,25 +58,10 @@
                     {{ form.sexo }}
                     {{ form.sexo.errors }}
                 </div>
-                <div class="cadastro-campo cadastro-senha-area">
-                    <div class="cadastro-senha-label">
-                        <label for="{{ form.password1.id_for_label }}">Senha</label>
-                    </div>
-                    {{ form.password1 }}
-                    {{ form.password1.errors }}
-                </div>
-
-                <div class="cadastro-campo cadastro-senha-area">
-                    <div class="cadastro-senha-label">
-                        <label for="{{ form.password2.id_for_label }}">Confirmar senha</label>
-                    </div>
-                    {{ form.password2 }}
-                    {{ form.password2.errors }}
-                </div>
 
                 {{ form.non_field_errors }}
 
-                <button class="cadastro-botao" type="submit">Cadastrar</button>
+                <button class="cadastro-botao" type="submit">Próximo</button>
             </form>
 
         </div>

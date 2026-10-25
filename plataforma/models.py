@@ -23,7 +23,7 @@ class UsuarioReal(AbstractUser):
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=100, unique=True)
-    icone_imagem = models.ImageField(blank=True, null=True)
+    icone_imagem = models.ImageField(blank=True, null=True, upload_to="categorias/")
 
     def __str__(self):
         return self.nome
@@ -41,7 +41,7 @@ class Categoria(models.Model):
 
 class LojaParceira(models.Model):
     nome = models.CharField(max_length=100, unique=True)
-    logo_imagem = models.ImageField(blank=True, null=True)
+    logo_imagem = models.ImageField(blank=True, null=True, upload_to="lojas/")
     verificado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -154,7 +154,7 @@ class Oferta(DescontoCalculadoMixin):
     )
     nome_produto = models.CharField(max_length=100)
     link_afiliado = models.URLField()
-    image_url = models.URLField(blank=True, null=True)
+    image_url = models.ImageField(upload_to="ofertas/", blank=True, null=True)
     descricao = models.TextField(blank=True, null=True)
     is_destaque = models.BooleanField(default=False)
     is_relampago = models.BooleanField("Oferta relâmpago", default=False)
@@ -240,4 +240,23 @@ class ClickOferta(models.Model):
     class Meta:
         verbose_name = "Click de Oferta"
         verbose_name_plural = "Clicks de Ofertas"
+        ordering = ["-criado_em"]
+
+
+class Banner(models.Model):
+    titulo = models.CharField(max_length=100)
+    imagem = models.ImageField(upload_to="banners/")
+    descricao = models.TextField(blank=True, null=True)
+    link = models.URLField()
+    ativo = models.BooleanField(default=True)
+    ordem = models.PositiveIntegerField(default=0, verbose_name="Ordem de exibição")
+    criado_em = models.DateTimeField(auto_now_add=True)
+    texto_botao = models.CharField(max_length=50, blank=True, null=True, default="Saiba mais", verbose_name="Texto do botão")
+
+    def __str__(self):
+        return self.titulo
+
+    class Meta:
+        verbose_name = "Banner"
+        verbose_name_plural = "Banners"
         ordering = ["-criado_em"]

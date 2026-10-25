@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET
 from .forms import CadastroForm
-from .models import Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto, ClickOferta
+from .models import Banner, Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto, ClickOferta
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -93,7 +93,8 @@ def favoritar_oferta(request, pk):
     if not criado:
         favorito.delete()
 
-    return redirect(request.META.get("HTTP_REFERER", "index"))
+    voltar = request.META.get("HTTP_REFERER", "/")
+    return redirect(f"{voltar}#oferta-{oferta.pk}")
 
 @login_required
 def favoritos(request):
@@ -117,6 +118,7 @@ def home(request):
     mais_favoritas = ativas.order_by("-total_favoritos")[:8]
     mais_acessadas = ativas.order_by("-total_clicks")[:8]
     recomendadas = ofertas_recomendadas(request.user)[:8]
+    banners = Banner.objects.filter(ativo=True).order_by("ordem")
 
     lojas_parceiras = (
         LojaParceira.objects.all().order_by("nome")
@@ -153,6 +155,7 @@ def home(request):
         "mais_favoritas": mais_favoritas,
         "mais_acessadas": mais_acessadas,
         "recomendadas": recomendadas,
+        "banners": banners,
         **interacoes(request.user),
     })
 

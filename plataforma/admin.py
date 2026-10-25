@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.utils.html import format_html
 
 from .models import (
+    Banner,
     Categoria,
     ClickOferta,
     Cupom,
@@ -180,3 +181,19 @@ class ClickOfertaAdmin(admin.ModelAdmin):
 admin.site.site_header = "Boydoslinks • Administração"
 admin.site.site_title = "Boydoslinks"
 admin.site.index_title = "Painel de Administração"
+
+@admin.register(Banner)
+class BannerAdmin(admin.ModelAdmin):
+    list_display = (
+        "titulo",
+        "ordem",
+        "ativo",
+    )
+
+    list_editable = ("ordem", "ativo")
+
+    list_filter = ("ativo", "criado_em")
+
+    search_fields = ("titulo", "descricao")
+
+    ordering = ("ordem", "-criado_em")

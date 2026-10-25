@@ -1,41 +1,69 @@
+
 {% load static %}
+
 <section class="banner-section">
-        <div class="carousel">
+    <div class="carousel">
+
         <div class="carousel-track">
-        <div class="carousel-slide">
-            <img src="{% static 'images/banner1.png' %}" 
-                    alt="Semana da Tecnologia">
+
+            {% for banner in banners %}
+            <div class="carousel-slide">
+
+                {% if banner.link %}
+                <a href="{{ banner.link }}">
+                {% endif %}
+
+                    <img
+                        src="{{ banner.imagem.url }}"
+                        alt="{{ banner.titulo }}"
+                    >
+
+                {% if banner.link %}
+                </a>
+                {% endif %}
+
+            </div>
+            {% empty %}
+            <div class="carousel-slide">
+                <img
+                    src="{% static 'images/banner1.png' %}"
+                    alt="Semana da Tecnologia"
+                >
+            </div>
+            {% endfor %}
+
         </div>
 
-        <div class="carousel-slide">
-            <img src="{% static 'images/banner2.png' %}" 
-                    alt="Ofertas em destaque">
-        </div>
-
-        <div class="carousel-slide">
-            <img src="{% static 'images/banner3.png' %}" 
-                    alt="Cupons e descontos">
-        </div>
-
-        </div>
+        {% if banners|length > 1 %}
 
         <!-- Botões -->
-        <button class="carousel-button prev" onclick="mudarSlide(-1)">
-        ❮
+        <button
+            class="carousel-button prev"
+            type="button"
+            onclick="mudarSlide(-1)">
+            ❮
         </button>
 
-        <button class="carousel-button next" onclick="mudarSlide(1)">
-        ❯
+        <button
+            class="carousel-button next"
+            type="button"
+            onclick="mudarSlide(1)">
+            ❯
         </button>
 
         <!-- Indicadores -->
         <div class="carousel-indicators">
 
-        <span class="indicator active" onclick="irParaSlide(0)"></span>
-        <span class="indicator" onclick="irParaSlide(1)"></span>
-        <span class="indicator" onclick="irParaSlide(2)"></span>
+            {% for banner in banners %}
+            <span
+                class="indicator {% if forloop.first %}active{% endif %}"
+                onclick="irParaSlide()">
+            </span>
+            {% endfor %}
 
         </div>
 
-        </div>
+        {% endif %}
+
+    </div>
 </section>

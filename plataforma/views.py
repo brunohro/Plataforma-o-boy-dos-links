@@ -78,7 +78,8 @@ def votar_oferta(request, pk):
     if not criado:
         voto.delete()
 
-    return redirect(request.META.get("HTTP_REFERER", "index"))
+    voltar = request.META.get("HTTP_REFERER", "/")
+    return redirect(f"{voltar}#oferta-{oferta.pk}")
 
 
 @require_POST

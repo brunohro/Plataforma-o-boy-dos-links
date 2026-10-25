@@ -7,6 +7,7 @@ from django.utils.html import format_html
 
 from .models import (
     Categoria,
+    ClickOferta,
     Cupom,
     Favorito,
     LojaParceira,
@@ -113,8 +114,6 @@ class OfertaAdmin(DescontoAdminMixin, admin.ModelAdmin):
         "ativa",
         "is_destaque",
         "is_relampago",
-        "votos",
-        "clicks",
         "criado_em",
     )
     list_filter = (
@@ -137,8 +136,6 @@ class OfertaAdmin(DescontoAdminMixin, admin.ModelAdmin):
         "data_inicio",
         "data_fim",
         "criado_em",
-        "votos",
-        "clicks",
     )
     ordering = ("-criado_em",)
 
@@ -158,6 +155,13 @@ class VotoAdmin(admin.ModelAdmin):
     search_fields = ("usuario__username", "usuario__email", "oferta__nome_produto")
     readonly_fields = ("criado_em",)
 
+
+@admin.register(ClickOferta)
+class ClickOfertaAdmin(admin.ModelAdmin):
+    list_display = ("usuario", "oferta", "criado_em")
+    list_filter = ("criado_em",)
+    search_fields = ("usuario__username", "usuario__email", "oferta__nome_produto")
+    readonly_fields = ("criado_em",)
 
 admin.site.site_header = "Boydoslinks • Administração"
 admin.site.site_title = "Boydoslinks"

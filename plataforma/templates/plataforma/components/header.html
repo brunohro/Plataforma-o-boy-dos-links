@@ -129,7 +129,7 @@
 
             <div class="menu-divider"></div>
 
-            <form method="post" action="#">
+            <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
                 <button type="submit" class="account-menu-logout">
                     <i class="fa-solid fa-right-from-bracket"></i>

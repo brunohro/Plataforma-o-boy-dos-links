@@ -156,14 +156,9 @@ class Oferta(DescontoCalculadoMixin):
     link_afiliado = models.URLField()
     image_url = models.URLField(blank=True, null=True)
     descricao = models.TextField(blank=True, null=True)
-
     is_destaque = models.BooleanField(default=False)
     is_relampago = models.BooleanField("Oferta relâmpago", default=False)
-
     criado_em = models.DateTimeField(auto_now_add=True)
-    votos = models.IntegerField(default=0)
-    clicks = models.IntegerField(default=0)
-
     def __str__(self):
         return self.nome_produto
 
@@ -228,3 +223,21 @@ class Voto(models.Model):
 
     def __str__(self):
         return f"{self.usuario} - {self.oferta}"
+
+class ClickOferta(models.Model):
+    usuario = models.ForeignKey(
+        UsuarioReal,
+        on_delete=models.CASCADE,
+        related_name="clicks_ofertas",
+    )
+    oferta = models.ForeignKey(
+        Oferta,
+        on_delete=models.CASCADE,
+        related_name="clicks_registros",
+    )
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Click de Oferta"
+        verbose_name_plural = "Clicks de Ofertas"
+        ordering = ["-criado_em"]

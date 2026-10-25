@@ -3,11 +3,14 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Count, Q, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 from .forms import CadastroForm
-from .models import Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto
+from .models import Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto, ClickOferta
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.urls import reverse
 
 TEMPLATE_PAINEL = "plataforma/adm/painel_adm.html"
 TEMPLATE_INDEX = "plataforma/index.html"
@@ -23,9 +26,90 @@ def ofertas_ativas_qs():
         Oferta.objects
         .filter(data_inicio__lte=agora, data_fim__gte=agora)
         .select_related("loja", "categoria", "cupom")
+        .annotate(
+            total_votos=Count("votos_registros"),
+            total_favoritos=Count("favoritos"),
+            total_clicks=Count("clicks_registros"),
+        )
     )
+def interacoes(user):
+    """Retorna as interações do usuário com as ofertas."""
+    if user.is_authenticated:
+        votos = Voto.objects.filter(usuario=user).values_list("oferta_id", flat=True)
+        favoritos = Favorito.objects.filter(usuario=user).values_list("oferta_id", flat=True)
+        return {
+            "votos": set(votos),
+            "favoritos": set(favoritos),
+        }
+    return {"votos": set(), "favoritos": set()}
+
+def ofertas_recomendadas(user):
+    """Retorna ofertas recomendadas com base nas interações do usuário."""
+    if user.is_authenticated:
+        interacoes_usuario = interacoes(user)
+        categorias_interagidas = (
+            Oferta.objects
+            .filter(id__in=interacoes_usuario["votos"] | interacoes_usuario["favoritos"])
+            .values_list("categoria_id", flat=True)
+        )
+        return (
+            ofertas_ativas_qs()
+            .filter(categoria_id__in=categorias_interagidas)
+            .exclude(id__in=interacoes_usuario["votos"] | interacoes_usuario["favoritos"])
+            .order_by("-data_inicio")[:8]
+        )
+    return ofertas_ativas_qs().order_by("-data_inicio")[:8]
+
+@require_GET
+def ir_para_oferta(request, pk):
+    oferta = get_object_or_404(Oferta, pk=pk)
+
+    usuario = request.user if request.user.is_authenticated else None
+    ClickOferta.objects.create(usuario=usuario, oferta=oferta)
+
+    return redirect(oferta.link_afiliado)
 
 
+def _exige_login():
+    return JsonResponse({"login_url": reverse("login")}, status=401)
+
+
+@require_POST
+def votar_oferta(request, pk):
+    if not request.user.is_authenticated:
+        return _exige_login()
+
+    oferta = get_object_or_404(Oferta, pk=pk)
+
+    voto, criado = Voto.objects.get_or_create(usuario=request.user, oferta=oferta)
+    if not criado:
+        voto.delete()
+
+    return JsonResponse({"ativo": criado, "total": oferta.votos_registros.count()})
+
+
+@require_POST
+def favoritar_oferta(request, pk):
+    if not request.user.is_authenticated:
+        return _exige_login()
+
+    oferta = get_object_or_404(Oferta, pk=pk)
+
+    favorito, criado = Favorito.objects.get_or_create(usuario=request.user, oferta=oferta)
+    if not criado:
+        favorito.delete()
+
+    return JsonResponse({"ativo": criado})
+
+
+@login_required
+def favoritos(request):
+    lista = (
+        ofertas_ativas_qs()
+        .filter(favoritos__usuario=request.user)
+        .order_by("-favoritos__criado_em")
+    )
+    return render(request, "plataforma/favoritos.html", {"ofertas": lista, **interacoes(request.user)})
 # =========================================================
 # PÁGINA INICIAL
 # =========================================================
@@ -36,6 +120,10 @@ def home(request):
     recentes = ativas.filter(is_destaque=False, is_relampago=False).order_by("-criado_em")[:8] ### Adicionado apenas 8 campos de ofertas recentes
     ofertas_relampago = ativas.filter(is_relampago=True).order_by("data_fim")[:4]
     ofertas_destaque = ativas.filter(is_destaque=True, is_relampago=False).order_by("-criado_em")[:8]
+    mais_votadas = ativas.order_by("-total_votos")[:8]
+    mais_favoritas = ativas.order_by("-total_favoritos")[:8]
+    mais_acessadas = ativas.order_by("-total_clicks")[:8]
+    recomendadas = ofertas_recomendadas(request.user)[:8]
 
     lojas_parceiras = (
         LojaParceira.objects.all().order_by("nome")
@@ -68,6 +156,11 @@ def home(request):
         "ofertas_relampago": ofertas_relampago,
         "ofertas_destaque": ofertas_destaque,
         "lojas_parceiras": lojas_parceiras,
+        "mais_votadas": mais_votadas,
+        "mais_favoritas": mais_favoritas,
+        "mais_acessadas": mais_acessadas,
+        "recomendadas": recomendadas,
+        **interacoes(request.user),
     })
 
 
@@ -92,7 +185,7 @@ def admin_dashboard(request):
         "total_com_cupom": Oferta.objects.filter(cupom__isnull=False).count(),
         "total_votos": Voto.objects.count(),
         "total_favoritos": Favorito.objects.count(),
-        "total_clicks": Oferta.objects.aggregate(total=Sum("clicks"))["total"] or 0,
+        "total_clicks": Oferta.objects.aggregate(total=Sum("clicks_registros"))["total"] or 0,
         "ofertas": (
             Oferta.objects
             .select_related("loja", "categoria", "cupom")

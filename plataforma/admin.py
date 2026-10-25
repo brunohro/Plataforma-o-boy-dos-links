@@ -115,6 +115,9 @@ class OfertaAdmin(DescontoAdminMixin, admin.ModelAdmin):
         "is_destaque",
         "is_relampago",
         "criado_em",
+        "total_votos",
+        "total_favoritos",
+        "total_clicks",
     )
     list_filter = (
         "loja",
@@ -139,6 +142,17 @@ class OfertaAdmin(DescontoAdminMixin, admin.ModelAdmin):
     )
     ordering = ("-criado_em",)
 
+    @admin.display(description="Votos")
+    def total_votos(self, obj):
+        return obj.votos_registros.count()
+
+    @admin.display(description="Favoritos")
+    def total_favoritos(self, obj):
+        return obj.favoritos.count()
+
+    @admin.display(description="Cliques")
+    def total_clicks(self, obj):
+        return obj.clicks_registros.count()
 
 @admin.register(Favorito)
 class FavoritoAdmin(admin.ModelAdmin):

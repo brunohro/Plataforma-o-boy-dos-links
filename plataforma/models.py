@@ -18,7 +18,7 @@ class UsuarioReal(AbstractUser):
     sexo = models.CharField(max_length=10, choices=[("M", "Masculino"), ("F", "Feminino"), ("O", "Outro")], blank=True)
 
     def __str__(self):
-        return self.apelido
+        return self.apelido or self.username
 
 
 class Categoria(models.Model):

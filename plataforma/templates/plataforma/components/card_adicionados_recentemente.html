@@ -29,16 +29,12 @@
                         </span>
 
                         <!-- NOVO: botão de favorito agora funciona (class, data-*, aria-pressed e o coração) -->
-                        <button
-                            type="button"
-                            class="favorite-button {% if oferta.id in favoritos_ids %}is-active{% endif %}"
-                            data-acao="favoritar"
-                            data-url="{% url 'favoritar_oferta' oferta.pk %}"
-                            aria-pressed="{% if oferta.id in favoritos_ids %}true{% else %}false{% endif %}"
-                            aria-label="Adicionar aos favoritos"
-                        >
+                        <form method="post" action="{% url 'favoritar_oferta' oferta.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="favorite-button {% if oferta.id in favoritos_ids %}is-active{% endif %}" aria-label="Favoritar">
                             {% if oferta.id in favoritos_ids %}♥{% else %}♡{% endif %}
-                        </button>
+                            </button>
+                        </form>
 
                         {% if oferta.image_url %}
                             <img
@@ -102,17 +98,13 @@
 
 
                         <!-- NOVO: botão de votar -->
-                        <button
-                            type="button"
-                            class="vote-button {% if oferta.id in votos_ids %}is-active{% endif %}"
-                            data-acao="votar"
-                            data-url="{% url 'votar_oferta' oferta.pk %}"
-                            aria-pressed="{% if oferta.id in votos_ids %}true{% else %}false{% endif %}"
-                            aria-label="Curtir oferta"
-                        >
-                            <i class="fa-solid fa-thumbs-up"></i>
-                            <span data-votos>{{ oferta.total_votos }}</span>
-                        </button>
+                        <form method="post" action="{% url 'votar_oferta' oferta.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="vote-button {% if oferta.id in votos_ids %}is-active{% endif %}" aria-label="Curtir oferta">
+                                <i class="fa-solid fa-thumbs-up"></i> {{ oferta.votos_registros.count }}
+                                <span class="click-count"><i class="fa-solid fa-eye"></i> {{ oferta.clicks_registros.count }}</span>
+                            </button>
+                        </form>
 
 
                         <!-- ALTERADO: o href passa pela rota que conta o clique (era {{ oferta.link_afiliado }}) -->

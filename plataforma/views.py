@@ -9,8 +9,6 @@ from .models import Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioRea
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-from django.urls import reverse
 
 TEMPLATE_PAINEL = "plataforma/adm/painel_adm.html"
 TEMPLATE_INDEX = "plataforma/index.html"
@@ -69,15 +67,10 @@ def ir_para_oferta(request, pk):
 
     return redirect(oferta.link_afiliado)
 
-
-def _exige_login():
-    return JsonResponse({"login_url": reverse("login")}, status=401)
-
-
 @require_POST
 def votar_oferta(request, pk):
     if not request.user.is_authenticated:
-        return _exige_login()
+        return redirect("login")
 
     oferta = get_object_or_404(Oferta, pk=pk)
 
@@ -85,13 +78,13 @@ def votar_oferta(request, pk):
     if not criado:
         voto.delete()
 
-    return JsonResponse({"ativo": criado, "total": oferta.votos_registros.count()})
+    return redirect(request.META.get("HTTP_REFERER", "index"))
 
 
 @require_POST
 def favoritar_oferta(request, pk):
     if not request.user.is_authenticated:
-        return _exige_login()
+        return redirect("login")
 
     oferta = get_object_or_404(Oferta, pk=pk)
 
@@ -99,8 +92,7 @@ def favoritar_oferta(request, pk):
     if not criado:
         favorito.delete()
 
-    return JsonResponse({"ativo": criado})
-
+    return redirect(request.META.get("HTTP_REFERER", "index"))
 
 @login_required
 def favoritos(request):
@@ -117,9 +109,9 @@ def favoritos(request):
 def home(request):
     agora = timezone.now()
     ativas = ofertas_ativas_qs()
-    recentes = ativas.filter(is_destaque=False, is_relampago=False).order_by("-criado_em")[:8] ### Adicionado apenas 8 campos de ofertas recentes
+    recentes = ativas.order_by("-criado_em")[:8] ### Adicionado apenas 8 campos de ofertas recentes
     ofertas_relampago = ativas.filter(is_relampago=True).order_by("data_fim")[:4]
-    ofertas_destaque = ativas.filter(is_destaque=True, is_relampago=False).order_by("-criado_em")[:8]
+    ofertas_destaque = ativas.filter(is_destaque=True).order_by("-criado_em")[:8]
     mais_votadas = ativas.order_by("-total_votos")[:8]
     mais_favoritas = ativas.order_by("-total_favoritos")[:8]
     mais_acessadas = ativas.order_by("-total_clicks")[:8]

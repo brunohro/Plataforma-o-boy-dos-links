@@ -111,9 +111,9 @@ def favoritos(request):
 def home(request):
     agora = timezone.now()
     ativas = ofertas_ativas_qs()
-    recentes = ativas.order_by("-criado_em")[:8] ### Adicionado apenas 8 campos de ofertas recentes
+    recentes = ativas.filter(is_relampago=False, is_destaque=False).order_by("-criado_em")[:8] ### Adicionado apenas 8 campos de ofertas recentes
     ofertas_relampago = ativas.filter(is_relampago=True).order_by("data_fim")[:4]
-    ofertas_destaque = ativas.filter(is_destaque=True).order_by("-criado_em")[:8]
+    ofertas_destaque = ativas.filter(is_destaque=True, is_relampago=False).order_by("-criado_em")[:8]
     mais_votadas = ativas.order_by("-total_votos")[:8]
     mais_favoritas = ativas.order_by("-total_favoritos")[:8]
     mais_acessadas = ativas.order_by("-total_clicks")[:8]

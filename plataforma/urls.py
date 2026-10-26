@@ -17,11 +17,14 @@ urlpatterns = [
     path("ofertas/<int:pk>/favoritar/", views.favoritar_oferta, name="favoritar_oferta"),
     path("favoritos/", views.favoritos, name="favoritos"),   # só se mantiver a página de favoritos
 
+    #cupons 
+    path("cupons/", views.cupons, name="cupons"),
+
     # Painel administrativo
     path("adm/", views.admin_dashboard, name="painel_adm"),
     path("adm/usuarios/", views.adm_usuarios, name="usuarios_adm"),
 
-    # ofertas
+    # ofertas adm
     path("adm/ofertas/", views.ofertas_adm, name="ofertas_adm"),
     path("adm/ofertas/cadastrar", views.cadastrar_oferta, name="cadastrar_oferta"),
     path("adm/ofertas/editar/<int:id>", views.editar_oferta, name="editar_oferta"),

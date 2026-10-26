@@ -159,6 +159,13 @@ def home(request):
         **interacoes(request.user),
     })
 
+# =========================================================
+# PÁGINA DE CUPONS - USUÁRIO
+# =========================================================
+
+def cupons(request):
+    cupons = Cupom.objects.all()
+    return render(request, "plataforma/cupons.html", {"cupons": cupons})
 
 # =========================================================
 # PAINEL ADMINISTRATIVO
@@ -219,20 +226,15 @@ def editar_oferta(request, id):
     oferta = Oferta.objects.get(id=id)
     return render(request, "plataforma/adm/forms/form_oferta.html", {"oferta": oferta})
 
-
-
-
 @staff_member_required
 def lojas_adm(request):
     lojas = LojaParceira.objects.order_by("nome")
     return render(request, "plataforma/adm/lojas_adm.html", {"lojas": lojas})
 
-
 @staff_member_required
 def categorias_adm(request):
     categorias = Categoria.objects.order_by("nome")
     return render(request, "plataforma/adm/categorias_adm.html", {"categorias": categorias})
-
 
 @staff_member_required
 def cupons_adm(request):

@@ -268,13 +268,13 @@ def ofertas(request, tipo="todas"):
 
 @staff_member_required
 @require_POST
-def excluir_oferta(request, pk):
-    oferta = get_object_or_404(Oferta, pk=pk)
+def excluir_oferta(request, id):
+    oferta = get_object_or_404(Oferta, id=id)
     nome = oferta.nome_produto
     oferta.delete()
 
     messages.success(request, f'Oferta "{nome}" excluída com sucesso!')
-    return redirect("adm_ofertas")
+    return redirect("ofertas_adm")
 
 # =========================================================
 # LOGIN E CADASTRO

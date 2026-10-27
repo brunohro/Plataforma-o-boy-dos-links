@@ -27,6 +27,10 @@ urlpatterns = [
 
     # ofertas adm
     path("adm/ofertas/", views.ofertas_adm, name="ofertas_adm"),
+    path("adm/cupons/", views.cupons_adm, name="cupons_adm"),
+    path("adm/lojas/", views.lojas_adm, name="lojas_adm"),
+    path("adm/categorias/", views.categorias_adm, name="categorias_adm"),
+
     path("adm/ofertas/cadastrar", views.cadastrar_oferta, name="cadastrar_oferta"),
     path("adm/ofertas/editar/<int:id>", views.editar_oferta, name="editar_oferta"),
     path("adm/ofertas/<int:id>/excluir/", views.excluir_oferta, name="excluir_oferta"),
@@ -34,9 +38,6 @@ urlpatterns = [
     path("ofertas/relampago/",views.ofertas,{"tipo": "relampago"}, name="ofertas_relampago",),
     path("promocoes/", RedirectView.as_view(pattern_name="ofertas", permanent=True)),
 
-    path("adm/lojas/", views.lojas_adm, name="lojas_adm"),
-    path("adm/categorias/", views.categorias_adm, name="categorias_adm"),
-    path("adm/cupons/", views.cupons_adm, name="cupons_adm"),
 
     path("logout/", LogoutView.as_view(next_page="/"), name="logout"),
 ]

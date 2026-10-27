@@ -1,1 +1,271 @@
-<h1>Cupons</h1>
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="admin-offers">
+    <div class="offers-container">
+
+        <!-- Cabeçalho -->
+        <header class="offers-header">
+            <div>
+                <span class="offers-eyebrow">PAINEL ADMINISTRATIVO</span>
+                <h1>Gerenciar cupons</h1>
+                <p>Consulte e gerencie os cupons cadastrados na plataforma.</p>
+            </div>
+
+            <div>
+                <a href="{% url 'painel_adm' %}" class="oferta-btn-voltar">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Voltar
+                </a>
+
+                <a href="{% url 'cadastrar_cupom' %}" class="admin-ofertas-btn-nova">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Novo cupom</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- Busca -->
+        <form method="get" class="offers-toolbar">
+            <div class="offers-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="search"
+                    name="q"
+                    placeholder="Buscar cupom pelo código..."
+                    value="{{ request.GET.q|default:'' }}"
+                    aria-label="Buscar cupons"
+                >
+            </div>
+
+            <button type="submit" class="offers-search-button">
+                Buscar
+            </button>
+
+            {% if request.GET.q %}
+                <a href="{% url 'cupons_adm' %}" class="offers-clear">
+                    Limpar
+                </a>
+            {% endif %}
+        </form>
+
+        <!-- Listagem -->
+        <div class="offers-table-wrapper">
+            <table class="offers-table">
+                <thead>
+                    <tr>
+                        <th>Cupom</th>
+                        <th>Loja</th>
+                        <th>Validade</th>
+                        <th>Desconto</th>
+                        <th>Usos</th>
+                        <th>Status</th>
+                        <th class="actions-heading">Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for cupom in cupons %}
+                    <tr>
+                        <!-- Código e descrição -->
+                        <td>
+                            <div class="offer-product">
+                                <div class="offer-image">
+                                    <i class="fa-solid fa-ticket"></i>
+                                </div>
+
+                                <div class="offer-product-info">
+                                    <span class="offer-name">
+                                        {{ cupom.codigo }}
+                                    </span>
+
+                                    <span class="offer-category">
+                                        {{ cupom.descricao }}
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Loja parceira -->
+                        <td>
+                            <span class="offer-store">
+                                {% if cupom.loja %}
+                                    {{ cupom.loja }}
+                                {% else %}
+                                    Não vinculada
+                                {% endif %}
+                            </span>
+                        </td>
+
+                        <!-- Data de validade -->
+                        <td>
+                            <span class="offer-store">
+                                {{ cupom.data_validade|date:"d/m/Y H:i" }}
+                            </span>
+                        </td>
+
+                        <!-- Desconto -->
+                        <td>
+                            <span class="offer-name">
+                                {{ cupom.desconto }}
+                            </span>
+                        </td>
+
+                        <!-- Quantidade de usos -->
+                        <td>
+                            <span class="offer-store">
+                                {{ cupom.quantidade_usos }}
+                            </span>
+                        </td>
+
+                        <!-- Status -->
+                        <td>
+                            <div class="offer-statuses">
+                                {% if cupom.ativo %}
+                                    <span class="status-badge status-featured">
+                                        <i class="fa-solid fa-check"></i>
+                                        Ativo
+                                    </span>
+                                {% else %}
+                                    <span class="status-badge status-normal">
+                                        <i class="fa-solid fa-ban"></i>
+                                        Inativo
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </td>
+
+                        <!-- Ações -->
+                        <td>
+                            <div class="offer-actions">
+                                <a
+                                    href="{% url 'editar_cupom' cupom.id %}"
+                                    class="offer-edit-button"
+                                    aria-label="Editar cupom {{ cupom.codigo }}"
+                                    title="Editar cupom"
+                                >
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    <span>Editar</span>
+                                </a>
+
+                                <a
+                                    href="{% url 'excluir_cupom' cupom.id %}"
+                                    class="offer-delete-button"
+                                    aria-label="Excluir cupom {{ cupom.codigo }}"
+                                    title="Excluir cupom"
+                                >
+                                    <i class="fa-solid fa-trash"></i>
+                                    <span>Excluir</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+
+                    {% empty %}
+                    <tr>
+                        <td colspan="7">
+                            <div class="offers-empty">
+                                <i class="fa-solid fa-ticket"></i>
+
+                                <h3>Nenhum cupom encontrado</h3>
+
+                                <p>
+                                    {% if request.GET.q %}
+                                        Tente buscar usando outro código.
+                                    {% else %}
+                                        Ainda não existem cupons cadastrados.
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Rodapé e paginação -->
+        {% if page_obj.paginator.num_pages > 0 %}
+        <footer class="offers-footer">
+            <span class="offers-page-info">
+                Página {{ page_obj.number }} de
+                {{ page_obj.paginator.num_pages }}
+
+                <span class="offers-total">
+                    · {{ page_obj.paginator.count }} registros
+                </span>
+            </span>
+
+            {% if page_obj.has_other_pages %}
+            <nav class="offers-pagination" aria-label="Paginação dos cupons">
+
+                {% if page_obj.has_previous %}
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page=1"
+                        class="page-button"
+                        aria-label="Primeira página"
+                        title="Primeira página"
+                    >
+                        <i class="fa-solid fa-angles-left"></i>
+                    </a>
+
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}"
+                        class="page-button"
+                        aria-label="Página anterior"
+                    >
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+                {% else %}
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </span>
+
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </span>
+                {% endif %}
+
+                <span class="page-current">
+                    {{ page_obj.number }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.next_page_number }}"
+                        class="page-button"
+                        aria-label="Próxima página"
+                    >
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.paginator.num_pages }}"
+                        class="page-button"
+                        aria-label="Última página"
+                        title="Última página"
+                    >
+                        <i class="fa-solid fa-angles-right"></i>
+                    </a>
+                {% else %}
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </span>
+
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </span>
+                {% endif %}
+
+            </nav>
+            {% endif %}
+        </footer>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

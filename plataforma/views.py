@@ -241,6 +241,13 @@ def cupons_adm(request):
     cupons = Cupom.objects.select_related("loja").order_by("-data_validade")
     return render(request, "plataforma/adm/cupons_adm.html", {"cupons": cupons})
 
+def cadastrar_cupom(request):
+    return render(request, "plataforma/adm/forms/form_cupom.html")
+
+def editar_cupom(request, id):
+    cupom = Cupom.objects.get(id=id)
+    return render(request, "plataforma/adm/forms/form_cupom.html", {"cupom": cupom})
+
 # =========================================================
 # CRUD DE OFERTAS
 # =========================================================
@@ -274,7 +281,15 @@ def excluir_oferta(request, pk):
     oferta.delete()
 
     messages.success(request, f'Oferta "{nome}" excluída com sucesso!')
-    return redirect("adm_ofertas")
+    return redirect("ofertas_adm")
+
+def excluir_cupom(request, pk):
+    cupom = get_object_or_404(Cupom, pk=pk)
+    nome = cupom.nome
+    cupom.delete()
+
+    messages.success(request, f'Cupom "{nome}" excluído com sucesso!')
+    return redirect("cupons_adm")
 
 # =========================================================
 # LOGIN E CADASTRO

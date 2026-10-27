@@ -4,7 +4,7 @@ from django.db.models import Count, Q, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET
-from .forms import CadastroForm
+from .forms import CadastroForm, CategoriaForm
 from .models import Banner, Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto, ClickOferta
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
@@ -267,6 +267,10 @@ def ofertas(request, tipo="todas"):
     return render(request, "plataforma/ofertas.html", context)
 
 @staff_member_required
+def criar_oferta(request):
+    pass
+
+@staff_member_required
 @require_POST
 def excluir_oferta(request, pk):
     oferta = get_object_or_404(Oferta, pk=pk)
@@ -275,6 +279,55 @@ def excluir_oferta(request, pk):
 
     messages.success(request, f'Oferta "{nome}" excluída com sucesso!')
     return redirect("adm_ofertas")
+
+# =========================================================
+# CRUD CATEGORIAS
+# =========================================================
+def adm_categorias(request):
+    categorias = Categoria.objects.all()
+
+    return render(request, "plataforma/adm_categorias.html", {"categorias": categorias})
+
+@staff_member_required
+def criar_categoria(request):
+    if request.method == "POST":
+        form = CategoriaForm(request.POST, request.FILES)
+        if form.is_valid():
+            categoria = form.save()
+            messages.success(request, f'Categoria "{categoria.nome}" cadastrada com sucesso!')
+            return redirect("adm_categorias")
+    else:
+        form = CategoriaForm()
+
+    return render(request, "plataforma/categoria_form.html",{"form": form})
+
+@staff_member_required
+def editar_categoria(request, pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
+
+    if request.method == "POST":
+        form = CategoriaForm(request.POST, request.FILES, instance=categoria)
+        if form.is_valid():
+            categoria = form.save()
+            messages.success(request, f'Categoria "{categoria.nome}" atualizada com sucesso!')
+            return redirect("adm_categorias")
+        else:
+            form = CategoriaForm(instance=categoria)
+            
+        return render(request, "categorias/form.html", {
+            "form": form,
+            "categoria": categoria,
+        })
+
+@staff_member_required
+@require_POST
+def excluir_categoria(request, pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
+    nome = categoria.nome
+    categoria.delete()
+
+    messages.success(request, f'Categoria "{nome}" excluída com sucesso!')
+    return redirect("adm_categorias")
 
 # =========================================================
 # LOGIN E CADASTRO

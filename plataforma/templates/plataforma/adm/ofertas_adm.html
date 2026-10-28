@@ -135,16 +135,23 @@
                                     <i class="fa-solid fa-pen-to-square"></i>
                                     <span>Editar</span>
                                 </a>
-
-                                <a
-                                    href="{% url 'ofertas_adm' %}"
-                                    class="offer-delete-button"
-                                    aria-label="Deletar {{ oferta.nome_produto }}"
-                                    title="Deletar oferta"
+                                <form
+                                    method="post"
+                                    action="{% url 'excluir_oferta' oferta.id %}"
+                                    class="offer-delete-form"
+                                    onsubmit="return confirm('Tem certeza que deseja deletar a oferta {{ oferta.nome_produto }}?');"
                                 >
-                                    <i class="fa-solid fa-trash"></i>
-                                    <span>Deletar</span>
-                                </a>
+                                    {% csrf_token %}
+                                    <button
+                                        type="submit"
+                                        class="offer-delete-button"
+                                        aria-label="Deletar {{ oferta.nome_produto }}"
+                                        title="Deletar oferta"
+                                    >
+                                        <i class="fa-solid fa-trash"></i>
+                                        <span>Deletar</span>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>

@@ -3,30 +3,30 @@
 
 {% block content %}
 
-<section class="admin-offers">
-    <div class="offers-container">
+<section class="admin-categorias">
+    <div class="categorias-container">
 
-        <header class="offers-header">
+        <header class="categorias-header">
             <div>
-                <span class="offers-eyebrow">PAINEL ADMINISTRATIVO</span>
+                <span class="categorias-eyebrow">PAINEL ADMINISTRATIVO</span>
                 <h1>Gerenciar categorias</h1>
                 <p>Consulte e gerencie as categorias cadastradas na plataforma.</p>
             </div>
 
             <div>
-                <a href="{% url 'painel_adm' %}" class="oferta-btn-voltar">
+                <a href="{% url 'painel_adm' %}" class="categoria-btn-voltar">
                     <i class="fa-solid fa-arrow-left"></i>
                     Voltar
                 </a>
-                <a href="{% url 'cadastrar_cupom' %}" class="admin-ofertas-btn-nova">
+                <a href="{% url 'cadastrar_cupom' %}" class="admin-categorias-btn-nova">
                     <i class="fa-solid fa-plus"></i>
                     <span>Nova categoria</span>
                 </a>
             </div>
         </header>
 
-        <form method="get" class="offers-toolbar">
-            <div class="offers-search">
+        <form method="get" class="categorias-toolbar">
+            <div class="categorias-search">
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="search" name="q"
                     placeholder="Buscar categoria pelo nome..."
@@ -34,19 +34,19 @@
                     aria-label="Buscar categorias">
             </div>
 
-            <button type="submit" class="offers-search-button">Buscar</button>
+            <button type="submit" class="categorias-search-button">Buscar</button>
 
             {% if request.GET.q %}
-                <a href="{% url 'categorias_adm' %}" class="offers-clear">Limpar</a>
+                <a href="{% url 'categorias_adm' %}" class="categorias-clear">Limpar</a>
             {% endif %}
         </form>
 
-        <div class="offers-table-wrapper">
-            <table class="offers-table">
+        <div class="categorias-table-wrapper">
+            <table class="categorias-table">
                 <thead>
                     <tr>
                         <th>Categoria</th>
-                        <th>Ofertas ativas</th>
+                        <th>categoriass ativas</th>
                         <th class="actions-heading">Ações</th>
                     </tr>
                 </thead>
@@ -55,8 +55,8 @@
                     {% for categoria in categorias %}
                     <tr>
                         <td>
-                            <div class="offer-product">
-                                <div class="offer-image">
+                            <div class="categorias-product">
+                                <div class="categorias-image">
                                     {% if categoria.icone_imagem %}
                                         <img src="{{ categoria.icone_imagem.url }}"
                                             alt="Ícone de {{ categoria.nome }}"
@@ -65,35 +65,35 @@
                                         <i class="fa-solid fa-tag"></i>
                                     {% endif %}
                                 </div>
-                                <div class="offer-product-info">
-                                    <span class="offer-name">{{ categoria.nome }}</span>
-                                    <span class="offer-category">Categoria da plataforma</span>
+                                <div class="categorias-product-info">
+                                    <span class="categorias-name">{{ categoria.nome }}</span>
+                                    <span class="categorias-category">Categoria da plataforma</span>
                                 </div>
                             </div>
                         </td>
 
                         <td>
                             <span class="status-badge status-normal">
-                                {{ categoria.contador_ofertas }}
-                                {% if categoria.contador_ofertas == 1 %}
-                                    oferta ativa
+                                {{ categoria.contador_categoriass }}
+                                {% if categoria.contador_categoriass == 1 %}
+                                    categorias ativa
                                 {% else %}
-                                    ofertas ativas
+                                    categoriass ativas
                                 {% endif %}
                             </span>
                         </td>
 
                         <td>
-                            <div class="offer-actions">
+                            <div class="categorias-actions">
                                 <a href="{% url 'editar_cupom' categoria.id %}"
-                                    class="offer-edit-button"
+                                    class="categorias-edit-button"
                                     aria-label="Editar categoria {{ categoria.nome }}"
                                     title="Editar categoria">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                     <span>Editar</span>
                                 </a>
                                 <a href="{% url 'excluir_cupom' categoria.id %}"
-                                    class="offer-delete-button"
+                                    class="categorias-delete-button"
                                     aria-label="Excluir categoria {{ categoria.nome }}"
                                     title="Excluir categoria">
                                     <i class="fa-solid fa-trash"></i>
@@ -105,7 +105,7 @@
                     {% empty %}
                     <tr>
                         <td colspan="3">
-                            <div class="offers-empty">
+                            <div class="categorias-empty">
                                 <i class="fa-solid fa-tags"></i>
                                 <h3>Nenhuma categoria encontrada</h3>
                                 <p>
@@ -124,14 +124,14 @@
         </div>
 
         {% if page_obj.paginator.num_pages > 0 %}
-        <footer class="offers-footer">
-            <span class="offers-page-info">
+        <footer class="categorias-footer">
+            <span class="categorias-page-info">
                 Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
-                <span class="offers-total">· {{ page_obj.paginator.count }} registros</span>
+                <span class="categorias-total">· {{ page_obj.paginator.count }} registros</span>
             </span>
 
             {% if page_obj.has_other_pages %}
-            <nav class="offers-pagination" aria-label="Paginação das categorias">
+            <nav class="categorias-pagination" aria-label="Paginação das categorias">
                 {% if page_obj.has_previous %}
                     <a href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page=1"
                         class="page-button" aria-label="Primeira página" title="Primeira página">

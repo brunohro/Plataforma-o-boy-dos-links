@@ -406,9 +406,9 @@ def excluir_loja(request, id):
     return redirect("lojas_adm")
 
 # =========================================================
-# CRUD CUPOM
+# CRUD CUPOM ADM
 # =========================================================
-def cupons(request, id):
+def cupons_adm(request, id):
     cupons = Cupom.objects.all()
 
     return render(request, "plataforma/cupom_adm.html")

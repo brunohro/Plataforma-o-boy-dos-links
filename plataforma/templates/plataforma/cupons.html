@@ -24,14 +24,6 @@
             </div>
         </header>
 
-        <nav class="coupons-page__navigation">
-            {% for grupo in cupons_por_categoria %}
-                <a href="#categoria-{{ grupo.categoria.id }}">
-                    {{ grupo.categoria.nome }}
-                </a>
-            {% endfor %}
-        </nav>
-
                 <!-- Lista de cupons -->
         <div class="featured-coupons__grid">
 

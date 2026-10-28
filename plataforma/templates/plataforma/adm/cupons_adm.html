@@ -3,24 +3,24 @@
 
 {% block content %}
 
-<section class="admin-offers">
-    <div class="offers-container">
+<section class="admin-cupons">
+    <div class="cupons-container">
 
         <!-- Cabeçalho -->
-        <header class="offers-header">
+        <header class="cupons-header">
             <div>
-                <span class="offers-eyebrow">PAINEL ADMINISTRATIVO</span>
+                <span class="cupons-eyebrow">PAINEL ADMINISTRATIVO</span>
                 <h1>Gerenciar cupons</h1>
                 <p>Consulte e gerencie os cupons cadastrados na plataforma.</p>
             </div>
 
             <div>
-                <a href="{% url 'painel_adm' %}" class="oferta-btn-voltar">
+                <a href="{% url 'painel_adm' %}" class="cupom-btn-voltar">
                     <i class="fa-solid fa-arrow-left"></i>
                     Voltar
                 </a>
 
-                <a href="{% url 'cadastrar_cupom' %}" class="admin-ofertas-btn-nova">
+                <a href="{% url 'cadastrar_cupom' %}" class="admin-cupons-btn-nova">
                     <i class="fa-solid fa-plus"></i>
                     <span>Novo cupom</span>
                 </a>
@@ -28,8 +28,8 @@
         </header>
 
         <!-- Busca -->
-        <form method="get" class="offers-toolbar">
-            <div class="offers-search">
+        <form method="get" class="cupons-toolbar">
+            <div class="cupons-search">
                 <i class="fa-solid fa-magnifying-glass"></i>
 
                 <input
@@ -41,20 +41,20 @@
                 >
             </div>
 
-            <button type="submit" class="offers-search-button">
+            <button type="submit" class="cupons-search-button">
                 Buscar
             </button>
 
             {% if request.GET.q %}
-                <a href="{% url 'cupons_adm' %}" class="offers-clear">
+                <a href="{% url 'cupons_adm' %}" class="cupons-clear">
                     Limpar
                 </a>
             {% endif %}
         </form>
 
         <!-- Listagem -->
-        <div class="offers-table-wrapper">
-            <table class="offers-table">
+        <div class="cupons-table-wrapper">
+            <table class="cupons-table">
                 <thead>
                     <tr>
                         <th>Cupom</th>
@@ -72,17 +72,17 @@
                     <tr>
                         <!-- Código e descrição -->
                         <td>
-                            <div class="offer-product">
-                                <div class="offer-image">
+                            <div class="cupons-product">
+                                <div class="cupons-image">
                                     <i class="fa-solid fa-ticket"></i>
                                 </div>
 
-                                <div class="offer-product-info">
-                                    <span class="offer-name">
+                                <div class="cupons-product-info">
+                                    <span class="cupons-name">
                                         {{ cupom.codigo }}
                                     </span>
 
-                                    <span class="offer-category">
+                                    <span class="cupons-category">
                                         {{ cupom.descricao }}
                                     </span>
                                 </div>
@@ -91,7 +91,7 @@
 
                         <!-- Loja parceira -->
                         <td>
-                            <span class="offer-store">
+                            <span class="cupons-store">
                                 {% if cupom.loja %}
                                     {{ cupom.loja }}
                                 {% else %}
@@ -102,28 +102,28 @@
 
                         <!-- Data de validade -->
                         <td>
-                            <span class="offer-store">
+                            <span class="cupons-store">
                                 {{ cupom.data_validade|date:"d/m/Y H:i" }}
                             </span>
                         </td>
 
                         <!-- Desconto -->
                         <td>
-                            <span class="offer-name">
+                            <span class="cupons-name">
                                 {{ cupom.desconto }}
                             </span>
                         </td>
 
                         <!-- Quantidade de usos -->
                         <td>
-                            <span class="offer-store">
+                            <span class="cupons-store">
                                 {{ cupom.quantidade_usos }}
                             </span>
                         </td>
 
                         <!-- Status -->
                         <td>
-                            <div class="offer-statuses">
+                            <div class="cupons-statuses">
                                 {% if cupom.ativo %}
                                     <span class="status-badge status-featured">
                                         <i class="fa-solid fa-check"></i>
@@ -140,10 +140,10 @@
 
                         <!-- Ações -->
                         <td>
-                            <div class="offer-actions">
+                            <div class="cupons-actions">
                                 <a
                                     href="{% url 'editar_cupom' cupom.id %}"
-                                    class="offer-edit-button"
+                                    class="cupons-edit-button"
                                     aria-label="Editar cupom {{ cupom.codigo }}"
                                     title="Editar cupom"
                                 >
@@ -153,7 +153,7 @@
 
                                 <a
                                     href="{% url 'excluir_cupom' cupom.id %}"
-                                    class="offer-delete-button"
+                                    class="cupons-delete-button"
                                     aria-label="Excluir cupom {{ cupom.codigo }}"
                                     title="Excluir cupom"
                                 >
@@ -167,7 +167,7 @@
                     {% empty %}
                     <tr>
                         <td colspan="7">
-                            <div class="offers-empty">
+                            <div class="cupons-empty">
                                 <i class="fa-solid fa-ticket"></i>
 
                                 <h3>Nenhum cupom encontrado</h3>
@@ -189,18 +189,18 @@
 
         <!-- Rodapé e paginação -->
         {% if page_obj.paginator.num_pages > 0 %}
-        <footer class="offers-footer">
-            <span class="offers-page-info">
+        <footer class="cupons-footer">
+            <span class="cupons-page-info">
                 Página {{ page_obj.number }} de
                 {{ page_obj.paginator.num_pages }}
 
-                <span class="offers-total">
+                <span class="cupons-total">
                     · {{ page_obj.paginator.count }} registros
                 </span>
             </span>
 
             {% if page_obj.has_other_pages %}
-            <nav class="offers-pagination" aria-label="Paginação dos cupons">
+            <nav class="cupons-pagination" aria-label="Paginação dos cupons">
 
                 {% if page_obj.has_previous %}
                     <a

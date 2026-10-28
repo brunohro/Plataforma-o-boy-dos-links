@@ -1,0 +1,129 @@
+
+{% extends '../../base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin/formulario_oferta.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="oferta-form-page">
+    <div class="oferta-form-container">
+
+        <div class="oferta-form-header">
+            <div>
+                <span class="oferta-form-eyebrow">ADMINISTRAÇÃO</span>
+                <h1>
+                    {% if modo_edicao %}
+                        Editar categoria
+                    {% else %}
+                        Cadastrar nova categoria
+                    {% endif %}
+                </h1>
+                <p>
+                    {% if modo_edicao %}
+                        Atualize os dados da categoria cadastrada.
+                    {% else %}
+                        Preencha os dados para adicionar uma categoria ao site.
+                    {% endif %}
+                </p>
+            </div>
+
+            <a href="{% url 'categorias_adm' %}" class="oferta-btn-voltar">
+                <i class="fa-solid fa-arrow-left"></i>
+                Voltar
+            </a>
+        </div>
+
+        <form class="oferta-form"
+              action=""
+              method="post"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <section class="oferta-form-section">
+                <div class="oferta-section-heading">
+                    <i class="fa-solid fa-tags"></i>
+                    <div>
+                        <h2>Informações da categoria</h2>
+                        <p>Defina o nome e a imagem que representam a categoria.</p>
+                    </div>
+                </div>
+
+                <div class="oferta-form-grid">
+                    <div class="oferta-field oferta-field-full">
+                        <label for="nome">Nome da categoria *</label>
+                        <input
+                            type="text"
+                            id="nome"
+                            name="nome"
+                            class="oferta-input"
+                            placeholder="Ex.: Eletrônicos"
+                            value="{{ form.nome.value|default:'' }}"
+                            maxlength="100"
+                            required
+                        >
+                        {% if form.nome.errors %}
+                            <small class="form-error">{{ form.nome.errors|striptags }}</small>
+                        {% endif %}
+                    </div>
+
+                    <div class="oferta-field oferta-field-full">
+                        <label for="icone_imagem">Ícone da categoria</label>
+                        <input
+                            type="file"
+                            id="icone_imagem"
+                            name="icone_imagem"
+                            class="oferta-input"
+                            accept="image/*"
+                        >
+                        <small>
+                            Envie uma imagem para representar a categoria.
+                            Este campo é opcional.
+                        </small>
+
+                        {% if modo_edicao and categoria.icone_imagem %}
+                            <div class="categoria-imagem-atual">
+                                <p>Imagem atual:</p>
+                                <img
+                                    src="{{ categoria.icone_imagem.url }}"
+                                    alt="Ícone atual de {{ categoria.nome }}"
+                                    style="max-width: 120px; max-height: 120px; object-fit: contain;"
+                                >
+                            </div>
+                        {% endif %}
+
+                        {% if form.icone_imagem.errors %}
+                            <small class="form-error">
+                                {{ form.icone_imagem.errors|striptags }}
+                            </small>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+
+            <div class="oferta-form-footer">
+                <a href="{% url 'categorias_adm' %}" class="oferta-btn-cancelar">
+                    Cancelar
+                </a>
+
+                <button type="submit" class="oferta-btn-salvar">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    {% if modo_edicao %}
+                        Salvar alterações
+                    {% else %}
+                        Cadastrar categoria
+                    {% endif %}
+                </button>
+            </div>
+
+        </form>
+    </div>
+</main>
+{% endblock %}

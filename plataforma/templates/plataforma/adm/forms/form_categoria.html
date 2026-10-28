@@ -3,16 +3,16 @@
 {% load static %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/admin/formulario_oferta.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin/formulario_categoria.css' %}">
 {% endblock %}
 
 {% block content %}
-<main class="oferta-form-page">
-    <div class="oferta-form-container">
+<main class="categoria-form-page">
+    <div class="categoria-form-container">
 
-        <div class="oferta-form-header">
+        <div class="categoria-form-header">
             <div>
-                <span class="oferta-form-eyebrow">ADMINISTRAÇÃO</span>
+                <span class="categoria-form-eyebrow">ADMINISTRAÇÃO</span>
                 <h1>
                     {% if modo_edicao %}
                         Editar categoria
@@ -29,13 +29,13 @@
                 </p>
             </div>
 
-            <a href="{% url 'categorias_adm' %}" class="oferta-btn-voltar">
+            <a href="{% url 'categorias_adm' %}" class="categoria-btn-voltar">
                 <i class="fa-solid fa-arrow-left"></i>
                 Voltar
             </a>
         </div>
 
-        <form class="oferta-form"
+        <form class="categoria-form"
               action=""
               method="post"
               enctype="multipart/form-data">
@@ -47,8 +47,8 @@
                 </div>
             {% endif %}
 
-            <section class="oferta-form-section">
-                <div class="oferta-section-heading">
+            <section class="categoria-form-section">
+                <div class="categoria-section-heading">
                     <i class="fa-solid fa-tags"></i>
                     <div>
                         <h2>Informações da categoria</h2>
@@ -56,14 +56,14 @@
                     </div>
                 </div>
 
-                <div class="oferta-form-grid">
-                    <div class="oferta-field oferta-field-full">
+                <div class="categoria-form-grid">
+                    <div class="categoria-field categoria-field-full">
                         <label for="nome">Nome da categoria *</label>
                         <input
                             type="text"
                             id="nome"
                             name="nome"
-                            class="oferta-input"
+                            class="categoria-input"
                             placeholder="Ex.: Eletrônicos"
                             value="{{ form.nome.value|default:'' }}"
                             maxlength="100"
@@ -74,13 +74,13 @@
                         {% endif %}
                     </div>
 
-                    <div class="oferta-field oferta-field-full">
+                    <div class="categoria-field categoria-field-full">
                         <label for="icone_imagem">Ícone da categoria</label>
                         <input
                             type="file"
                             id="icone_imagem"
                             name="icone_imagem"
-                            class="oferta-input"
+                            class="categoria-input"
                             accept="image/*"
                         >
                         <small>
@@ -108,12 +108,12 @@
                 </div>
             </section>
 
-            <div class="oferta-form-footer">
-                <a href="{% url 'categorias_adm' %}" class="oferta-btn-cancelar">
+            <div class="categoria-form-footer">
+                <a href="{% url 'categorias_adm' %}" class="categoria-btn-cancelar">
                     Cancelar
                 </a>
 
-                <button type="submit" class="oferta-btn-salvar">
+                <button type="submit" class="categoria-btn-salvar">
                     <i class="fa-solid fa-floppy-disk"></i>
                     {% if modo_edicao %}
                         Salvar alterações

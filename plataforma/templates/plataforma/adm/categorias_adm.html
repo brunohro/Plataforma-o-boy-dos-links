@@ -18,7 +18,7 @@
                     <i class="fa-solid fa-arrow-left"></i>
                     Voltar
                 </a>
-                <a href="{% url 'cadastrar_cupom' %}" class="admin-categorias-btn-nova">
+                <a href="{% url 'cadastrar_categoria' %}" class="admin-categorias-btn-nova">
                     <i class="fa-solid fa-plus"></i>
                     <span>Nova categoria</span>
                 </a>
@@ -46,7 +46,7 @@
                 <thead>
                     <tr>
                         <th>Categoria</th>
-                        <th>categoriass ativas</th>
+                        <th>categorias ativas</th>
                         <th class="actions-heading">Ações</th>
                     </tr>
                 </thead>
@@ -85,14 +85,14 @@
 
                         <td>
                             <div class="categorias-actions">
-                                <a href="{% url 'editar_cupom' categoria.id %}"
+                                <a href="{% url 'editar_categoria' categoria.id %}"
                                     class="categorias-edit-button"
                                     aria-label="Editar categoria {{ categoria.nome }}"
                                     title="Editar categoria">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                     <span>Editar</span>
                                 </a>
-                                <a href="{% url 'excluir_cupom' categoria.id %}"
+                                <a href="{% url 'excluir_categoria' categoria.id %}"
                                     class="categorias-delete-button"
                                     aria-label="Excluir categoria {{ categoria.nome }}"
                                     title="Excluir categoria">

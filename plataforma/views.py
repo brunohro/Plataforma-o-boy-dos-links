@@ -236,6 +236,13 @@ def categorias_adm(request):
     categorias = Categoria.objects.order_by("nome")
     return render(request, "plataforma/adm/categorias_adm.html", {"categorias": categorias})
 
+def cadastrar_categoria(request):
+    return render(request, "plataforma/adm/forms/form_categoria.html")
+
+def editar_categoria(request, id):
+    categoria = Categoria.objects.get(id=id)
+    return render(request, "plataforma/adm/forms/form_categoria.html", {"categoria": categoria})
+
 @staff_member_required
 def cupons_adm(request):
     cupons = Cupom.objects.select_related("loja").order_by("-data_validade")
@@ -290,6 +297,14 @@ def excluir_cupom(request, pk):
 
     messages.success(request, f'Cupom "{nome}" excluído com sucesso!')
     return redirect("cupons_adm")
+
+def excluir_categoria(request, pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
+    nome = categoria.nome
+    categoria.delete()
+
+    messages.success(request, f'Categoria "{nome}" excluída com sucesso!')
+    return redirect("categorias_adm")
 
 # =========================================================
 # LOGIN E CADASTRO

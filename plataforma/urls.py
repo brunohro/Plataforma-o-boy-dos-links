@@ -38,6 +38,12 @@ urlpatterns = [
     path("adm/cupons/editar/<int:id>", views.editar_cupom, name="editar_cupom"),
     path("adm/cupons/<int:id>/excluir/", views.excluir_cupom, name="excluir_cupom"),
 
+    #categorias adm
+    path("adm/categorias/", views.categorias_adm, name="categorias_adm"),
+    path("adm/categorias/cadastrar", views.cadastrar_categoria, name="cadastrar_categoria"),
+    path("adm/categorias/editar/<int:id>", views.editar_categoria, name="editar_categoria"),
+    path("adm/categorias/<int:id>/excluir/", views.excluir_categoria, name="excluir_categoria"),
+    
     # lojas adm
     path("adm/lojas/", views.lojas_adm, name="lojas_adm"),
 

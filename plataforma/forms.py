@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import UsuarioReal, Categoria, Oferta
+from .models import UsuarioReal, Categoria, Oferta, LojaParceira, Cupom
 
 
 class CadastroForm(UserCreationForm):
@@ -31,7 +31,6 @@ class OfertaForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Placeholders baseados nos inputs da tela
         self.fields['nome_produto'].widget.attrs['placeholder'] = 'Ex: Tênis de corrida masculino'
         self.fields['link_afiliado'].widget.attrs['placeholder'] = 'https://...'
         self.fields['image_url'].widget.attrs['placeholder'] = 'https://...imagem.jpeg'
@@ -58,3 +57,33 @@ class CategoriaForm(forms.ModelForm):
             "nome": forms.TextInput(attrs={"class": "form-control", "placeholder": "Nome da categoria"}),
             "icone_imagem": forms.ClearableFileInput(attrs={"class": "form-control", "accept": "image/*"}),
         }
+
+class LojaParceiraForm(forms.ModelForm):
+    class Meta:
+        model = LojaParceira
+        fields = ["nome", "logo_imagem", "verificado"]
+        widgets = {
+            "logo_imagem": forms.ClearableFileInput(attrs={"class": "form-control", "accept": "image/*"}),
+        }
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+
+            self.fields["nome"].widget.attrs['placeholder'] = 'Ex: Mercado Livre'
+            self.fields['logo_imagem'].widget.attrs['placeholder'] = 'https://...imagem.jpeg'
+            self.fields['verificado'].widget.attrs['class'] = 'form-check-input'
+
+class CupomForm(forms.ModelForm):
+    class Meta:
+        model = Cupom
+        fields = ['codigo', 'descricao', 'data_validade', 'desconto', 'quantidade_usos', 'ativo']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['codigo'].widget.attrs['placeholder'] = 'CODIGO'
+        self.fields['descricao'].widget.attrs['placeholder'] = 'Ex: O cupom depende da condição ... para ser utilizado.'
+        self.fields['data_validade'].widget.attrs['placeholder'] = 'xx/xx/xxxx'
+        self.fields['desconto'].widget.attrs['placeholder'] = 'R$50,00'
+        self.fields['quantidade_usos'].widget.attrs['placeholder'] = '100'
+        self.fields['ativo'].widget.attrs['class'] = 'form-check-input'

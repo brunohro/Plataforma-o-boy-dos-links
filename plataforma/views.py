@@ -4,7 +4,7 @@ from django.db.models import Count, Q, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET
-from .forms import CadastroForm, CategoriaForm
+from .forms import CadastroForm, OfertaForm, CategoriaForm, LojaParceiraForm, CupomForm
 from .models import Banner, Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto, ClickOferta
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
@@ -268,7 +268,34 @@ def ofertas(request, tipo="todas"):
 
 @staff_member_required
 def criar_oferta(request):
-    pass
+    if request.method == "POST":
+        form = OfertaForm(request.POST, request.FILES)
+        if form.is_valid():
+            oferta = form.save()
+            messages.success(request, f'Oferta "{oferta.nome}" cadastrada com sucesso!')
+            return redirect("ofertas_adm")
+        else:
+            form = OfertaForm()
+
+        return render(request, "plataforma/templates/adm/ofertas_adm.html")
+
+@staff_member_required
+def editar_oferta(request, id):
+    oferta = get_object_or_404(request, id=id)
+
+    if request.method == "POST":
+        form = OfertaForm(request.POST, request.FILES, instance=oferta)
+        if form.is_valid():
+            oferta = form.save()
+            messages.success(request, f'Oferta "{oferta.nome}" atualizada com sucesso!')
+            return redirect("ofertas_adm")
+        else:
+            form = OfertaForm(instance=oferta)
+
+        return render(request, "form/form_ofertas.html", {
+            "form": form,
+            "oferta": oferta,
+        })
 
 @staff_member_required
 @require_POST
@@ -328,6 +355,103 @@ def excluir_categoria(request, pk):
 
     messages.success(request, f'Categoria "{nome}" excluída com sucesso!')
     return redirect("adm_categorias")
+
+# =========================================================
+# CRUD LOJAPARCEIRA
+# =========================================================
+def lojas(request):
+    lojas = LojaParceira.objects.all()
+
+    return render(request, "plataforma/lojas_adm.html", {"lojas": lojas})
+
+@staff_member_required
+def criar_loja(request):
+    if request.method == "POST":
+        form = LojaParceiraForm(request.POST, request.FILES)
+        if form.is_valid():
+            loja = form.save()
+            messages.success(request, f'Loja "{loja.nome}" cadastrada com sucesso!')
+            return redirect("lojas_adm")
+    else:
+        form = LojaParceiraForm()
+
+    return render(request, "plataforma/form_loja.html",{"form": form})
+
+@staff_member_required
+def editar_loja(request, id):
+    loja = get_object_or_404(Categoria, id=id)
+
+    if request.method == "POST":
+        form = LojaParceiraForm(request.POST, request.FILES, instance=loja)
+        if form.is_valid():
+            loja = form.save()
+            messages.success(request, f'Loja "{loja.nome}" atualizada com sucesso!')
+            return redirect("lojas_adm")
+        else:
+            form = LojaParceiraForm(instance=loja)
+            
+        return render(request, "plataforma/form_lojas.html", {
+            "form": form,
+            "loja": loja,
+        })
+
+@staff_member_required
+@require_POST
+def excluir_loja(request, id):
+    loja = get_object_or_404(Categoria, id=id)
+    nome = loja.nome
+    loja.delete()
+
+    messages.success(request, f'Loja "{nome}" excluída com sucesso!')
+    return redirect("lojas_adm")
+
+# =========================================================
+# CRUD CUPOM
+# =========================================================
+def cupons(request, id):
+    cupons = Cupom.objects.all()
+
+    return render(request, "plataforma/cupom_adm.html")
+
+@staff_member_required
+def criar_cupom(request):
+    if request.method == "POST":
+        form = CupomForm(request.POST, request.FILES)
+        if form.is_valid():
+            cupom = form.save()
+            messages.success(request, f'Cupom "{cupom.nome}" cadastrado com sucesso!')
+            return redirect("cupom_adm")
+        else:
+            form = CupomForm()
+    
+        return render(request, "plataforma/form_cupom.html",{"form": form})
+
+def editar_cupom(request, id):
+    cupom = get_object_or_404(Categoria, id=id)
+
+    if request.method == "POST":
+        form = CupomForm(request.POST, request.FILES, instance=cupom)
+        if form.is_valid():
+            cupom = form.save()
+            messages.success(request, f'Cupom "{cupom.nome}" atualizado com sucesso!')
+            return redirect("cupom_adm")
+        else:
+            form = CupomForm(instance=cupom)
+            
+        return render(request, "plataforma/form_cupom.html", {
+            "form": form,
+            "cupom": cupom,
+        })
+
+@staff_member_required
+@require_POST
+def excluir_cupom(request, id):
+    cupom = get_object_or_404(Categoria, id=id)
+    nome = cupom.nome
+    cupom.delete()
+
+    messages.success(request, f'Cupom "{nome}" excluído com sucesso!')
+    return redirect("cupom_adm")
 
 # =========================================================
 # LOGIN E CADASTRO

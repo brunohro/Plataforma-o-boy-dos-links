@@ -35,8 +35,19 @@ urlpatterns = [
     path("promocoes/", RedirectView.as_view(pattern_name="ofertas", permanent=True)),
 
     path("adm/lojas/", views.lojas_adm, name="lojas_adm"),
+    path("adm/lojas/cadastrar/", views.criar_loja, name="cadastrar_loja"),
+    path("adm/lojas/editar/<int:id>/", views.editar_loja, name="editar_loja"),
+    path("adm/lojas/<int:id>/excluir/", views.excluir_loja, name="excluir_loja"),
+    
     path("adm/categorias/", views.categorias_adm, name="categorias_adm"),
+    path("adm/categorias/cadastrar/", views.criar_categoria, name="cadastrar_categoria"),
+    path("adm/categorias/editar/<int:id>/", views.editar_categoria, name="editar_categoria"),
+    path("adm/categorias/<int:id>/excluir/", views.excluir_categoria, name="excluir_categoria"),    
+
     path("adm/cupons/", views.cupons_adm, name="cupons_adm"),
+    path("adm/cupons/cadastrar/", views.criar_cupom, name="cadastrar_cupom"),
+    path("adm/cupons/editar/<int:id>/", views.editar_cupom, name="editar_cupom"),
+    path("adm/cupons/<int:id>/excluir/", views.excluir_cupom, name="excluir_cupom"),
 
     path("logout/", LogoutView.as_view(next_page="/"), name="logout"),
 ]

@@ -1,10 +1,5 @@
-
 {% extends '../base.html' %}
 {% load static %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/adm/ofertas.css' %}">
-{% endblock %}
 
 {% block content %}
 
@@ -149,7 +144,7 @@
                                     {% csrf_token %}
                                     <button
                                         type="submit"
-                                        class="offer-delete-button"
+                                        class="ofertas-delete-button"
                                         aria-label="Deletar {{ oferta.nome_produto }}"
                                         title="Deletar oferta"
                                     >

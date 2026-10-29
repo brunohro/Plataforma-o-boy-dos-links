@@ -590,3 +590,25 @@ a.page-button:hover {
     }
 }
 
+.ofertas-delete-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 8px 11px;
+    border: 1px solid var(--danger);
+    border-radius: 7px;
+    background: rgba(239, 68, 68, 0.08);
+    color: var(--danger);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.ofertas-delete-button:hover {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: #FFFFFF;
+}

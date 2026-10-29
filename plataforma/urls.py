@@ -28,19 +28,19 @@ urlpatterns = [
 
     # ofertas adm
     path("adm/ofertas/", views.ofertas_adm, name="ofertas_adm"),
-    path("adm/ofertas/cadastrar", views.cadastrar_oferta, name="cadastrar_oferta"),
+    path("adm/ofertas/cadastrar", views.criar_oferta, name="cadastrar_oferta"),
     path("adm/ofertas/editar/<int:id>", views.editar_oferta, name="editar_oferta"),
     path("adm/ofertas/<int:id>/excluir/", views.excluir_oferta, name="excluir_oferta"),
 
     # cupons adm
     path("adm/cupons/", views.cupons_adm, name="cupons_adm"),
-    path("adm/cupons/cadastrar", views.cadastrar_cupom, name="cadastrar_cupom"),
+    path("adm/cupons/cadastrar", views.criar_cupom, name="cadastrar_cupom"),
     path("adm/cupons/editar/<int:id>", views.editar_cupom, name="editar_cupom"),
     path("adm/cupons/<int:id>/excluir/", views.excluir_cupom, name="excluir_cupom"),
 
     #categorias adm
     path("adm/categorias/", views.categorias_adm, name="categorias_adm"),
-    path("adm/categorias/cadastrar", views.cadastrar_categoria, name="cadastrar_categoria"),
+    path("adm/categorias/cadastrar", views.criar_categoria, name="cadastrar_categoria"),
     path("adm/categorias/editar/<int:id>", views.editar_categoria, name="editar_categoria"),
     path("adm/categorias/<int:id>/excluir/", views.excluir_categoria, name="excluir_categoria"),
     

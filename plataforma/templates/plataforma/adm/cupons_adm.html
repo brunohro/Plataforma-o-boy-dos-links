@@ -151,15 +151,22 @@
                                     <span>Editar</span>
                                 </a>
 
-                                <a
-                                    href="{% url 'excluir_cupom' cupom.id %}"
-                                    class="cupons-delete-button"
-                                    aria-label="Excluir cupom {{ cupom.codigo }}"
-                                    title="Excluir cupom"
+                                <form
+                                    method="POST"
+                                    action="{% url 'excluir_cupom' cupom.id %}"
+                                    onsubmit="return confirm('Tem certeza que deseja excluir o cupom {{ cupom.codigo }}?');"
                                 >
-                                    <i class="fa-solid fa-trash"></i>
-                                    <span>Excluir</span>
-                                </a>
+                                    {% csrf_token %}
+                                    <button
+                                        type="submit"
+                                        class="cupons-delete-button"
+                                        aria-label="Excluir cupom {{ cupom.codigo }}"
+                                        title="Excluir cupom"
+                                    >
+                                        <i class="fa-solid fa-trash"></i>
+                                        <span>Excluir</span>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>

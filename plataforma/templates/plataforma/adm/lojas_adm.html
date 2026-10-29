@@ -126,14 +126,22 @@
                                     <span>Editar</span>
                                 </a>
 
-                                <a
-                                    href="{% url 'excluir_loja' loja.id %}"
-                                    class="lojas-delete-button"
-                                    aria-label="Excluir loja {{ loja.nome }}"
-                                    title="Excluir loja">
-                                    <i class="fa-solid fa-trash"></i>
-                                    <span>Excluir</span>
-                                </a>
+                                <form
+                                    method="POST"
+                                    action="{% url 'excluir_loja' loja.id %}"
+                                    onsubmit="return confirm('Tem certeza que deseja excluir a loja {{ loja.nome }}?');"
+                                >
+                                    {% csrf_token %}
+                                    <button
+                                        type="submit"
+                                        class="lojas-delete-button"
+                                        aria-label="Excluir loja {{ loja.nome }}"
+                                        title="Excluir loja"
+                                    >
+                                        <i class="fa-solid fa-trash"></i>
+                                        <span>Excluir</span>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>

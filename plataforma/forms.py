@@ -6,7 +6,13 @@ from .models import UsuarioReal, Categoria, Oferta, LojaParceira, Cupom
 class CadastroForm(UserCreationForm):
     class Meta:
         model = UsuarioReal
-        fields = ["username", "email", "telefone", "data_nascimento", "sexo"]
+        fields = [
+            "username",
+            "email",
+            "telefone",
+            "data_nascimento",
+            "sexo"
+        ]
         widgets = {
             "data_nascimento": forms.DateInput(attrs={"type": "date"}),
         }
@@ -23,7 +29,17 @@ class CadastroForm(UserCreationForm):
 class OfertaForm(forms.ModelForm):
     class Meta:
         model = Oferta
-        fields = ["nome_produto", "link_afiliado", "image_url", "descricao", "is_destaque", "is_relampago"]
+        fields = [
+            "nome_produto",
+            "loja",
+            "categoria",
+            "cupom",
+            "link_afiliado",
+            "image_url",
+            "descricao",
+            "is_destaque",
+            "is_relampago",
+        ]
         widgets = {
         'descricao': forms.Textarea(attrs={'rows': 4}),
         }
@@ -37,7 +53,7 @@ class OfertaForm(forms.ModelForm):
         self.fields['descricao'].widget.attrs['placeholder'] = 'Descrição da oferta...'
 
         self.fields['nome_produto'].widget.attrs['class'] = 'form-control'
-        self.fields['loja_parceira'].widget.attrs['class'] = 'form-select'
+        self.fields['loja'].widget.attrs['class'] = 'form-select'
         self.fields['categoria'].widget.attrs['class'] = 'form-select'
         self.fields['descricao'].widget.attrs['class'] = 'form-control'
         self.fields['link_afiliado'].widget.attrs['class'] = 'form-control'
@@ -76,11 +92,12 @@ class LojaParceiraForm(forms.ModelForm):
 class CupomForm(forms.ModelForm):
     class Meta:
         model = Cupom
-        fields = ['codigo', 'descricao', 'data_validade', 'desconto', 'quantidade_usos', 'ativo']
+        fields = ['loja','codigo', 'descricao', 'data_validade', 'desconto', 'quantidade_usos', 'ativo']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self.fields['loja'].widget.attrs['class'] = 'cupom-input'
         self.fields['codigo'].widget.attrs['placeholder'] = 'CODIGO'
         self.fields['descricao'].widget.attrs['placeholder'] = 'Ex: O cupom depende da condição ... para ser utilizado.'
         self.fields['data_validade'].widget.attrs['placeholder'] = 'xx/xx/xxxx'

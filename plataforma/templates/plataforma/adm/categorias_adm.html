@@ -91,14 +91,22 @@
                                     title="Editar categoria">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                     <span>Editar</span>
-                                </a>
-                                <a href="{% url 'excluir_categoria' categoria.id %}"
-                                    class="categorias-delete-button"
-                                    aria-label="Excluir categoria {{ categoria.nome }}"
-                                    title="Excluir categoria">
-                                    <i class="fa-solid fa-trash"></i>
-                                    <span>Excluir</span>
-                                </a>
+                                <form
+                                    method="POST"
+                                    action="{% url 'excluir_categoria' categoria.id %}"
+                                    onsubmit="return confirm('Tem certeza que deseja excluir a categoria {{ categoria.nome }}?');"
+                                >
+                                    {% csrf_token %}
+                                    <button
+                                        type="submit"
+                                        class="categorias-delete-button"
+                                        aria-label="Excluir categoria {{ categoria.nome }}"
+                                        title="Excluir categoria"
+                                    >
+                                        <i class="fa-solid fa-trash"></i>
+                                        <span>Excluir</span>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>

@@ -53,11 +53,14 @@
                         <label for="loja">Loja parceira</label>
                         <select id="loja" name="loja" class="cupom-input">
                             <option value="">Nenhuma loja vinculada</option>
+
                             {% for loja in lojas %}
                                 <option value="{{ loja.pk }}"
-                                    {% if cupom.loja_id == loja.pk %}selected{% endif %}>
+                                    {% if cupom and cupom.loja_id == loja.pk %}selected{% endif %}>
                                     {{ loja }}
                                 </option>
+                            {% empty %}
+                                <option value="" disabled>Nenhuma loja cadastrada</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -157,17 +160,17 @@
                 </div>
             </section>
 
-            <div class="cupom-form-footer">
-                <a href="{% url 'cupons_adm' %}" class="cupom-btn-cancelar">
+            <div class="oferta-form-footer">
+                <a href="{% url 'ofertas_adm' %}" class="oferta-btn-cancelar">
                     Cancelar
                 </a>
-
-                <button type="submit" class="cupom-btn-salvar">
+                
+                <button type="submit" class="oferta-btn-salvar">
                     <i class="fa-solid fa-floppy-disk"></i>
                     {% if modo_edicao %}
                         Salvar alterações
                     {% else %}
-                        Cadastrar cupom
+                        Cadastrar oferta
                     {% endif %}
                 </button>
             </div>

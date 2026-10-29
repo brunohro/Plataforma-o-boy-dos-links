@@ -1,4 +1,3 @@
-
 {% extends '../../base.html' %}
 {% load static %}
 
@@ -23,8 +22,10 @@
             </a>
         </div>
 
-        <form class="oferta-form" action="#" method="get"
-              onsubmit="return false;">
+        
+        <form class="oferta-form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
 
             <section class="oferta-form-section">
                 <div class="oferta-section-heading">
@@ -50,21 +51,30 @@
                     <div class="oferta-field">
                         <label for="loja">Loja parceira *</label>
                         <select id="loja" name="loja" class="oferta-input">
-                            <option value="">Selecione uma loja</option>
-                            <option>Mercado Livre</option>
-                            <option>Amazon</option>
-                            <option>Shopee</option>
+                            <option value="">Nenhuma loja vinculada</option>
+                            {% for loja in lojas %}
+                                <option value="{{ loja.pk }}"
+                                    {% if oferta and oferta.loja_id == loja.pk %}selected{% endif %}>
+                                    {{ loja }}
+                                </option>
+                            {% empty %}
+                                <option value="" disabled>Nenhuma loja cadastrada</option>
+                            {% endfor %}
                         </select>
                     </div>
 
                     <div class="oferta-field">
                         <label for="categoria">Categoria</label>
                         <select id="categoria" name="categoria" class="oferta-input">
-                            <option value="">Selecione uma categoria</option>
-                            <option>Eletrônicos</option>
-                            <option>Moda</option>
-                            <option>Casa e decoração</option>
-                            <option>Esportes</option>
+                            <option value="">Nenhuma categoria vinculada</option>
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria.pk }}"
+                                    {% if oferta and oferta.categoria_id == categoria.pk %}selected{% endif %}>
+                                    {{ categoria }}
+                                </option>
+                            {% empty %}
+                                <option value="" disabled>Nenhuma categoria cadastrada</option>
+                            {% endfor %}
                         </select>
                     </div>
 
@@ -116,9 +126,13 @@
                     <div class="oferta-field oferta-field-full">
                         <label for="cupom">Cupom de desconto</label>
                         <select id="cupom" name="cupom" class="oferta-input">
-                            <option value="">Nenhum cupom</option>
-                            <option>DESCONTO10</option>
-                            <option>OFERTA20</option>
+                            <option value="">Nenhum cupom vinculado</option>
+                            {% for item_cupom in cupons %}
+                            <option value="{{ item_cupom.pk }}"
+                                {% if oferta and oferta.cupom_id == item_cupom.pk %}selected{% endif %}>
+                                {{ item_cupom }}
+                            </option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>

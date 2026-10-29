@@ -25,6 +25,21 @@
     font-size: 0.9rem;
 }
 
+.usuarios-btn-voltar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    white-space: nowrap;
+    transition: border-color 0.2s, color 0.2s;
+}
+
 /* Botão de cadastro */
 .admin-usuarios-btn-nova {
     display: inline-flex;

@@ -207,7 +207,7 @@ def admin_dashboard(request):
 @staff_member_required
 def adm_usuarios(request):
     usuarios = UsuarioReal.objects.order_by("-date_joined")
-    return render(request, TEMPLATE_PAINEL, {"usuarios": usuarios})
+    return render(request, "plataforma/adm/usuarios_adm.html", {"usuarios": usuarios})
 
 
 @staff_member_required

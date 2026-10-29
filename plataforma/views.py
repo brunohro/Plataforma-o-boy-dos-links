@@ -311,7 +311,7 @@ def excluir_oferta(request, id):
 # CRUD CATEGORIAS
 # =========================================================
 def categorias_adm(request):
-    categorias = Categoria.objects.all()
+    categorias = Categoria.objects.all().order_by("nome")
 
     return render(request, "plataforma/adm/categorias_adm.html", {"categorias": categorias})
 
@@ -338,10 +338,10 @@ def editar_categoria(request, id):
             categoria = form.save()
             messages.success(request, f'Categoria "{categoria.nome}" atualizada com sucesso!')
             return redirect("categorias_adm")
-        else:
-            form = CategoriaForm(instance=categoria)
+    else:
+        form = CategoriaForm(instance=categoria)
             
-    return render(request, "plataforma/adm/form_categoria.html", {
+    return render(request, "plataforma/adm/forms/form_categoria.html", {
         "form": form,
         "categoria": categoria,
     })
@@ -360,7 +360,7 @@ def excluir_categoria(request, id):
 # CRUD LOJAPARCEIRA
 # =========================================================
 def lojas(request):
-    lojas = LojaParceira.objects.all()
+    lojas = LojaParceira.objects.all().order_by("nome")
 
     return render(request, "plataforma/adm/lojas_adm.html", {"lojas": lojas})
 
@@ -379,21 +379,33 @@ def criar_loja(request):
 
 @staff_member_required
 def editar_loja(request, id):
-    loja = get_object_or_404(LojaParceira, id=id)
+    loja = get_object_or_404(LojaParceira, pk=id)
 
     if request.method == "POST":
-        form = LojaParceiraForm(request.POST, request.FILES, instance=loja)
+        form = LojaParceiraForm(
+            request.POST,
+            request.FILES,
+            instance=loja
+        )
+
         if form.is_valid():
             loja = form.save()
-            messages.success(request, f'Loja "{loja.nome}" atualizada com sucesso!')
+            messages.success(
+                request,
+                f'Loja "{loja.nome}" atualizada com sucesso!'
+            )
             return redirect("lojas_adm")
-        else:
-            form = LojaParceiraForm(instance=loja)
-            
-    return render(request, "plataforma/adm/forms/form_lojas.html", {
-        "form": form,
-        "loja": loja,
-    })
+    else:
+        form = LojaParceiraForm(instance=loja)
+
+    return render(
+        request,
+        "plataforma/adm/forms/form_loja.html",
+        {
+            "form": form,
+            "loja": loja,
+        }
+    )
 
 @staff_member_required
 @require_POST
@@ -409,7 +421,7 @@ def excluir_loja(request, id):
 # CRUD USUÁRIO
 # =========================================================
 def usuarios_adm(request):
-    usuarios = UsuarioReal.objects.all()
+    usuarios = UsuarioReal.filter(is_active=True).order_by("nome")
 
     return render(request, "plataforma/adm/usuarios_adm.html", {"usuarios": usuarios})
 
@@ -417,7 +429,7 @@ def usuarios_adm(request):
 # CRUD CUPOM ADM
 # =========================================================
 def cupons_adm(request):
-    cupons = Cupom.objects.all()
+    cupons = Cupom.objects.filter(ativo=True).order_by("data_validade")
 
     return render(
         request,
@@ -453,10 +465,10 @@ def editar_cupom(request, id):
             cupom = form.save()
             messages.success(request, f'Cupom "{cupom.codigo}" atualizado com sucesso!')
             return redirect("cupons_adm")
-        else:
-            form = CupomForm(instance=cupom)
+    else:
+        form = CupomForm(instance=cupom)
             
-        return render(request, "plataforma/form_cupom.html", {
+        return render(request, "plataforma/adm/forms/form_cupom.html", {
             "form": form,
             "cupom": cupom,
         })

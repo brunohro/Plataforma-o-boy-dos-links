@@ -1,1 +1,36 @@
-<h1>Formulário Categoria</h1>
+{% extends "plataforma/base.html" %}
+
+{% block content %}
+    <h1>
+        {% if categoria %}
+            Editar categoria
+        {% else %}
+            Cadastrar categoria
+        {% endif %}
+    </h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            {{ form.non_field_errors }}
+        {% endif %}
+
+        {% for field in form %}
+            <div>
+                <label for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                </label>
+
+                {{ field }}
+
+                {% for error in field.errors %}
+                    <p style="color: red;">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <button type="submit">Salvar categoria</button>
+        <a href="{% url 'categorias_adm' %}">Voltar</a>
+    </form>
+{% endblock%}

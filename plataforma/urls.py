@@ -18,7 +18,8 @@ urlpatterns = [
     path("ofertas/<int:pk>/favoritar/", views.favoritar_oferta, name="favoritar_oferta"),
     path("favoritos/", views.favoritos, name="favoritos"),   # só se mantiver a página de favoritos
 
-    #cupons 
+    #ofertas e cupons
+    path("ofertas/", views.ofertas, name="ofertas"),
     path("cupons/", views.cupons, name="cupons"),
 
     # Painel administrativo
@@ -30,24 +31,28 @@ urlpatterns = [
     path("adm/ofertas/cadastrar", views.cadastrar_oferta, name="cadastrar_oferta"),
     path("adm/ofertas/editar/<int:id>", views.editar_oferta, name="editar_oferta"),
     path("adm/ofertas/<int:id>/excluir/", views.excluir_oferta, name="excluir_oferta"),
-    path("ofertas/", views.ofertas, name="ofertas"),
-    path("ofertas/relampago/",views.ofertas,{"tipo": "relampago"}, name="ofertas_relampago",),
-    path("promocoes/", RedirectView.as_view(pattern_name="ofertas", permanent=True)),
 
+    # cupons adm
+    path("adm/cupons/", views.cupons_adm, name="cupons_adm"),
+    path("adm/cupons/cadastrar", views.cadastrar_cupom, name="cadastrar_cupom"),
+    path("adm/cupons/editar/<int:id>", views.editar_cupom, name="editar_cupom"),
+    path("adm/cupons/<int:id>/excluir/", views.excluir_cupom, name="excluir_cupom"),
+
+    #categorias adm
+    path("adm/categorias/", views.categorias_adm, name="categorias_adm"),
+    path("adm/categorias/cadastrar", views.cadastrar_categoria, name="cadastrar_categoria"),
+    path("adm/categorias/editar/<int:id>", views.editar_categoria, name="editar_categoria"),
+    path("adm/categorias/<int:id>/excluir/", views.excluir_categoria, name="excluir_categoria"),
+    
+    # lojas adm
     path("adm/lojas/", views.lojas_adm, name="lojas_adm"),
-    path("adm/lojas/cadastrar/", views.criar_loja, name="cadastrar_loja"),
+    path("adm/lojas/cadastrar/", views.cadastrar_loja, name="cadastrar_loja"),
     path("adm/lojas/editar/<int:id>/", views.editar_loja, name="editar_loja"),
     path("adm/lojas/<int:id>/excluir/", views.excluir_loja, name="excluir_loja"),
-    
-    path("adm/categorias/", views.categorias_adm, name="categorias_adm"),
-    path("adm/categorias/cadastrar/", views.criar_categoria, name="criar_categoria"),
-    path("adm/categorias/editar/<int:id>/", views.editar_categoria, name="editar_categoria"),
-    path("adm/categorias/<int:id>/excluir/", views.excluir_categoria, name="excluir_categoria"),    
 
-    path("adm/cupons/", views.cupons_adm, name="cupons_adm"),
-    path("adm/cupons/cadastrar/", views.criar_cupom, name="cadastrar_cupom"),
-    path("adm/cupons/editar/<int:id>/", views.editar_cupom, name="editar_cupom"),
-    path("adm/cupons/<int:id>/excluir/", views.excluir_cupom, name="excluir_cupom"),
+
+    path("ofertas/relampago/",views.ofertas,{"tipo": "relampago"}, name="ofertas_relampago",),
+    path("promocoes/", RedirectView.as_view(pattern_name="ofertas", permanent=True)),
 
     path("logout/", LogoutView.as_view(next_page="/"), name="logout"),
 ]

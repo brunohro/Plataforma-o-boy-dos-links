@@ -1,41 +1,75 @@
-{% extends "plataforma/base.html" %}
+{% extends '../base.html' %}
+{% load static %}
 
 {% block content %}
-    <main class="container">
-        <header class="cabecalho">
+
+<section class="admin-cupons">
+    <div class="cupons-container">
+
+        <!-- Cabeçalho -->
+        <header class="cupons-header">
             <div>
-                <h1>Cupons cadastrados</h1>
-                <p>Gerencie os cupons promocionais da plataforma.</p>
+                <span class="cupons-eyebrow">PAINEL ADMINISTRATIVO</span>
+                <h1>Gerenciar cupons</h1>
+                <p>Consulte e gerencie os cupons cadastrados na plataforma.</p>
             </div>
 
-            <a href="{% url 'cadastrar_cupom' %}"
-               class="botao botao-cadastrar">
-                + Cadastrar cupom
-            </a>
+            <div>
+                <a href="{% url 'painel_adm' %}" class="cupom-btn-voltar">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Voltar
+                </a>
+
+                <a href="{% url 'cadastrar_cupom' %}" class="admin-cupons-btn-nova">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Novo cupom</span>
+                </a>
+            </div>
         </header>
 
-        {% if messages %}
-            {% for message in messages %}
-                <div class="mensagem">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
+        <!-- Busca -->
+        <form method="get" class="cupons-toolbar">
+            <div class="cupons-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
 
-        <section class="tabela-container">
-            <table>
+                <input
+                    type="search"
+                    name="q"
+                    placeholder="Buscar cupom pelo código..."
+                    value="{{ request.GET.q|default:'' }}"
+                    aria-label="Buscar cupons"
+                >
+            </div>
+
+            <button type="submit" class="cupons-search-button">
+                Buscar
+            </button>
+
+            {% if request.GET.q %}
+                <a href="{% url 'cupons_adm' %}" class="cupons-clear">
+                    Limpar
+                </a>
+            {% endif %}
+        </form>
+
+        <!-- Listagem -->
+        <div class="cupons-table-wrapper">
+            <table class="cupons-table">
                 <thead>
                     <tr>
-                        <th>Código</th>
-                        <th>Descrição</th>
+                        <th>Cupom</th>
+                        <th>Loja</th>
                         <th>Validade</th>
                         <th>Desconto</th>
-                        <th>Quantidade de usos</th>
+                        <th>Usos</th>
                         <th>Status</th>
-                        <th>Ações</th>
+                        <th class="actions-heading">Ações</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     {% for cupom in cupons %}
+<<<<<<< HEAD
                         <tr>
                             <td>{{ cupom.codigo }}</td>
                             <td>{{ cupom.descricao|truncatechars:60 }}</td>
@@ -80,3 +114,205 @@
         </section>
     </main>
 {% endblock%}
+=======
+                    <tr>
+                        <!-- Código e descrição -->
+                        <td>
+                            <div class="cupons-product">
+                                <div class="cupons-image">
+                                    <i class="fa-solid fa-ticket"></i>
+                                </div>
+
+                                <div class="cupons-product-info">
+                                    <span class="cupons-name">
+                                        {{ cupom.codigo }}
+                                    </span>
+
+                                    <span class="cupons-category">
+                                        {{ cupom.descricao }}
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Loja parceira -->
+                        <td>
+                            <span class="cupons-store">
+                                {% if cupom.loja %}
+                                    {{ cupom.loja }}
+                                {% else %}
+                                    Não vinculada
+                                {% endif %}
+                            </span>
+                        </td>
+
+                        <!-- Data de validade -->
+                        <td>
+                            <span class="cupons-store">
+                                {{ cupom.data_validade|date:"d/m/Y H:i" }}
+                            </span>
+                        </td>
+
+                        <!-- Desconto -->
+                        <td>
+                            <span class="cupons-name">
+                                {{ cupom.desconto }}
+                            </span>
+                        </td>
+
+                        <!-- Quantidade de usos -->
+                        <td>
+                            <span class="cupons-store">
+                                {{ cupom.quantidade_usos }}
+                            </span>
+                        </td>
+
+                        <!-- Status -->
+                        <td>
+                            <div class="cupons-statuses">
+                                {% if cupom.ativo %}
+                                    <span class="status-badge status-featured">
+                                        <i class="fa-solid fa-check"></i>
+                                        Ativo
+                                    </span>
+                                {% else %}
+                                    <span class="status-badge status-normal">
+                                        <i class="fa-solid fa-ban"></i>
+                                        Inativo
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </td>
+
+                        <!-- Ações -->
+                        <td>
+                            <div class="cupons-actions">
+                                <a
+                                    href="{% url 'editar_cupom' cupom.id %}"
+                                    class="cupons-edit-button"
+                                    aria-label="Editar cupom {{ cupom.codigo }}"
+                                    title="Editar cupom"
+                                >
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    <span>Editar</span>
+                                </a>
+
+                                <a
+                                    href="{% url 'excluir_cupom' cupom.id %}"
+                                    class="cupons-delete-button"
+                                    aria-label="Excluir cupom {{ cupom.codigo }}"
+                                    title="Excluir cupom"
+                                >
+                                    <i class="fa-solid fa-trash"></i>
+                                    <span>Excluir</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+
+                    {% empty %}
+                    <tr>
+                        <td colspan="7">
+                            <div class="cupons-empty">
+                                <i class="fa-solid fa-ticket"></i>
+
+                                <h3>Nenhum cupom encontrado</h3>
+
+                                <p>
+                                    {% if request.GET.q %}
+                                        Tente buscar usando outro código.
+                                    {% else %}
+                                        Ainda não existem cupons cadastrados.
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Rodapé e paginação -->
+        {% if page_obj.paginator.num_pages > 0 %}
+        <footer class="cupons-footer">
+            <span class="cupons-page-info">
+                Página {{ page_obj.number }} de
+                {{ page_obj.paginator.num_pages }}
+
+                <span class="cupons-total">
+                    · {{ page_obj.paginator.count }} registros
+                </span>
+            </span>
+
+            {% if page_obj.has_other_pages %}
+            <nav class="cupons-pagination" aria-label="Paginação dos cupons">
+
+                {% if page_obj.has_previous %}
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page=1"
+                        class="page-button"
+                        aria-label="Primeira página"
+                        title="Primeira página"
+                    >
+                        <i class="fa-solid fa-angles-left"></i>
+                    </a>
+
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}"
+                        class="page-button"
+                        aria-label="Página anterior"
+                    >
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+                {% else %}
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </span>
+
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </span>
+                {% endif %}
+
+                <span class="page-current">
+                    {{ page_obj.number }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.next_page_number }}"
+                        class="page-button"
+                        aria-label="Próxima página"
+                    >
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.paginator.num_pages }}"
+                        class="page-button"
+                        aria-label="Última página"
+                        title="Última página"
+                    >
+                        <i class="fa-solid fa-angles-right"></i>
+                    </a>
+                {% else %}
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </span>
+
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </span>
+                {% endif %}
+
+            </nav>
+            {% endif %}
+        </footer>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}
+>>>>>>> feature/pagAdm

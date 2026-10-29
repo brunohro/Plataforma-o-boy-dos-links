@@ -1,36 +1,129 @@
-{% extends "plataforma/base.html" %}
+
+{% extends '../../base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin/formulario_categoria.css' %}">
+{% endblock %}
 
 {% block content %}
-    <h1>
-        {% if categoria %}
-            Editar categoria
-        {% else %}
-            Cadastrar categoria
-        {% endif %}
-    </h1>
+<main class="categoria-form-page">
+    <div class="categoria-form-container">
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-
-        {% if form.non_field_errors %}
-            {{ form.non_field_errors }}
-        {% endif %}
-
-        {% for field in form %}
+        <div class="categoria-form-header">
             <div>
-                <label for="{{ field.id_for_label }}">
-                    {{ field.label }}
-                </label>
-
-                {{ field }}
-
-                {% for error in field.errors %}
-                    <p style="color: red;">{{ error }}</p>
-                {% endfor %}
+                <span class="categoria-form-eyebrow">ADMINISTRAÇÃO</span>
+                <h1>
+                    {% if modo_edicao %}
+                        Editar categoria
+                    {% else %}
+                        Cadastrar nova categoria
+                    {% endif %}
+                </h1>
+                <p>
+                    {% if modo_edicao %}
+                        Atualize os dados da categoria cadastrada.
+                    {% else %}
+                        Preencha os dados para adicionar uma categoria ao site.
+                    {% endif %}
+                </p>
             </div>
-        {% endfor %}
 
-        <button type="submit">Salvar categoria</button>
-        <a href="{% url 'categorias_adm' %}">Voltar</a>
-    </form>
-{% endblock%}
+            <a href="{% url 'categorias_adm' %}" class="categoria-btn-voltar">
+                <i class="fa-solid fa-arrow-left"></i>
+                Voltar
+            </a>
+        </div>
+
+        <form class="categoria-form"
+              action=""
+              method="post"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <section class="categoria-form-section">
+                <div class="categoria-section-heading">
+                    <i class="fa-solid fa-tags"></i>
+                    <div>
+                        <h2>Informações da categoria</h2>
+                        <p>Defina o nome e a imagem que representam a categoria.</p>
+                    </div>
+                </div>
+
+                <div class="categoria-form-grid">
+                    <div class="categoria-field categoria-field-full">
+                        <label for="nome">Nome da categoria *</label>
+                        <input
+                            type="text"
+                            id="nome"
+                            name="nome"
+                            class="categoria-input"
+                            placeholder="Ex.: Eletrônicos"
+                            value="{{ form.nome.value|default:'' }}"
+                            maxlength="100"
+                            required
+                        >
+                        {% if form.nome.errors %}
+                            <small class="form-error">{{ form.nome.errors|striptags }}</small>
+                        {% endif %}
+                    </div>
+
+                    <div class="categoria-field categoria-field-full">
+                        <label for="icone_imagem">Ícone da categoria</label>
+                        <input
+                            type="file"
+                            id="icone_imagem"
+                            name="icone_imagem"
+                            class="categoria-input"
+                            accept="image/*"
+                        >
+                        <small>
+                            Envie uma imagem para representar a categoria.
+                            Este campo é opcional.
+                        </small>
+
+                        {% if modo_edicao and categoria.icone_imagem %}
+                            <div class="categoria-imagem-atual">
+                                <p>Imagem atual:</p>
+                                <img
+                                    src="{{ categoria.icone_imagem.url }}"
+                                    alt="Ícone atual de {{ categoria.nome }}"
+                                    style="max-width: 120px; max-height: 120px; object-fit: contain;"
+                                >
+                            </div>
+                        {% endif %}
+
+                        {% if form.icone_imagem.errors %}
+                            <small class="form-error">
+                                {{ form.icone_imagem.errors|striptags }}
+                            </small>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+
+            <div class="categoria-form-footer">
+                <a href="{% url 'categorias_adm' %}" class="categoria-btn-cancelar">
+                    Cancelar
+                </a>
+
+                <button type="submit" class="categoria-btn-salvar">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    {% if modo_edicao %}
+                        Salvar alterações
+                    {% else %}
+                        Cadastrar categoria
+                    {% endif %}
+                </button>
+            </div>
+
+        </form>
+    </div>
+</main>
+{% endblock %}

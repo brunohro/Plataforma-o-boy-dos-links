@@ -3,13 +3,13 @@
 
 {% block content %}
 
-<section class="admin-offers">
-    <div class="offers-container">
+<section class="admin-ofertas">
+    <div class="ofertas-container">
 
         <!-- Cabeçalho -->
-        <header class="offers-header">
+        <header class="ofertas-header">
             <div>
-                <span class="offers-eyebrow">PAINEL ADMINISTRATIVO</span>
+                <span class="ofertas-eyebrow">PAINEL ADMINISTRATIVO</span>
                 <h1>Gerenciar ofertas</h1>
                 <p>Consulte e edite as ofertas cadastradas na plataforma.</p>
             </div>
@@ -28,8 +28,8 @@
         </header>
 
         <!-- Busca -->
-        <form method="get" class="offers-toolbar">
-            <div class="offers-search">
+        <form method="get" class="ofertas-toolbar">
+            <div class="ofertas-search">
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input
                     type="search"
@@ -40,20 +40,20 @@
                 >
             </div>
 
-            <button type="submit" class="offers-search-button">
+            <button type="submit" class="ofertas-search-button">
                 Buscar
             </button>
 
             {% if request.GET.q %}
-                <a href="{% url 'ofertas_adm' %}" class="offers-clear">
+                <a href="{% url 'ofertas_adm' %}" class="ofertas-clear">
                     Limpar
                 </a>
             {% endif %}
         </form>
 
         <!-- Listagem -->
-        <div class="offers-table-wrapper">
-            <table class="offers-table">
+        <div class="ofertas-table-wrapper">
+            <table class="ofertas-table">
                 <thead>
                     <tr>
                         <th>Oferta</th>
@@ -67,8 +67,8 @@
                     {% for oferta in ofertas %}
                     <tr>
                         <td>
-                            <div class="offer-product">
-                                <div class="offer-image">
+                            <div class="ofertas-product">
+                                <div class="ofertas-image">
                                     {% if oferta.image_url %}
                                         <img
                                             src="{{ oferta.image_url }}"
@@ -80,13 +80,13 @@
                                     {% endif %}
                                 </div>
 
-                                <div class="offer-product-info">
-                                    <span class="offer-name">
+                                <div class="ofertas-product-info">
+                                    <span class="ofertas-name">
                                         {{ oferta.nome_produto }}
                                     </span>
 
                                     {% if oferta.categoria %}
-                                        <span class="offer-category">
+                                        <span class="ofertas-category">
                                             {{ oferta.categoria }}
                                         </span>
                                     {% endif %}
@@ -95,13 +95,13 @@
                         </td>
 
                         <td>
-                            <span class="offer-store">
+                            <span class="ofertas-store">
                                 {{ oferta.loja }}
                             </span>
                         </td>
 
                         <td>
-                            <div class="offer-statuses">
+                            <div class="ofertas-statuses">
                                 {% if oferta.is_destaque %}
                                     <span class="status-badge status-featured">
                                         <i class="fa-solid fa-star"></i>
@@ -125,21 +125,30 @@
                         </td>
 
                         <td>
-                            <div class="offer-actions">
+                            <div class="ofertas-actions">
                                 <a
                                     href="{% url 'editar_oferta' oferta.id %}"
-                                    class="offer-edit-button"
+                                    class="ofertas-edit-button"
                                     aria-label="Editar {{ oferta.nome_produto }}"
                                     title="Editar oferta"
                                 >
                                     <i class="fa-solid fa-pen-to-square"></i>
                                     <span>Editar</span>
                                 </a>
+<<<<<<< HEAD
                                 <form
                                     method="post"
                                     action="{% url 'excluir_oferta' oferta.id %}"
                                     class="offer-delete-form"
                                     onsubmit="return confirm('Tem certeza que deseja deletar a oferta {{ oferta.nome_produto }}?');"
+=======
+
+                                <a
+                                    href="{% url 'ofertas_adm' %}"
+                                    class="ofertas-delete-button"
+                                    aria-label="Deletar {{ oferta.nome_produto }}"
+                                    title="Deletar oferta"
+>>>>>>> feature/pagAdm
                                 >
                                     {% csrf_token %}
                                     <button
@@ -159,7 +168,7 @@
                     {% empty %}
                     <tr>
                         <td colspan="4">
-                            <div class="offers-empty">
+                            <div class="ofertas-empty">
                                 <i class="fa-solid fa-box-open"></i>
                                 <h3>Nenhuma oferta encontrada</h3>
                                 <p>
@@ -179,16 +188,16 @@
 
         <!-- Rodapé e paginação -->
         {% if page_obj.paginator.num_pages > 0 %}
-        <footer class="offers-footer">
-            <span class="offers-page-info">
+        <footer class="ofertas-footer">
+            <span class="ofertas-page-info">
                 Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
-                <span class="offers-total">
+                <span class="ofertas-total">
                     · {{ page_obj.paginator.count }} registros
                 </span>
             </span>
 
             {% if page_obj.has_other_pages %}
-            <nav class="offers-pagination" aria-label="Paginação das ofertas">
+            <nav class="ofertas-pagination" aria-label="Paginação das ofertas">
 
                 {% if page_obj.has_previous %}
                     <a

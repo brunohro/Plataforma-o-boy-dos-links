@@ -1,36 +1,178 @@
-{% extends "plataforma/base.html" %}
+{% extends '../../base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin/formulario_cupom.css' %}">
+{% endblock %}
 
 {% block content %}
-<h1>
-    {% if cupom %}
-        Editar cupom
-    {% else %}
-        Cadastrar cupom
-    {% endif %}
-</h1>
+<main class="cupom-form-page">
+    <div class="cupom-form-container">
 
-<form method="post">
-    {% csrf_token %}
-
-    {% if form.non_field_errors %}
-        {{ form.non_field_errors }}
-        {% endif %}
-
-        {% for field in form %}
+        <div class="cupom-form-header">
             <div>
-                <label for="{{ field.id_for_label }}">
-                    {{ field.label }}
-                </label>
-
-                {{ field }}
-
-                {% for error in field.errors %}
-                    <p style="color: red;">{{ error }}</p>
-                {% endfor %}
+                <span class="cupom-form-eyebrow">ADMINISTRAÇÃO</span>
+                <h1>{% if modo_edicao %}Editar cupom{% else %}Cadastrar novo cupom{% endif %}</h1>
+                <p>Preencha os dados para {% if modo_edicao %}atualizar o{% else %}adicionar um novo{% endif %} cupom à plataforma.</p>
             </div>
-        {% endfor %}
 
-        <button type="submit">Salvar cupom</button>
-        <a href="{% url 'cupons_adm' %}">Voltar</a>
-    </form>
+            <a href="{% url 'cupons_adm' %}" class="cupom-btn-voltar">
+                <i class="fa-solid fa-arrow-left"></i>
+                Voltar
+            </a>
+        </div>
+
+        <form class="cupom-form" method="post">
+            {% csrf_token %}
+
+            <section class="cupom-form-section">
+                <div class="cupom-section-heading">
+                    <i class="fa-solid fa-ticket"></i>
+                    <div>
+                        <h2>Informações do cupom</h2>
+                        <p>Defina o código, a descrição e a loja parceira.</p>
+                    </div>
+                </div>
+
+                <div class="cupom-form-grid">
+                    <div class="cupom-field">
+                        <label for="codigo">Código do cupom *</label>
+                        <input
+                            type="text"
+                            id="codigo"
+                            name="codigo"
+                            class="cupom-input"
+                            maxlength="20"
+                            placeholder="Ex.: DESCONTO10"
+                            value="{{ cupom.codigo|default:'' }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="cupom-field">
+                        <label for="loja">Loja parceira</label>
+                        <select id="loja" name="loja" class="cupom-input">
+                            <option value="">Nenhuma loja vinculada</option>
+                            {% for loja in lojas %}
+                                <option value="{{ loja.pk }}"
+                                    {% if cupom.loja_id == loja.pk %}selected{% endif %}>
+                                    {{ loja }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="cupom-field cupom-field-full">
+                        <label for="descricao">Descrição do cupom *</label>
+                        <textarea
+                            id="descricao"
+                            name="descricao"
+                            class="cupom-input cupom-textarea"
+                            rows="4"
+                            placeholder="Descreva as condições ou os benefícios do cupom..."
+                            required
+                        >{{ cupom.descricao|default:'' }}</textarea>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cupom-form-section">
+                <div class="cupom-section-heading">
+                    <i class="fa-solid fa-percent"></i>
+                    <div>
+                        <h2>Desconto e validade</h2>
+                        <p>Configure o valor do desconto e o prazo de utilização.</p>
+                    </div>
+                </div>
+
+                <div class="cupom-form-grid">
+                    <div class="cupom-field">
+                        <label for="desconto">Desconto *</label>
+                        <input
+                            type="number"
+                            id="desconto"
+                            name="desconto"
+                            class="cupom-input"
+                            min="0"
+                            step="0.01"
+                            placeholder="Ex.: 10.00"
+                            value="{{ cupom.desconto|default:'' }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="cupom-field">
+                        <label for="data_validade">Data e hora de validade *</label>
+                        <input
+                            type="datetime-local"
+                            id="data_validade"
+                            name="data_validade"
+                            class="cupom-input"
+                            value="{{ cupom.data_validade|date:'Y-m-d\\TH:i'|default:'' }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="cupom-field cupom-field-full">
+                        <label for="quantidade_usos">Quantidade de usos</label>
+                        <input
+                            type="number"
+                            id="quantidade_usos"
+                            name="quantidade_usos"
+                            class="cupom-input"
+                            min="0"
+                            step="1"
+                            value="{{ cupom.quantidade_usos|default:0 }}"
+                        >
+                    </div>
+                </div>
+            </section>
+
+            <section class="cupom-form-section">
+                <div class="cupom-section-heading">
+                    <i class="fa-solid fa-toggle-on"></i>
+                    <div>
+                        <h2>Status do cupom</h2>
+                        <p>Defina se o cupom poderá ser utilizado.</p>
+                    </div>
+                </div>
+
+                <div class="cupom-options">
+                    <label class="cupom-option" for="ativo">
+                        <input
+                            type="checkbox"
+                            id="ativo"
+                            name="ativo"
+                            class="cupom-checkbox"
+                            {% if cupom.ativo or not modo_edicao %}checked{% endif %}
+                        >
+                        <span class="cupom-option-icon destaque">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                        <span class="cupom-option-text">
+                            <strong>Cupom ativo</strong>
+                            <small>Permitir que o cupom seja considerado ativo na plataforma.</small>
+                        </span>
+                    </label>
+                </div>
+            </section>
+
+            <div class="cupom-form-footer">
+                <a href="{% url 'cupons_adm' %}" class="cupom-btn-cancelar">
+                    Cancelar
+                </a>
+
+                <button type="submit" class="cupom-btn-salvar">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    {% if modo_edicao %}
+                        Salvar alterações
+                    {% else %}
+                        Cadastrar cupom
+                    {% endif %}
+                </button>
+            </div>
+
+        </form>
+    </div>
+</main>
 {% endblock %}

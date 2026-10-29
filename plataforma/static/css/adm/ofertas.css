@@ -68,13 +68,13 @@
 }
 
 
-.admin-offers {
+.admin-ofertas {
     width: 100%;
     padding: 28px 0 44px;
     color: var(--text-primary);
 }
 
-.offers-container {
+.ofertas-container {
     width: calc(100% - 48px);
     max-width: 1216px;
     margin: 0 auto;
@@ -82,7 +82,7 @@
 
 /* Cabeçalho */
 
-.offers-header {
+.ofertas-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -90,14 +90,14 @@
     margin-bottom: 24px;
 }
 
-.offers-eyebrow {
+.ofertas-eyebrow {
     color: var(--primary);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 1.2px;
 }
 
-.offers-header h1 {
+.ofertas-header h1 {
     margin: 7px 0 5px;
     color: var(--text-primary);
     font-size: 28px;
@@ -105,14 +105,14 @@
     letter-spacing: -0.6px;
 }
 
-.offers-header p {
+.ofertas-header p {
     margin: 0;
     color: var(--text-secondary);
     font-size: 14px;
     line-height: 1.5;
 }
 
-.offers-count {
+.ofertas-count {
     display: inline-flex;
     align-items: center;
     gap: 9px;
@@ -127,20 +127,20 @@
     font-weight: 600;
 }
 
-.offers-count i {
+.ofertas-count i {
     color: var(--primary);
 }
 
 /* Busca */
 
-.offers-toolbar {
+.ofertas-toolbar {
     display: flex;
     align-items: center;
     gap: 9px;
     margin-bottom: 16px;
 }
 
-.offers-search {
+.ofertas-search {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -154,11 +154,11 @@
     transition: border-color 0.2s ease;
 }
 
-.offers-search:focus-within {
+.ofertas-search:focus-within {
     border-color: var(--primary);
 }
 
-.offers-search input {
+.ofertas-search input {
     width: 100%;
     min-width: 0;
     height: 42px;
@@ -170,11 +170,11 @@
     font-size: 13px;
 }
 
-.offers-search input::placeholder {
+.ofertas-search input::placeholder {
     color: var(--text-muted);
 }
 
-.offers-search-button {
+.ofertas-search-button {
     height: 42px;
     padding: 0 18px;
     border: 1px solid var(--primary);
@@ -188,40 +188,40 @@
     transition: background 0.2s ease;
 }
 
-.offers-search-button:hover {
+.ofertas-search-button:hover {
     background: var(--primary-hover);
 }
 
-.offers-clear {
+.ofertas-clear {
     color: var(--text-secondary);
     font-size: 12px;
     text-decoration: none;
 }
 
-.offers-clear:hover {
+.ofertas-clear:hover {
     color: var(--primary);
 }
 
 /* Tabela */
 
-.offers-table-wrapper {
+.ofertas-table-wrapper {
     overflow-x: auto;
     border: 1px solid var(--border);
     border-radius: 12px;
     background: var(--surface);
 }
 
-.offers-table {
+.ofertas-table {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
 }
 
-.offers-table thead {
+.ofertas-table thead {
     background: var(--card);
 }
 
-.offers-table th {
+.ofertas-table th {
     padding: 13px 16px;
     border-bottom: 1px solid var(--border);
     color: var(--text-muted);
@@ -232,7 +232,7 @@
     white-space: nowrap;
 }
 
-.offers-table td {
+.ofertas-table td {
     padding: 12px 16px;
     border-bottom: 1px solid var(--border);
     color: var(--text-secondary);
@@ -240,28 +240,28 @@
     vertical-align: middle;
 }
 
-.offers-table tbody tr:last-child td {
+.ofertas-table tbody tr:last-child td {
     border-bottom: 0;
 }
 
-.offers-table tbody tr {
+.ofertas-table tbody tr {
     transition: background 0.2s ease;
 }
 
-.offers-table tbody tr:hover {
+.ofertas-table tbody tr:hover {
     background: rgba(255, 255, 255, 0.02);
 }
 
 /* Produto */
 
-.offer-product {
+.ofertas-product {
     display: flex;
     align-items: center;
     gap: 12px;
     min-width: 230px;
 }
 
-.offer-image {
+.ofertas-image {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -276,21 +276,21 @@
     font-size: 18px;
 }
 
-.offer-image img {
+.ofertas-image img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: contain;
 }
 
-.offer-product-info {
+.ofertas-product-info {
     display: flex;
     flex-direction: column;
     gap: 5px;
     min-width: 0;
 }
 
-.offer-name {
+.ofertas-name {
     display: -webkit-box;
     overflow: hidden;
     color: var(--text-primary);
@@ -301,12 +301,12 @@
     -webkit-box-orient: vertical;
 }
 
-.offer-category {
+.ofertas-category {
     color: var(--text-muted);
     font-size: 11px;
 }
 
-.offer-store {
+.ofertas-store {
     display: inline-block;
     max-width: 160px;
     overflow: hidden;
@@ -317,7 +317,7 @@
 
 /* Status */
 
-.offer-statuses {
+.ofertas-statuses {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
@@ -354,14 +354,14 @@
     text-align: right;
 }
 
-.offer-actions {
+.ofertas-actions {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 8px;
 }
 
-.offer-delete-button {
+.ofertas-delete-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -378,13 +378,13 @@
     transition: background 0.2s ease, color 0.2s ease;
 }
 
-.offer-delete-button:hover {
+.ofertas-delete-button:hover {
     background: var(--danger);
     border-color: var(--danger);
     color: #FFFFFF;
 }
 
-.offer-edit-button {
+.ofertas-edit-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -404,7 +404,7 @@
         border-color 0.2s ease;
 }
 
-.offer-edit-button:hover {
+.ofertas-edit-button:hover {
     background: var(--warning);
     border-color: var(--warning);
     color: #0D0D0D;
@@ -412,24 +412,24 @@
 
 /* Estado vazio */
 
-.offers-empty {
+.ofertas-empty {
     padding: 42px 16px;
     text-align: center;
 }
 
-.offers-empty > i {
+.ofertas-empty > i {
     margin-bottom: 12px;
     color: var(--text-muted);
     font-size: 28px;
 }
 
-.offers-empty h3 {
+.ofertas-empty h3 {
     margin: 0 0 7px;
     color: var(--text-primary);
     font-size: 15px;
 }
 
-.offers-empty p {
+.ofertas-empty p {
     margin: 0;
     color: var(--text-muted);
     font-size: 12px;
@@ -437,7 +437,7 @@
 
 /* Rodapé */
 
-.offers-footer {
+.ofertas-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -446,18 +446,18 @@
     padding-top: 16px;
 }
 
-.offers-page-info {
+.ofertas-page-info {
     color: var(--text-secondary);
     font-size: 12px;
 }
 
-.offers-total {
+.ofertas-total {
     color: var(--text-muted);
 }
 
 /* Paginação */
 
-.offers-pagination {
+.ofertas-pagination {
     display: flex;
     align-items: center;
     gap: 5px;
@@ -503,87 +503,87 @@ a.page-button:hover {
 /* Responsividade */
 
 @media (max-width: 768px) {
-    .admin-offers {
+    .admin-ofertas {
         padding: 20px 0 32px;
     }
 
-    .offers-container {
+    .ofertas-container {
         width: calc(100% - 28px);
     }
 
-    .offers-header {
+    .ofertas-header {
         align-items: flex-start;
     }
 
-    .offers-header h1 {
+    .ofertas-header h1 {
         font-size: 23px;
     }
 
-    .offers-header p {
+    .ofertas-header p {
         font-size: 12px;
     }
 
-    .offers-count {
+    .ofertas-count {
         padding: 9px;
         font-size: 11px;
     }
 
-    .offers-table {
+    .ofertas-table {
         min-width: 650px;
     }
 
-    .offers-footer {
+    .ofertas-footer {
         align-items: flex-start;
     }
 }
 
 @media (max-width: 480px) {
-    .offers-container {
+    .ofertas-container {
         width: calc(100% - 20px);
     }
 
-    .offers-header {
+    .ofertas-header {
         flex-direction: column;
         gap: 12px;
         margin-bottom: 18px;
     }
 
-    .offers-header h1 {
+    .ofertas-header h1 {
         font-size: 21px;
     }
 
-    .offers-toolbar {
+    .ofertas-toolbar {
         flex-wrap: wrap;
     }
 
-    .offers-search {
+    .ofertas-search {
         flex-basis: 100%;
     }
 
-    .offers-search-button {
+    .ofertas-search-button {
         flex: 1;
     }
 
-    .offers-footer {
+    .ofertas-footer {
         flex-direction: column;
     }
 
-    .offers-pagination {
+    .ofertas-pagination {
         width: 100%;
         justify-content: center;
     }
 
-    .offers-total {
+    .ofertas-total {
         display: block;
         margin-top: 4px;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .offers-search,
-    .offers-search-button,
-    .offers-table tbody tr,
-    .offer-edit-button,
+    .ofertas-search,
+    .ofertas-search-button,
+    .ofertas-table tbody tr,
+    .ofertas-edit-button,
     .admin-ofertas-btn-nova,
     .page-button {
         transition: none;

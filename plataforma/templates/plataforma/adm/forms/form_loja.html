@@ -1,36 +1,170 @@
-{% extends "plataforma/base.html" %}
+
+{% extends '../../base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin/formulario_loja.css' %}">
+{% endblock %}
 
 {% block content %}
-  <h1>
-    {% if loja %}
-    Editar loja
-    {% else %}
-    Cadastrar loja
-    {% endif %}
-</h1>
+<main class="loja-form-page">
+    <div class="loja-form-container">
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-
-        {% if form.non_field_errors %}
-            {{ form.non_field_errors }}
-        {% endif %}
-
-        {% for field in form %}
+        <div class="loja-form-header">
             <div>
-                <label for="{{ field.id_for_label }}">
-                    {{ field.label }}
-                </label>
-
-                {{ field }}
-
-                {% for error in field.errors %}
-                    <p style="color: red;">{{ error }}</p>
-                {% endfor %}
+                <span class="loja-form-eyebrow">ADMINISTRAÇÃO</span>
+                <h1>
+                    {% if modo_edicao %}
+                        Editar loja parceira
+                    {% else %}
+                        Cadastrar nova loja parceira
+                    {% endif %}
+                </h1>
+                <p>
+                    {% if modo_edicao %}
+                        Atualize os dados da loja parceira cadastrada.
+                    {% else %}
+                        Preencha os dados para adicionar uma loja parceira ao site.
+                    {% endif %}
+                </p>
             </div>
-        {% endfor %}
 
-        <button type="submit">Salvar loja</button>
-        <a href="{% url 'lojas_adm' %}">Voltar</a>
-    </form>
-{% endblock%}
+            <a href="{% url 'lojas_adm' %}" class="loja-btn-voltar">
+                <i class="fa-solid fa-arrow-left"></i>
+                Voltar
+            </a>
+        </div>
+
+        <form class="loja-form"
+              action=""
+              method="post"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <section class="loja-form-section">
+                <div class="loja-section-heading">
+                    <i class="fa-solid fa-store"></i>
+                    <div>
+                        <h2>Informações da loja</h2>
+                        <p>Defina o nome, a logo e o status de verificação da loja.</p>
+                    </div>
+                </div>
+
+                <div class="loja-form-grid">
+
+                    <!-- Nome da loja -->
+                    <div class="loja-field loja-field-full">
+                        <label for="nome">Nome da loja *</label>
+                        <input
+                            type="text"
+                            id="nome"
+                            name="nome"
+                            class="loja-input"
+                            placeholder="Ex.: Mercado Livre"
+                            value="{{ form.nome.value|default:'' }}"
+                            maxlength="100"
+                            required
+                        >
+
+                        {% if form.nome.errors %}
+                            <small class="form-error">
+                                {{ form.nome.errors|striptags }}
+                            </small>
+                        {% endif %}
+                    </div>
+
+                    <!-- Logo da loja -->
+                    <div class="loja-field loja-field-full">
+                        <label for="logo_imagem">Logo da loja</label>
+                        <input
+                            type="file"
+                            id="logo_imagem"
+                            name="logo_imagem"
+                            class="loja-input"
+                            accept="image/*"
+                        >
+
+                        <small>
+                            Envie uma imagem para representar a loja parceira.
+                            Este campo é opcional.
+                        </small>
+
+                        {% if modo_edicao and loja.logo_imagem %}
+                            <div class="loja-imagem-atual">
+                                <p>Logo atual:</p>
+                                <img
+                                    src="{{ loja.logo_imagem.url }}"
+                                    alt="Logo atual de {{ loja.nome }}"
+                                    style="max-width: 160px; max-height: 120px; object-fit: contain;"
+                                >
+                            </div>
+                        {% endif %}
+
+                        {% if form.logo_imagem.errors %}
+                            <small class="form-error">
+                                {{ form.logo_imagem.errors|striptags }}
+                            </small>
+                        {% endif %}
+                    </div>
+
+                    <!-- Verificação -->
+                    <div class="loja-field loja-field-full">
+                        <label for="verificado">Status da loja</label>
+
+                        <label class="loja-option" for="verificado">
+                            <input
+                                type="checkbox"
+                                id="verificado"
+                                name="verificado"
+                                class="loja-checkbox"
+                                {% if form.verificado.value %}checked{% endif %}
+                            >
+
+                            <span class="loja-option-icon">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </span>
+
+                            <span class="loja-option-text">
+                                <strong>Loja verificada</strong>
+                                <small>
+                                    Marque esta opção para indicar que a loja
+                                    é verificada pela plataforma.
+                                </small>
+                            </span>
+                        </label>
+
+                        {% if form.verificado.errors %}
+                            <small class="form-error">
+                                {{ form.verificado.errors|striptags }}
+                            </small>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </section>
+
+            <div class="loja-form-footer">
+                <a href="{% url 'lojas_adm' %}" class="loja-btn-cancelar">
+                    Cancelar
+                </a>
+
+                <button type="submit" class="loja-btn-salvar">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    {% if modo_edicao %}
+                        Salvar alterações
+                    {% else %}
+                        Cadastrar loja
+                    {% endif %}
+                </button>
+            </div>
+
+        </form>
+    </div>
+</main>
+{% endblock %}

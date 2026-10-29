@@ -1,71 +1,172 @@
-{% extends "plataforma/base.html" %}
+{% extends '../base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="container">
-    <h1>Gerenciar categorias</h1>
 
-    <a href="{% url 'criar_categoria' %}">
-        + Cadastrar categoria
-    </a>
+<section class="admin-categorias">
+    <div class="categorias-container">
 
-    {% if messages %}
-        {% for message in messages %}
-            <p>{{ message }}</p>
-        {% endfor %}
-    {% endif %}
+        <header class="categorias-header">
+            <div>
+                <span class="categorias-eyebrow">PAINEL ADMINISTRATIVO</span>
+                <h1>Gerenciar categorias</h1>
+                <p>Consulte e gerencie as categorias cadastradas na plataforma.</p>
+            </div>
 
-    {% if categorias %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Ícone</th>
-                    <th>Nome</th>
-                    <th>Ofertas ativas</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
+            <div>
+                <a href="{% url 'painel_adm' %}" class="categoria-btn-voltar">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Voltar
+                </a>
+                <a href="{% url 'cadastrar_categoria' %}" class="admin-categorias-btn-nova">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Nova categoria</span>
+                </a>
+            </div>
+        </header>
 
-            <tbody>
-                {% for categoria in categorias %}
+        <form method="get" class="categorias-toolbar">
+            <div class="categorias-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="search" name="q"
+                    placeholder="Buscar categoria pelo nome..."
+                    value="{{ request.GET.q|default:'' }}"
+                    aria-label="Buscar categorias">
+            </div>
+
+            <button type="submit" class="categorias-search-button">Buscar</button>
+
+            {% if request.GET.q %}
+                <a href="{% url 'categorias_adm' %}" class="categorias-clear">Limpar</a>
+            {% endif %}
+        </form>
+
+        <div class="categorias-table-wrapper">
+            <table class="categorias-table">
+                <thead>
+                    <tr>
+                        <th>Categoria</th>
+                        <th>categorias ativas</th>
+                        <th class="actions-heading">Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for categoria in categorias %}
                     <tr>
                         <td>
-                            {% if categoria.icone_imagem %}
-                                <img
-                                    src="{{ categoria.icone_imagem.url }}"
-                                    alt="Ícone de {{ categoria.nome }}"
-                                    width="40"
-                                    height="40"
-                                >
-                            {% else %}
-                                Sem ícone
-                            {% endif %}
+                            <div class="categorias-product">
+                                <div class="categorias-image">
+                                    {% if categoria.icone_imagem %}
+                                        <img src="{{ categoria.icone_imagem.url }}"
+                                            alt="Ícone de {{ categoria.nome }}"
+                                            loading="lazy">
+                                    {% else %}
+                                        <i class="fa-solid fa-tag"></i>
+                                    {% endif %}
+                                </div>
+                                <div class="categorias-product-info">
+                                    <span class="categorias-name">{{ categoria.nome }}</span>
+                                    <span class="categorias-category">Categoria da plataforma</span>
+                                </div>
+                            </div>
                         </td>
-
-                        <td>{{ categoria.nome }}</td>
-
-                        <td>{{ categoria.contador_ofertas }}</td>
 
                         <td>
-                            <a href="{% url 'editar_categoria' categoria.pk %}">
-                                Editar
-                            </a>
+                            <span class="status-badge status-normal">
+                                {{ categoria.contador_categoriass }}
+                                {% if categoria.contador_categoriass == 1 %}
+                                    categorias ativa
+                                {% else %}
+                                    categoriass ativas
+                                {% endif %}
+                            </span>
+                        </td>
 
-                            <form
-                                method="post"
-                                action="{% url 'excluir_categoria' categoria.pk %}"
-                            >
-                                {% csrf_token %}
-                                <button type="submit">
-                                    Excluir
-                                </button>
-                            </form>
+                        <td>
+                            <div class="categorias-actions">
+                                <a href="{% url 'editar_categoria' categoria.id %}"
+                                    class="categorias-edit-button"
+                                    aria-label="Editar categoria {{ categoria.nome }}"
+                                    title="Editar categoria">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    <span>Editar</span>
+                                </a>
+                                <a href="{% url 'excluir_categoria' categoria.id %}"
+                                    class="categorias-delete-button"
+                                    aria-label="Excluir categoria {{ categoria.nome }}"
+                                    title="Excluir categoria">
+                                    <i class="fa-solid fa-trash"></i>
+                                    <span>Excluir</span>
+                                </a>
+                            </div>
                         </td>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>Nenhuma categoria cadastrada.</p>
-    {% endif %}
-</div>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">
+                            <div class="categorias-empty">
+                                <i class="fa-solid fa-tags"></i>
+                                <h3>Nenhuma categoria encontrada</h3>
+                                <p>
+                                    {% if request.GET.q %}
+                                        Tente buscar usando outro nome.
+                                    {% else %}
+                                        Ainda não existem categorias cadastradas.
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if page_obj.paginator.num_pages > 0 %}
+        <footer class="categorias-footer">
+            <span class="categorias-page-info">
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                <span class="categorias-total">· {{ page_obj.paginator.count }} registros</span>
+            </span>
+
+            {% if page_obj.has_other_pages %}
+            <nav class="categorias-pagination" aria-label="Paginação das categorias">
+                {% if page_obj.has_previous %}
+                    <a href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page=1"
+                        class="page-button" aria-label="Primeira página" title="Primeira página">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </a>
+                    <a href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}"
+                        class="page-button" aria-label="Página anterior">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+                {% else %}
+                    <span class="page-button disabled"><i class="fa-solid fa-angles-left"></i></span>
+                    <span class="page-button disabled"><i class="fa-solid fa-chevron-left"></i></span>
+                {% endif %}
+
+                <span class="page-current">{{ page_obj.number }}</span>
+
+                {% if page_obj.has_next %}
+                    <a href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.next_page_number }}"
+                        class="page-button" aria-label="Próxima página">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                    <a href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.paginator.num_pages }}"
+                        class="page-button" aria-label="Última página" title="Última página">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </a>
+                {% else %}
+                    <span class="page-button disabled"><i class="fa-solid fa-chevron-right"></i></span>
+                    <span class="page-button disabled"><i class="fa-solid fa-angles-right"></i></span>
+                {% endif %}
+            </nav>
+            {% endif %}
+        </footer>
+        {% endif %}
+
+    </div>
+</section>
+
 {% endblock %}

@@ -207,7 +207,7 @@ def admin_dashboard(request):
 @staff_member_required
 def adm_usuarios(request):
     usuarios = UsuarioReal.objects.order_by("-date_joined")
-    return render(request, TEMPLATE_PAINEL, {"usuarios": usuarios})
+    return render(request, "plataforma/adm/usuarios_adm.html", {"usuarios": usuarios})
 
 
 @staff_member_required
@@ -236,10 +236,24 @@ def categorias_adm(request):
     categorias = Categoria.objects.order_by("nome")
     return render(request, "plataforma/adm/categorias_adm.html", {"categorias": categorias})
 
+def cadastrar_categoria(request):
+    return render(request, "plataforma/adm/forms/form_categoria.html")
+
+def editar_categoria(request, id):
+    categoria = Categoria.objects.get(id=id)
+    return render(request, "plataforma/adm/forms/form_categoria.html", {"categoria": categoria})
+
 @staff_member_required
 def cupons_adm(request):
     cupons = Cupom.objects.select_related("loja").order_by("-data_validade")
     return render(request, "plataforma/adm/cupons_adm.html", {"cupons": cupons})
+
+def cadastrar_cupom(request):
+    return render(request, "plataforma/adm/forms/form_cupom.html")
+
+def editar_cupom(request, id):
+    cupom = Cupom.objects.get(id=id)
+    return render(request, "plataforma/adm/forms/form_cupom.html", {"cupom": cupom})
 
 # =========================================================
 # CRUD DE OFERTAS
@@ -350,6 +364,16 @@ def editar_categoria(request, id):
 @require_POST
 def excluir_categoria(request, id):
     categoria = get_object_or_404(Categoria, id=id)
+def excluir_cupom(request, pk):
+    cupom = get_object_or_404(Cupom, pk=pk)
+    nome = cupom.nome
+    cupom.delete()
+
+    messages.success(request, f'Cupom "{nome}" excluído com sucesso!')
+    return redirect("cupons_adm")
+
+def excluir_categoria(request, pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
     nome = categoria.nome
     categoria.delete()
 
@@ -365,7 +389,7 @@ def lojas(request):
     return render(request, "plataforma/adm/lojas_adm.html", {"lojas": lojas})
 
 @staff_member_required
-def criar_loja(request):
+def cadastrar_loja(request):
     if request.method == "POST":
         form = LojaParceiraForm(request.POST, request.FILES)
         if form.is_valid():

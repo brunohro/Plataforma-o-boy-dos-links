@@ -1,90 +1,242 @@
-{% extends "plataforma/base.html" %}
+{% extends '../base.html' %}
+{% load static %}
 
 {% block content %}
-<main class="container">
 
-    <header>
-        <div>
-            <h1>Lojas parceiras</h1>
-            <p>Gerencie as lojas cadastradas na plataforma.</p>
-        </div>
+<section class="admin-lojas">
+    <div class="lojas-container">
 
-        <a href="{% url 'cadastrar_loja' %}" class="botao cadastrar">
-            + Cadastrar loja
-        </a>
-    </header>
+        <header class="lojas-header">
+            <div>
+                <span class="lojas-eyebrow">PAINEL ADMINISTRATIVO</span>
+                <h1>Gerenciar lojas parceiras</h1>
+                <p>Consulte e gerencie as lojas cadastradas na plataforma.</p>
+            </div>
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="mensagem">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+            <div>
+                <a href="{% url 'painel_adm' %}" class="loja-btn-voltar">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Voltar
+                </a>
 
-    <section class="tabela-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Logo</th>
-                    <th>Nome</th>
-                    <th>Verificada</th>
-                    <th>Ofertas ativas</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
+                <a href="{% url 'cadastrar_loja' %}" class="admin-lojas-btn-nova">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Nova loja</span>
+                </a>
+            </div>
+        </header>
 
-            <tbody>
-                {% for loja in lojas %}
+        <!-- Busca -->
+        <form method="get" class="lojas-toolbar">
+            <div class="lojas-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input
+                    type="search"
+                    name="q"
+                    placeholder="Buscar loja pelo nome..."
+                    value="{{ request.GET.q|default:'' }}"
+                    aria-label="Buscar lojas">
+            </div>
+
+            <button type="submit" class="lojas-search-button">
+                Buscar
+            </button>
+
+            {% if request.GET.q %}
+                <a href="{% url 'lojas_adm' %}" class="lojas-clear">
+                    Limpar
+                </a>
+            {% endif %}
+        </form>
+
+        <!-- Listagem -->
+        <div class="lojas-table-wrapper">
+            <table class="lojas-table">
+                <thead>
+                    <tr>
+                        <th>Loja parceira</th>
+                        <th>Ofertas ativas</th>
+                        <th>Verificação</th>
+                        <th class="actions-heading">Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for loja in lojas %}
                     <tr>
                         <td>
-                            {% if loja.logo_imagem %}
-                                <img src="{{ loja.logo_imagem.url }}"
-                                     alt="Logo de {{ loja.nome }}"
-                                     class="logo">
-                            {% else %}
-                                Sem logo
-                            {% endif %}
+                            <div class="lojas-product">
+                                <div class="lojas-image">
+                                    {% if loja.logo_imagem %}
+                                        <img
+                                            src="{{ loja.logo_imagem.url }}"
+                                            alt="Logo de {{ loja.nome }}"
+                                            loading="lazy">
+                                    {% else %}
+                                        <i class="fa-solid fa-store"></i>
+                                    {% endif %}
+                                </div>
+
+                                <div class="lojas-product-info">
+                                    <span class="lojas-name">
+                                        {{ loja.nome }}
+                                    </span>
+
+                                    <span class="lojas-category">
+                                        Loja parceira da plataforma
+                                    </span>
+                                </div>
+                            </div>
                         </td>
 
-                        <td>{{ loja.nome }}</td>
+                        <td>
+                            <span class="status-badge status-normal">
+                                {{ loja.contador_ofertas }}
+
+                                {% if loja.contador_ofertas == 1 %}
+                                    oferta ativa
+                                {% else %}
+                                    ofertas ativas
+                                {% endif %}
+                            </span>
+                        </td>
 
                         <td>
                             {% if loja.verificado %}
-                                <span class="status">Sim</span>
+                                <span class="status-badge status-normal">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    Verificada
+                                </span>
                             {% else %}
-                                <span class="status">Não</span>
+                                <span class="status-badge status-pendente">
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                    Não verificada
+                                </span>
                             {% endif %}
                         </td>
 
-                        <td>{{ loja.contador_ofertas }}</td>
-
                         <td>
-                            <div class="acoes">
-                                <a href="{% url 'editar_loja' loja.id %}"
-                                   class="botao editar">
-                                    Editar
+                            <div class="lojas-actions">
+                                <a
+                                    href="{% url 'editar_loja' loja.id %}"
+                                    class="lojas-edit-button"
+                                    aria-label="Editar loja {{ loja.nome }}"
+                                    title="Editar loja">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    <span>Editar</span>
                                 </a>
 
-                                <form method="post"
-                                      action="{% url 'excluir_loja' loja.id %}"
-                                      onsubmit="return confirm('Deseja excluir esta loja?');">
-                                    {% csrf_token %}
-                                    <button type="submit" class="botao excluir">
-                                        Excluir
-                                    </button>
-                                </form>
+                                <a
+                                    href="{% url 'excluir_loja' loja.id %}"
+                                    class="lojas-delete-button"
+                                    aria-label="Excluir loja {{ loja.nome }}"
+                                    title="Excluir loja">
+                                    <i class="fa-solid fa-trash"></i>
+                                    <span>Excluir</span>
+                                </a>
                             </div>
                         </td>
                     </tr>
-                {% empty %}
+
+                    {% empty %}
                     <tr>
-                        <td colspan="5" class="vazio">
-                            Nenhuma loja cadastrada.
+                        <td colspan="4">
+                            <div class="lojas-empty">
+                                <i class="fa-solid fa-store"></i>
+
+                                <h3>Nenhuma loja encontrada</h3>
+
+                                <p>
+                                    {% if request.GET.q %}
+                                        Tente buscar usando outro nome.
+                                    {% else %}
+                                        Ainda não existem lojas parceiras cadastradas.
+                                    {% endif %}
+                                </p>
+                            </div>
                         </td>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </section>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-</main>
-{% endblock%}
+        <!-- Paginação -->
+        {% if page_obj.paginator.num_pages > 0 %}
+        <footer class="lojas-footer">
+            <span class="lojas-page-info">
+                Página {{ page_obj.number }} de
+                {{ page_obj.paginator.num_pages }}
+
+                <span class="lojas-total">
+                    · {{ page_obj.paginator.count }} registros
+                </span>
+            </span>
+
+            {% if page_obj.has_other_pages %}
+            <nav class="lojas-pagination"
+                 aria-label="Paginação das lojas">
+
+                {% if page_obj.has_previous %}
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page=1"
+                        class="page-button"
+                        aria-label="Primeira página"
+                        title="Primeira página">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </a>
+
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}"
+                        class="page-button"
+                        aria-label="Página anterior">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+                {% else %}
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </span>
+
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </span>
+                {% endif %}
+
+                <span class="page-current">
+                    {{ page_obj.number }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.next_page_number }}"
+                        class="page-button"
+                        aria-label="Próxima página">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.paginator.num_pages }}"
+                        class="page-button"
+                        aria-label="Última página"
+                        title="Última página">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </a>
+                {% else %}
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </span>
+
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </span>
+                {% endif %}
+
+            </nav>
+            {% endif %}
+        </footer>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

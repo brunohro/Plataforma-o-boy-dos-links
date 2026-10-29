@@ -40,7 +40,7 @@ urlpatterns = [
     path("adm/lojas/<int:id>/excluir/", views.excluir_loja, name="excluir_loja"),
     
     path("adm/categorias/", views.categorias_adm, name="categorias_adm"),
-    path("adm/categorias/cadastrar/", views.criar_categoria, name="cadastrar_categoria"),
+    path("adm/categorias/cadastrar/", views.criar_categoria, name="criar_categoria"),
     path("adm/categorias/editar/<int:id>/", views.editar_categoria, name="editar_categoria"),
     path("adm/categorias/<int:id>/excluir/", views.excluir_categoria, name="excluir_categoria"),    
 

@@ -1,1 +1,71 @@
-<h1>Categorias adm</h1>
+{% extends "plataforma/base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Gerenciar categorias</h1>
+
+    <a href="{% url 'criar_categoria' %}">
+        + Cadastrar categoria
+    </a>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    {% if categorias %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Ícone</th>
+                    <th>Nome</th>
+                    <th>Ofertas ativas</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for categoria in categorias %}
+                    <tr>
+                        <td>
+                            {% if categoria.icone_imagem %}
+                                <img
+                                    src="{{ categoria.icone_imagem.url }}"
+                                    alt="Ícone de {{ categoria.nome }}"
+                                    width="40"
+                                    height="40"
+                                >
+                            {% else %}
+                                Sem ícone
+                            {% endif %}
+                        </td>
+
+                        <td>{{ categoria.nome }}</td>
+
+                        <td>{{ categoria.contador_ofertas }}</td>
+
+                        <td>
+                            <a href="{% url 'editar_categoria' categoria.pk %}">
+                                Editar
+                            </a>
+
+                            <form
+                                method="post"
+                                action="{% url 'excluir_categoria' categoria.pk %}"
+                            >
+                                {% csrf_token %}
+                                <button type="submit">
+                                    Excluir
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhuma categoria cadastrada.</p>
+    {% endif %}
+</div>
+{% endblock %}

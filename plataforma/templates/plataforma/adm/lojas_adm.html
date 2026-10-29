@@ -1,1 +1,90 @@
-<H1>Lojas</H1>
+{% extends "plataforma/base.html" %}
+
+{% block content %}
+<main class="container">
+
+    <header>
+        <div>
+            <h1>Lojas parceiras</h1>
+            <p>Gerencie as lojas cadastradas na plataforma.</p>
+        </div>
+
+        <a href="{% url 'cadastrar_loja' %}" class="botao cadastrar">
+            + Cadastrar loja
+        </a>
+    </header>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="mensagem">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <section class="tabela-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Logo</th>
+                    <th>Nome</th>
+                    <th>Verificada</th>
+                    <th>Ofertas ativas</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for loja in lojas %}
+                    <tr>
+                        <td>
+                            {% if loja.logo_imagem %}
+                                <img src="{{ loja.logo_imagem.url }}"
+                                     alt="Logo de {{ loja.nome }}"
+                                     class="logo">
+                            {% else %}
+                                Sem logo
+                            {% endif %}
+                        </td>
+
+                        <td>{{ loja.nome }}</td>
+
+                        <td>
+                            {% if loja.verificado %}
+                                <span class="status">Sim</span>
+                            {% else %}
+                                <span class="status">Não</span>
+                            {% endif %}
+                        </td>
+
+                        <td>{{ loja.contador_ofertas }}</td>
+
+                        <td>
+                            <div class="acoes">
+                                <a href="{% url 'editar_loja' loja.id %}"
+                                   class="botao editar">
+                                    Editar
+                                </a>
+
+                                <form method="post"
+                                      action="{% url 'excluir_loja' loja.id %}"
+                                      onsubmit="return confirm('Deseja excluir esta loja?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="botao excluir">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="vazio">
+                            Nenhuma loja cadastrada.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+</main>
+{% endblock%}

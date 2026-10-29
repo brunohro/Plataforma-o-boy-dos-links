@@ -310,10 +310,10 @@ def excluir_oferta(request, id):
 # =========================================================
 # CRUD CATEGORIAS
 # =========================================================
-def adm_categorias(request):
+def categorias_adm(request):
     categorias = Categoria.objects.all()
 
-    return render(request, "plataforma/adm_categorias.html", {"categorias": categorias})
+    return render(request, "plataforma/adm/categorias_adm.html", {"categorias": categorias})
 
 @staff_member_required
 def criar_categoria(request):
@@ -322,39 +322,39 @@ def criar_categoria(request):
         if form.is_valid():
             categoria = form.save()
             messages.success(request, f'Categoria "{categoria.nome}" cadastrada com sucesso!')
-            return redirect("adm_categorias")
+            return redirect("categorias_adm")
     else:
         form = CategoriaForm()
 
-    return render(request, "plataforma/categoria_form.html",{"form": form})
+    return render(request, "plataforma/adm/forms/form_categoria.html",{"form": form})
 
 @staff_member_required
-def editar_categoria(request, pk):
-    categoria = get_object_or_404(Categoria, pk=pk)
+def editar_categoria(request, id):
+    categoria = get_object_or_404(Categoria, id=id)
 
     if request.method == "POST":
         form = CategoriaForm(request.POST, request.FILES, instance=categoria)
         if form.is_valid():
             categoria = form.save()
             messages.success(request, f'Categoria "{categoria.nome}" atualizada com sucesso!')
-            return redirect("adm_categorias")
+            return redirect("categorias_adm")
         else:
             form = CategoriaForm(instance=categoria)
             
-        return render(request, "categorias/form.html", {
-            "form": form,
-            "categoria": categoria,
-        })
+    return render(request, "plataforma/adm/form_categoria.html", {
+        "form": form,
+        "categoria": categoria,
+    })
 
 @staff_member_required
 @require_POST
-def excluir_categoria(request, pk):
-    categoria = get_object_or_404(Categoria, pk=pk)
+def excluir_categoria(request, id):
+    categoria = get_object_or_404(Categoria, id=id)
     nome = categoria.nome
     categoria.delete()
 
     messages.success(request, f'Categoria "{nome}" excluída com sucesso!')
-    return redirect("adm_categorias")
+    return redirect("categorias_adm")
 
 # =========================================================
 # CRUD LOJAPARCEIRA
@@ -362,7 +362,7 @@ def excluir_categoria(request, pk):
 def lojas(request):
     lojas = LojaParceira.objects.all()
 
-    return render(request, "plataforma/lojas_adm.html", {"lojas": lojas})
+    return render(request, "plataforma/adm/lojas_adm.html", {"lojas": lojas})
 
 @staff_member_required
 def criar_loja(request):
@@ -375,11 +375,11 @@ def criar_loja(request):
     else:
         form = LojaParceiraForm()
 
-    return render(request, "plataforma/form_loja.html",{"form": form})
+    return render(request, "plataforma/adm/forms/form_loja.html",{"form": form})
 
 @staff_member_required
 def editar_loja(request, id):
-    loja = get_object_or_404(Categoria, id=id)
+    loja = get_object_or_404(LojaParceira, id=id)
 
     if request.method == "POST":
         form = LojaParceiraForm(request.POST, request.FILES, instance=loja)
@@ -390,15 +390,15 @@ def editar_loja(request, id):
         else:
             form = LojaParceiraForm(instance=loja)
             
-        return render(request, "plataforma/form_lojas.html", {
-            "form": form,
-            "loja": loja,
-        })
+    return render(request, "plataforma/adm/forms/form_lojas.html", {
+        "form": form,
+        "loja": loja,
+    })
 
 @staff_member_required
 @require_POST
 def excluir_loja(request, id):
-    loja = get_object_or_404(Categoria, id=id)
+    loja = get_object_or_404(LojaParceira, id=id)
     nome = loja.nome
     loja.delete()
 
@@ -406,35 +406,53 @@ def excluir_loja(request, id):
     return redirect("lojas_adm")
 
 # =========================================================
+# CRUD USUÁRIO
+# =========================================================
+def usuarios_adm(request):
+    usuarios = UsuarioReal.objects.all()
+
+    return render(request, "plataforma/adm/usuarios_adm.html", {"usuarios": usuarios})
+
+# =========================================================
 # CRUD CUPOM ADM
 # =========================================================
-def cupons_adm(request, id):
+def cupons_adm(request):
     cupons = Cupom.objects.all()
 
-    return render(request, "plataforma/cupom_adm.html")
+    return render(
+        request,
+        "plataforma/adm/cupons_adm.html",
+        {"cupons": cupons}
+    )
 
 @staff_member_required
 def criar_cupom(request):
     if request.method == "POST":
         form = CupomForm(request.POST, request.FILES)
+
         if form.is_valid():
             cupom = form.save()
-            messages.success(request, f'Cupom "{cupom.nome}" cadastrado com sucesso!')
-            return redirect("cupom_adm")
-        else:
-            form = CupomForm()
-    
-        return render(request, "plataforma/form_cupom.html",{"form": form})
+            messages.success(
+                request,
+                f'Cupom "{cupom.codigo}" cadastrado com sucesso!'
+            )
+            return redirect("cupons_adm")
+    else:
+        form = CupomForm()
+
+    return render(request, "plataforma/adm/forms/form_cupom.html", {
+        "form": form,
+    })
 
 def editar_cupom(request, id):
-    cupom = get_object_or_404(Categoria, id=id)
+    cupom = get_object_or_404(Cupom, id=id)
 
     if request.method == "POST":
         form = CupomForm(request.POST, request.FILES, instance=cupom)
         if form.is_valid():
             cupom = form.save()
-            messages.success(request, f'Cupom "{cupom.nome}" atualizado com sucesso!')
-            return redirect("cupom_adm")
+            messages.success(request, f'Cupom "{cupom.codigo}" atualizado com sucesso!')
+            return redirect("cupons_adm")
         else:
             form = CupomForm(instance=cupom)
             

@@ -1,0 +1,326 @@
+
+/* ========================================
+   PÁGINA DE FAVORITOS
+======================================== */
+
+.favorites-page {
+    width: 100%;
+    min-height: 60vh;
+    padding: 30px 0 48px;
+    background: var(--background);
+    color: var(--text-primary);
+}
+
+.favorites-page__container {
+    width: 1216px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.favorites-page__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.favorites-page__heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.favorites-page__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--primary);
+    font-size: 21px;
+}
+
+.favorites-page__heading h1 {
+    margin: 0 0 6px;
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.favorites-page__heading p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.favorites-page__count {
+    flex-shrink: 0;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--surface);
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+/* Grade de ofertas */
+
+.favorites-page__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+/* Card */
+
+.favorites-card {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--card);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.favorites-card:hover {
+    border-color: var(--primary-dark);
+    transform: translateY(-3px);
+}
+
+.favorites-card__image {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 190px;
+    padding: 14px;
+    background: var(--surface);
+}
+
+.favorites-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.favorites-card__image > i {
+    color: var(--text-muted);
+    font-size: 36px;
+}
+
+.favorites-card__badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 8px;
+    border-radius: 7px;
+    background: var(--background);
+    color: var(--primary);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.favorites-card__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px;
+}
+
+.favorites-card__store {
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.favorites-card__title {
+    display: -webkit-box;
+    min-height: 40px;
+    margin: 0;
+    overflow: hidden;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.favorites-card__prices {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: auto;
+}
+
+.favorites-card__old-price {
+    color: var(--text-muted);
+    font-size: 11px;
+    text-decoration: line-through;
+}
+
+.favorites-card__price {
+    color: var(--primary);
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.favorites-card__button,
+.favorites-empty__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 40px;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 9px;
+    background: var(--primary);
+    color: var(--text-primary);
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.favorites-card__button:hover,
+.favorites-empty__button:hover {
+    background: var(--primary-hover);
+}
+
+/* Estado vazio */
+
+.favorites-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 64px 24px;
+    border: 1px dashed var(--border);
+    border-radius: 16px;
+    background: var(--card);
+    text-align: center;
+}
+
+.favorites-empty__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 18px;
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--primary);
+    font-size: 27px;
+}
+
+.favorites-empty h2 {
+    margin: 0 0 10px;
+    font-size: 19px;
+}
+
+.favorites-empty p {
+    max-width: 420px;
+    margin: 0 0 22px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.favorites-empty__button {
+    width: auto;
+}
+
+/* Responsividade */
+
+@media (max-width: 1000px) {
+    .favorites-page__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .favorites-page {
+        padding: 22px 0 36px;
+    }
+
+    .favorites-page__container {
+        padding: 0 16px;
+    }
+
+    .favorites-page__header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .favorites-page__heading h1 {
+        font-size: 21px;
+    }
+
+    .favorites-page__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .favorites-card__image {
+        height: 150px;
+    }
+
+    .favorites-card__content {
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .favorites-card__title {
+        font-size: 12px;
+    }
+
+    .favorites-card__price {
+        font-size: 18px;
+    }
+
+    .favorites-card__badge {
+        top: 7px;
+        right: 7px;
+        font-size: 9px;
+    }
+}
+
+@media (max-width: 380px) {
+    .favorites-page__container {
+        padding: 0 12px;
+    }
+
+    .favorites-page__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .favorites-card__image {
+        height: 200px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .favorites-card,
+    .favorites-card__button,
+    .favorites-empty__button {
+        transition: none;
+    }
+}

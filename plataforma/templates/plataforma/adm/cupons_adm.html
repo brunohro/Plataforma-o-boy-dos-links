@@ -69,52 +69,6 @@
 
                 <tbody>
                     {% for cupom in cupons %}
-<<<<<<< HEAD
-                        <tr>
-                            <td>{{ cupom.codigo }}</td>
-                            <td>{{ cupom.descricao|truncatechars:60 }}</td>
-                            <td>{{ cupom.data_validade|date:"d/m/Y H:i" }}</td>
-                            <td>R$ {{ cupom.desconto }}</td>
-                            <td>{{ cupom.quantidade_usos }}</td>
-                            <td>
-                                {% if cupom.ativo %}
-                                    <span class="status ativo">Ativo</span>
-                                {% else %}
-                                    <span class="status inativo">Inativo</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <div class="acoes">
-                                    <a href="{% url 'editar_cupom' cupom.id %}"
-                                       class="botao botao-editar">
-                                        Editar
-                                    </a>
-
-                                    <form method="post"
-                                          action="{% url 'excluir_cupom' cupom.id %}"
-                                          onsubmit="return confirm('Tem certeza de que deseja excluir este cupom?');">
-                                        {% csrf_token %}
-                                        <button type="submit"
-                                                class="botao botao-excluir">
-                                            Excluir
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="7" class="vazio">
-                                Nenhum cupom cadastrado.
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </section>
-    </main>
-{% endblock%}
-=======
                     <tr>
                         <!-- Código e descrição -->
                         <td>
@@ -315,4 +269,3 @@
 </section>
 
 {% endblock %}
->>>>>>> feature/pagAdm

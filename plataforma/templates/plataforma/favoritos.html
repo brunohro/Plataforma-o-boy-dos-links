@@ -1,0 +1,115 @@
+
+{% extends 'plataforma/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="favorites-page">
+    <div class="favorites-page__container">
+
+        <header class="favorites-page__header">
+            <div class="favorites-page__heading">
+                <span class="favorites-page__icon">
+                    <i class="fa-solid fa-heart"></i>
+                </span>
+
+                <div>
+                    <h1>Minhas ofertas favoritas</h1>
+                    <p>Seus produtos favoritos reunidos em um só lugar.</p>
+                </div>
+            </div>
+
+            <span class="favorites-page__count">
+                {{ ofertas_favoritas|length }}
+                {% if ofertas_favoritas|length == 1 %}
+                    oferta salva
+                {% else %}
+                    ofertas salvas
+                {% endif %}
+            </span>
+        </header>
+
+        {% if ofertas_favoritas %}
+            <div class="favorites-page__grid">
+
+                {% for oferta in ofertas_favoritas %}
+                    <article class="favorites-card">
+
+                        <div class="favorites-card__image">
+                            {% if oferta.image_url %}
+                                <img
+                                    src="{{ oferta.image_url }}"
+                                    alt="{{ oferta.nome_produto }}"
+                                    loading="lazy"
+                                >
+                            {% else %}
+                                <i class="fa-regular fa-image"></i>
+                            {% endif %}
+
+                            <span class="favorites-card__badge">
+                                <i class="fa-solid fa-heart"></i>
+                                Favorito
+                            </span>
+                        </div>
+
+                        <div class="favorites-card__content">
+                            <span class="favorites-card__store">
+                                {{ oferta.loja.nome }}
+                            </span>
+
+                            <h2 class="favorites-card__title">
+                                {{ oferta.nome_produto }}
+                            </h2>
+
+                            <div class="favorites-card__prices">
+                                {% if oferta.preco_anterior %}
+                                    <span class="favorites-card__old-price">
+                                        R$ {{ oferta.preco_anterior|floatformat:2 }}
+                                    </span>
+                                {% endif %}
+
+                                <strong class="favorites-card__price">
+                                    R$ {{ oferta.preco_atual|floatformat:2 }}
+                                </strong>
+                            </div>
+
+                            <a
+                                href="{{ oferta.link_afiliado }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="favorites-card__button"
+                            >
+                                Ver oferta
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+
+                    </article>
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+            <div class="favorites-empty">
+                <span class="favorites-empty__icon">
+                    <i class="fa-regular fa-heart"></i>
+                </span>
+
+                <h2>Nenhuma oferta favorita ainda</h2>
+
+                <p>
+                    Explore nossas ofertas e salve seus produtos preferidos
+                    para encontrá-los facilmente depois.
+                </p>
+
+                <a href="{% url 'ofertas' %}" class="favorites-empty__button">
+                    <i class="fa-solid fa-fire"></i>
+                    Explorar ofertas
+                </a>
+            </div>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

@@ -85,6 +85,9 @@ class Cupom(models.Model):
         verbose_name_plural = "Cupons"
         ordering = ["-data_validade"]
 
+    def quantidade_usos(self):
+        return ClickCupom.objects.filter(cupom=self).count()
+
 
 class DescontoCalculadoMixin(models.Model):
     preco_atual = models.DecimalField(max_digits=10, decimal_places=2)

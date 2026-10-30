@@ -1,3 +1,7 @@
+#########################################################
+# IMPORTS
+#########################################################
+
 from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.admin.views.decorators import staff_member_required
@@ -13,11 +17,21 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.utils.http import url_has_allowed_host_and_scheme
 
+
+#########################################################
+# CONSTANTES
+#########################################################
+
 TEMPLATE_PAINEL = "plataforma/adm/painel_adm.html"
 TEMPLATE_INDEX = "plataforma/index.html"
 TEMPLATE_LOGIN = "plataforma/login/login.html"
 TEMPLATE_CADASTRO = "plataforma/login/cadastro.html"
 TEMPLATE_CADASTRO_ETAPA2 = "plataforma/login/cadastroetapa2.html"
+
+
+#########################################################
+# FUNÇÕES AUXILIARES (QUERYSETS / INTERAÇÕES)
+#########################################################
 
 def cupons_ativos_qs():
     """Cupons em vigência no momento."""
@@ -32,6 +46,7 @@ def cupons_ativos_qs():
         )
     )
 
+
 def ofertas_ativas_qs():
     """Ofertas em vigência no momento."""
     agora = timezone.now()
@@ -45,6 +60,8 @@ def ofertas_ativas_qs():
             total_clicks=Count("clicks_registros", distinct=True),
         )
     )
+
+
 def interacoes(user):
     """Retorna as interações do usuário com as ofertas."""
     if user.is_authenticated:
@@ -57,6 +74,7 @@ def interacoes(user):
             "favoritos_cupons_ids": set(favoritos_cupons),
         }
     return {"votos": set(), "favoritos": set(), "favoritos_cupons_ids": set()}
+
 
 def ofertas_recomendadas(user):
     """Retorna ofertas recomendadas com base nas interações do usuário."""
@@ -75,86 +93,10 @@ def ofertas_recomendadas(user):
         )
     return ofertas_ativas_qs().order_by("-data_inicio")[:8]
 
-@require_POST
-def registrar_copia_cupom(request, pk):
-    """Conta uma cópia do cupom (usuário logado ou anônimo)."""
-    cupom = get_object_or_404(Cupom, pk=pk)
 
-    usuario = request.user if request.user.is_authenticated else None
-    ClickCupom.objects.create(usuario=usuario, cupom=cupom)
-
-    return JsonResponse({"usos": cupom.clicks_registros_cupons.count()})
-
-@require_GET
-def ir_para_oferta(request, pk):
-    oferta = get_object_or_404(Oferta, pk=pk)
-
-    usuario = request.user if request.user.is_authenticated else None
-    ClickOferta.objects.create(usuario=usuario, oferta=oferta)
-
-    return redirect(oferta.link_afiliado)
-
-@require_POST
-def votar_oferta(request, pk):
-    if not request.user.is_authenticated:
-        return redirect("login")
-
-    oferta = get_object_or_404(Oferta, pk=pk)
-
-    voto, criado = Voto.objects.get_or_create(usuario=request.user, oferta=oferta)
-    if not criado:
-        voto.delete()
-
-    voltar = request.META.get("HTTP_REFERER", "/")
-    return redirect(f"{voltar}#oferta-{oferta.pk}")
-
-
-@require_POST
-def favoritar_oferta(request, pk):
-    if not request.user.is_authenticated:
-        return redirect("login")
-
-    oferta = get_object_or_404(Oferta, pk=pk)
-
-    favorito, criado = Favorito.objects.get_or_create(usuario=request.user, oferta=oferta)
-    if not criado:
-        favorito.delete()
-
-    voltar = request.META.get("HTTP_REFERER", "/")
-    return redirect(f"{voltar}#oferta-{oferta.pk}")
-
-@require_POST
-def favoritar_cupom(request, pk):
-    if not request.user.is_authenticated:
-        return redirect("login")
-
-    cupom = get_object_or_404(Cupom, pk=pk)
-
-    favorito, criado = FavoritoCupom.objects.get_or_create(usuario=request.user, cupom=cupom)
-    if not criado:
-        favorito.delete()
-
-    voltar = request.META.get("HTTP_REFERER", "/")
-    return redirect(f"{voltar}#cupom-{cupom.pk}")
-
-@login_required
-def favoritos(request):
-    ofertas_favoritas = (
-        ofertas_ativas_qs()
-        .filter(favoritos__usuario=request.user)
-        .order_by("-favoritos__criado_em")
-    )
-    cupons_favoritos = (
-        Cupom.objects
-        .filter(favoritoscupons__usuario=request.user)
-        .select_related("loja")
-        .order_by("-favoritoscupons__criado_em")
-    )
-    return render(request, "plataforma/favoritos.html", {
-        "ofertas_favoritas": ofertas_favoritas,
-        "cupons_favoritos": cupons_favoritos,
-        **interacoes(request.user),
-    })
+#########################################################
+# PÁGINAS PÚBLICAS (USUÁRIO)
+#########################################################
 
 # =========================================================
 # PÁGINA INICIAL
@@ -218,6 +160,33 @@ def home(request):
         **interacoes(request.user),
     })
 
+
+# =========================================================
+# PÁGINA DE OFERTAS - USUÁRIO
+# =========================================================
+
+def ofertas(request, tipo="todas"):
+    lista = ofertas_ativas_qs().order_by("data_fim")
+    categorias = Categoria.objects.all()
+
+    categoria_atual = request.GET.get("categoria", "")
+
+    if tipo == "relampago":
+        lista = lista.filter(is_relampago=True)
+
+    if categoria_atual:
+        lista = lista.filter(categoria__id=categoria_atual)
+
+    context = {
+        "ofertas": lista,
+        "categorias": categorias,
+        "tipo_pagina": tipo,
+        "categoria_atual": categoria_atual,
+    }
+
+    return render(request, "plataforma/ofertas.html", context)
+
+
 # =========================================================
 # PÁGINA DE CUPONS - USUÁRIO
 # =========================================================
@@ -230,8 +199,171 @@ def cupons(request):
         **interacoes(request.user),
     })
 
+
 # =========================================================
+# PÁGINA DE FAVORITOS - USUÁRIO
+# =========================================================
+
+@login_required
+def favoritos(request):
+    ofertas_favoritas = (
+        ofertas_ativas_qs()
+        .filter(favoritos__usuario=request.user)
+        .order_by("-favoritos__criado_em")
+    )
+    cupons_favoritos = (
+        Cupom.objects
+        .filter(favoritoscupons__usuario=request.user)
+        .select_related("loja")
+        .order_by("-favoritoscupons__criado_em")
+    )
+    return render(request, "plataforma/favoritos.html", {
+        "ofertas_favoritas": ofertas_favoritas,
+        "cupons_favoritos": cupons_favoritos,
+        **interacoes(request.user),
+    })
+
+
+#########################################################
+# INTERAÇÕES DO USUÁRIO (VOTOS / FAVORITOS / CLICKS)
+#########################################################
+
+# =========================================================
+# CLICKS E CÓPIAS
+# =========================================================
+
+@require_POST
+def registrar_copia_cupom(request, pk):
+    """Conta uma cópia do cupom (usuário logado ou anônimo)."""
+    cupom = get_object_or_404(Cupom, pk=pk)
+
+    usuario = request.user if request.user.is_authenticated else None
+    ClickCupom.objects.create(usuario=usuario, cupom=cupom)
+
+    return JsonResponse({"usos": cupom.clicks_registros_cupons.count()})
+
+
+@require_GET
+def ir_para_oferta(request, pk):
+    oferta = get_object_or_404(Oferta, pk=pk)
+
+    usuario = request.user if request.user.is_authenticated else None
+    ClickOferta.objects.create(usuario=usuario, oferta=oferta)
+
+    return redirect(oferta.link_afiliado)
+
+
+# =========================================================
+# VOTOS
+# =========================================================
+
+@require_POST
+def votar_oferta(request, pk):
+    if not request.user.is_authenticated:
+        return redirect("login")
+
+    oferta = get_object_or_404(Oferta, pk=pk)
+
+    voto, criado = Voto.objects.get_or_create(usuario=request.user, oferta=oferta)
+    if not criado:
+        voto.delete()
+
+    voltar = request.META.get("HTTP_REFERER", "/")
+    return redirect(f"{voltar}#oferta-{oferta.pk}")
+
+
+# =========================================================
+# FAVORITOS (AÇÕES)
+# =========================================================
+
+@require_POST
+def favoritar_oferta(request, pk):
+    if not request.user.is_authenticated:
+        return redirect("login")
+
+    oferta = get_object_or_404(Oferta, pk=pk)
+
+    favorito, criado = Favorito.objects.get_or_create(usuario=request.user, oferta=oferta)
+    if not criado:
+        favorito.delete()
+
+    voltar = request.META.get("HTTP_REFERER", "/")
+    return redirect(f"{voltar}#oferta-{oferta.pk}")
+
+
+@require_POST
+def favoritar_cupom(request, pk):
+    if not request.user.is_authenticated:
+        return redirect("login")
+
+    cupom = get_object_or_404(Cupom, pk=pk)
+
+    favorito, criado = FavoritoCupom.objects.get_or_create(usuario=request.user, cupom=cupom)
+    if not criado:
+        favorito.delete()
+
+    voltar = request.META.get("HTTP_REFERER", "/")
+    return redirect(f"{voltar}#cupom-{cupom.pk}")
+
+
+#########################################################
+# LOGIN E CADASTRO
+#########################################################
+
+def login_view(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            return redirect("index")
+    else:
+        form = AuthenticationForm()
+    return render(request, TEMPLATE_LOGIN, {"form": form})
+
+
+def cadastro_etapa1(request):
+    if request.method == "POST":
+        form = CadastroForm(request.POST)
+
+        form.errors.pop('sexo', None)
+        form.errors.pop('password1', None)
+        form.errors.pop('password2', None)
+
+        campos_etapa1 = ['username', 'email', 'telefone', 'data_nascimento']
+        if not any(campo in form.errors for campo in campos_etapa1):
+            request.session['cadastro'] = {
+                campo: request.POST.get(campo) for campo in campos_etapa1
+            }
+            return redirect("cadastro_etapa2")
+    else:
+        dados_salvos = request.session.get('cadastro', None)
+        form = CadastroForm(initial=dados_salvos)
+
+    return render(request, TEMPLATE_CADASTRO, {"form": form})
+
+
+def cadastro_etapa2(request):
+    if request.method == "POST":
+        dados_completos = request.session['cadastro'].copy()
+
+        dados_completos.update(request.POST.dict())
+
+        form = CadastroForm(dados_completos)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Cadastro realizado com sucesso!")
+            return redirect("login")
+    else:
+        form = CadastroForm()
+    return render(request, TEMPLATE_CADASTRO_ETAPA2, {"form": form})
+
+
+#########################################################
 # PAINEL ADMINISTRATIVO
+#########################################################
+
+# =========================================================
+# DASHBOARD
 # =========================================================
 
 @staff_member_required
@@ -267,6 +399,10 @@ def admin_dashboard(request):
     return render(request, TEMPLATE_PAINEL, contexto)
 
 
+# =========================================================
+# LISTAGENS (ADM)
+# =========================================================
+
 @staff_member_required
 def adm_usuarios(request):
     busca = request.GET.get('q', '').strip()
@@ -299,12 +435,6 @@ def ofertas_adm(request):
     page_obj = paginator.get_page(request.GET.get('page'))
     return render(request, "plataforma/adm/ofertas_adm.html", {"ofertas": page_obj, "page_obj": page_obj})
 
-def cadastrar_oferta(request):
-    return render(request, "plataforma/adm/forms/form_oferta.html")
-
-def editar_oferta(request, id):
-    oferta = Oferta.objects.get(id=id)
-    return render(request, "plataforma/adm/forms/form_oferta.html", {"oferta": oferta})
 
 @staff_member_required
 def lojas_adm(request):
@@ -323,7 +453,7 @@ def lojas_adm(request):
     }
 
     return render(request, 'plataforma/adm/lojas_adm.html', context)
-    
+
 
 @staff_member_required
 def categorias_adm(request):
@@ -337,12 +467,6 @@ def categorias_adm(request):
     page_obj = paginator.get_page(request.GET.get('page'))
     return render(request, "plataforma/adm/categorias_adm.html", {"categorias": page_obj, "page_obj": page_obj})
 
-def cadastrar_categoria(request):
-    return render(request, "plataforma/adm/forms/form_categoria.html")
-
-def editar_categoria(request, id):
-    categoria = Categoria.objects.get(id=id)
-    return render(request, "plataforma/adm/forms/form_categoria.html", {"categoria": categoria})
 
 @staff_member_required
 def cupons_adm(request):
@@ -360,38 +484,25 @@ def cupons_adm(request):
     return render(request, "plataforma/adm/cupons_adm.html", {"cupons": page_obj, "page_obj": page_obj})
 
 
-def cadastrar_cupom(request):
-    return render(request, "plataforma/adm/forms/form_cupom.html")
-
-def editar_cupom(request, id):
-    cupom = Cupom.objects.get(id=id)
-    return render(request, "plataforma/adm/forms/form_cupom.html", {"cupom": cupom})
+#########################################################
+# CRUD (ADM)
+#########################################################
 
 # =========================================================
 # CRUD DE OFERTAS
 # =========================================================
 
-def ofertas(request, tipo="todas"):
-    lista = ofertas_ativas_qs().order_by("data_fim")
-    categorias = Categoria.objects.all()
+# --- Versões antigas (editar_oferta é sobrescrita mais abaixo) ---
+def cadastrar_oferta(request):
+    return render(request, "plataforma/adm/forms/form_oferta.html")
 
-    categoria_atual = request.GET.get("categoria", "")
 
-    if tipo == "relampago":
-        lista = lista.filter(is_relampago=True)
+def editar_oferta(request, id):
+    oferta = Oferta.objects.get(id=id)
+    return render(request, "plataforma/adm/forms/form_oferta.html", {"oferta": oferta})
 
-    if categoria_atual:
-        lista = lista.filter(categoria__id=categoria_atual)
 
-    context = {
-        "ofertas": lista,
-        "categorias": categorias,
-        "tipo_pagina": tipo,
-        "categoria_atual": categoria_atual,
-    }
-
-    return render(request, "plataforma/ofertas.html", context)
-
+# --- Versões ativas ---
 @staff_member_required
 def criar_oferta(request):
     lojas = LojaParceira.objects.all()
@@ -455,6 +566,7 @@ def editar_oferta(request, id):
         "modo_edicao": True,
     })
 
+
 @staff_member_required
 @require_POST
 def excluir_oferta(request, id):
@@ -465,10 +577,22 @@ def excluir_oferta(request, id):
     messages.success(request, f'Oferta "{nome}" excluída com sucesso!')
     return redirect("ofertas_adm")
 
+
 # =========================================================
 # CRUD CATEGORIAS
 # =========================================================
 
+# --- Versões antigas (editar_categoria é sobrescrita mais abaixo) ---
+def cadastrar_categoria(request):
+    return render(request, "plataforma/adm/forms/form_categoria.html")
+
+
+def editar_categoria(request, id):
+    categoria = Categoria.objects.get(id=id)
+    return render(request, "plataforma/adm/forms/form_categoria.html", {"categoria": categoria})
+
+
+# --- Versões ativas ---
 @staff_member_required
 def criar_categoria(request):
     if request.method == "POST":
@@ -482,6 +606,7 @@ def criar_categoria(request):
 
     return render(request, "plataforma/adm/forms/form_categoria.html",{"form": form})
 
+
 @staff_member_required
 def editar_categoria(request, id):
     categoria = get_object_or_404(Categoria, id=id)
@@ -494,11 +619,12 @@ def editar_categoria(request, id):
             return redirect("categorias_adm")
     else:
         form = CategoriaForm(instance=categoria)
-            
+
     return render(request, "plataforma/adm/forms/form_categoria.html", {
         "form": form,
         "categoria": categoria,
     })
+
 
 @staff_member_required
 @require_POST
@@ -510,13 +636,16 @@ def excluir_categoria(request, id):
     messages.success(request, f'Categoria "{nome}" excluída com sucesso!')
     return redirect("categorias_adm")
 
+
 # =========================================================
 # CRUD LOJAPARCEIRA
 # =========================================================
+
 def lojas(request):
     lojas = LojaParceira.objects.all().order_by("nome")
 
     return render(request, "plataforma/adm/lojas_adm.html", {"lojas": lojas})
+
 
 @staff_member_required
 def cadastrar_loja(request):
@@ -530,6 +659,7 @@ def cadastrar_loja(request):
         form = LojaParceiraForm()
 
     return render(request, "plataforma/adm/forms/form_loja.html",{"form": form})
+
 
 @staff_member_required
 def editar_loja(request, id):
@@ -561,6 +691,7 @@ def editar_loja(request, id):
         }
     )
 
+
 @staff_member_required
 @require_POST
 def excluir_loja(request, id):
@@ -571,18 +702,22 @@ def excluir_loja(request, id):
     messages.success(request, f'Loja "{nome}" excluída com sucesso!')
     return redirect("lojas_adm")
 
-# =========================================================
-# CRUD USUÁRIO
-# =========================================================
-def usuarios_adm(request):
-    usuarios = UsuarioReal.filter(is_active=True).order_by("nome")
-
-    return render(request, "plataforma/adm/usuarios_adm.html", {"usuarios": usuarios})
 
 # =========================================================
 # CRUD CUPOM ADM
 # =========================================================
 
+# --- Versões antigas (editar_cupom é sobrescrita mais abaixo) ---
+def cadastrar_cupom(request):
+    return render(request, "plataforma/adm/forms/form_cupom.html")
+
+
+def editar_cupom(request, id):
+    cupom = Cupom.objects.get(id=id)
+    return render(request, "plataforma/adm/forms/form_cupom.html", {"cupom": cupom})
+
+
+# --- Versões ativas ---
 @staff_member_required
 def criar_cupom(request):
     lojas = LojaParceira.objects.all()
@@ -628,6 +763,7 @@ def editar_cupom(request, id):
         "lojas": lojas,
     })
 
+
 @staff_member_required
 @require_POST
 def excluir_cupom(request, id):
@@ -638,54 +774,15 @@ def excluir_cupom(request, id):
     messages.success(request, f'Cupom "{codigo}" excluído com sucesso!')
     return redirect("cupons_adm")
 
+
 # =========================================================
-# LOGIN E CADASTRO
+# CRUD USUÁRIO
 # =========================================================
 
-def login_view(request):
-    if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            login(request, form.get_user())
-            return redirect("index")
-    else:
-        form = AuthenticationForm()
-    return render(request, TEMPLATE_LOGIN, {"form": form})
+def usuarios_adm(request):
+    usuarios = UsuarioReal.filter(is_active=True).order_by("nome")
 
-def cadastro_etapa1(request):
-    if request.method == "POST":
-        form = CadastroForm(request.POST)
-        
-        form.errors.pop('sexo', None)
-        form.errors.pop('password1', None)
-        form.errors.pop('password2', None)
-
-        campos_etapa1 = ['username', 'email', 'telefone', 'data_nascimento']
-        if not any(campo in form.errors for campo in campos_etapa1):
-            request.session['cadastro'] = {
-                campo: request.POST.get(campo) for campo in campos_etapa1
-            }
-            return redirect("cadastro_etapa2")
-    else:
-        dados_salvos = request.session.get('cadastro', None)
-        form = CadastroForm(initial=dados_salvos)
-        
-    return render(request, TEMPLATE_CADASTRO, {"form": form})
-
-def cadastro_etapa2(request):
-    if request.method == "POST":
-        dados_completos = request.session['cadastro'].copy()
-        
-        dados_completos.update(request.POST.dict())
-
-        form = CadastroForm(dados_completos)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Cadastro realizado com sucesso!")
-            return redirect("login")
-    else:
-        form = CadastroForm()
-    return render(request, TEMPLATE_CADASTRO_ETAPA2, {"form": form})
+    return render(request, "plataforma/adm/usuarios_adm.html", {"usuarios": usuarios})
 
 
 @staff_member_required

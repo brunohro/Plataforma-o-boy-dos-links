@@ -27,6 +27,7 @@ urlpatterns = [
     # Painel administrativo
     path("adm/", views.admin_dashboard, name="painel_adm"),
     path("adm/usuarios/", views.adm_usuarios, name="usuarios_adm"),
+    path("adm/usuarios/<int:id>/permissao/", views.alterar_permissao_usuario, name="alterar_permissao_usuario"),
 
     # ofertas adm
     path("adm/ofertas/", views.ofertas_adm, name="ofertas_adm"),

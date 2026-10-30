@@ -11,7 +11,7 @@
             <div>
                 <span class="usuarios-eyebrow">PAINEL ADMINISTRATIVO</span>
                 <h1>Gerenciar usuários</h1>
-                <p>Consulte os usuários cadastrados na plataforma.</p>
+                <p>Consulte os usuários cadastrados e gerencie quem tem acesso ao painel administrativo.</p>
             </div>
 
             <div>
@@ -21,6 +21,25 @@
                 </a>
             </div>
         </header>
+
+        <!-- Mensagens -->
+        {% if messages %}
+        <div class="usuarios-messages" role="status">
+            {% for message in messages %}
+            <div class="usuarios-message usuarios-message-{{ message.tags }}">
+                <i class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% elif message.tags == 'error' %}fa-circle-exclamation{% else %}fa-circle-info{% endif %}"></i>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if not eh_superadmin %}
+        <p class="usuarios-aviso">
+            <i class="fa-solid fa-lock"></i>
+            Apenas superadministradores podem promover ou remover administradores.
+        </p>
+        {% endif %}
 
         <!-- Busca -->
         <form method="get" class="usuarios-toolbar">
@@ -53,6 +72,8 @@
                         <th>Nome de usuário</th>
                         <th>Apelido</th>
                         <th>E-mail</th>
+                        <th>Função</th>
+                        {% if eh_superadmin %}<th class="actions-heading">Ações</th>{% endif %}
                     </tr>
                 </thead>
 
@@ -90,11 +111,73 @@
                                 {{ usuario.email }}
                             </span>
                         </td>
+
+                        <!-- Função -->
+                        <td>
+                            <div class="usuarios-statuses">
+                                {% if usuario.is_superuser %}
+                                    <span class="status-badge status-super">
+                                        <i class="fa-solid fa-crown"></i> Superadmin
+                                    </span>
+                                {% elif usuario.is_staff %}
+                                    <span class="status-badge status-admin">
+                                        <i class="fa-solid fa-shield-halved"></i> Administrador
+                                    </span>
+                                {% else %}
+                                    <span class="status-badge status-normal">
+                                        <i class="fa-solid fa-user"></i> Usuário
+                                    </span>
+                                {% endif %}
+
+                                {% if not usuario.is_active %}
+                                    <span class="status-badge status-inativo">Inativo</span>
+                                {% endif %}
+                            </div>
+                        </td>
+
+                        <!-- Ações -->
+                        {% if eh_superadmin %}
+                        <td>
+                            <div class="usuarios-actions">
+                                {% if usuario.pk == request.user.pk %}
+                                    <span class="usuarios-nota">Você</span>
+                                {% elif usuario.is_superuser %}
+                                    <span class="usuarios-nota">—</span>
+                                {% elif usuario.is_staff %}
+                                    <form method="POST"
+                                          action="{% url 'alterar_permissao_usuario' usuario.id %}"
+                                          onsubmit="return confirm('Remover o acesso de administrador de {{ usuario.username|escapejs }}?');">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="acao" value="remover">
+                                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                        <button type="submit" class="usuarios-delete-button">
+                                            <i class="fa-solid fa-user-minus"></i>
+                                            <span>Remover admin</span>
+                                        </button>
+                                    </form>
+                                {% elif usuario.is_active %}
+                                    <form method="POST"
+                                          action="{% url 'alterar_permissao_usuario' usuario.id %}"
+                                          onsubmit="return confirm('Tornar {{ usuario.username|escapejs }} administrador? Ele terá acesso total ao painel.');">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="acao" value="promover">
+                                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                        <button type="submit" class="usuarios-promote-button">
+                                            <i class="fa-solid fa-user-shield"></i>
+                                            <span>Tornar admin</span>
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    <span class="usuarios-nota">Inativo</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        {% endif %}
                     </tr>
 
                     {% empty %}
                     <tr>
-                        <td colspan="3">
+                        <td colspan="{% if eh_superadmin %}5{% else %}4{% endif %}">
                             <div class="usuarios-empty">
                                 <i class="fa-solid fa-users"></i>
 

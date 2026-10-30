@@ -11,6 +11,7 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.utils.http import url_has_allowed_host_and_scheme
 
 TEMPLATE_PAINEL = "plataforma/adm/painel_adm.html"
 TEMPLATE_INDEX = "plataforma/index.html"
@@ -279,7 +280,7 @@ def adm_usuarios(request):
         )
     paginator = Paginator(usuarios, 10)
     page_obj = paginator.get_page(request.GET.get('page'))
-    return render(request, "plataforma/adm/usuarios_adm.html", {"usuarios": usuarios, "page_obj": page_obj})
+    return render(request, "plataforma/adm/usuarios_adm.html", {"usuarios": usuarios, "page_obj": page_obj, "eh_superadmin": request.user.is_superuser,})
 
 
 @staff_member_required
@@ -686,3 +687,44 @@ def cadastro_etapa2(request):
         form = CadastroForm()
     return render(request, TEMPLATE_CADASTRO_ETAPA2, {"form": form})
 
+
+@staff_member_required
+@require_POST
+def alterar_permissao_usuario(request, id):
+    destino = request.POST.get("next", "")
+    if not url_has_allowed_host_and_scheme(
+        destino, allowed_hosts={request.get_host()}, require_https=request.is_secure()
+    ):
+        destino = "usuarios_adm"
+
+    if not request.user.is_superuser:
+        messages.error(request, "Apenas superadministradores podem alterar permissões.")
+        return redirect(destino)
+
+    alvo = get_object_or_404(UsuarioReal, pk=id)
+    acao = request.POST.get("acao")
+
+    if alvo.pk == request.user.pk:
+        messages.error(request, "Você não pode alterar a sua própria permissão.")
+    elif alvo.is_superuser:
+        messages.error(request, "Superadministradores não podem ser alterados por aqui.")
+    elif acao == "promover":
+        if not alvo.is_active:
+            messages.error(request, f'"{alvo.username}" está inativo e não pode ser promovido.')
+        elif alvo.is_staff:
+            messages.info(request, f'"{alvo.username}" já é administrador.')
+        else:
+            alvo.is_staff = True
+            alvo.save(update_fields=["is_staff"])
+            messages.success(request, f'"{alvo.username}" agora é administrador.')
+    elif acao == "remover":
+        if not alvo.is_staff:
+            messages.info(request, f'"{alvo.username}" já é um usuário comum.')
+        else:
+            alvo.is_staff = False
+            alvo.save(update_fields=["is_staff"])
+            messages.success(request, f'"{alvo.username}" voltou a ser usuário comum.')
+    else:
+        messages.error(request, "Ação inválida.")
+
+    return redirect(destino)

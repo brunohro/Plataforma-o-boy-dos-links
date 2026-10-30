@@ -79,6 +79,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary_storage',  # depois do staticfiles: Cloudinary só para mídia
+    'cloudinary',
     'plataforma',
 ]
 
@@ -120,9 +122,6 @@ WSGI_APPLICATION = 'main.wsgi.application'
 # - Com DATABASE_URL definida (ex.: postgresql://user:senha@host/banco),
 #   usa PostgreSQL.
 # - Sem DATABASE_URL, usa SQLite local.
-#
-# Para migrar para PostgreSQL no futuro, basta criar o banco no Render e
-# colocar a "Internal Database URL" na variável DATABASE_URL do serviço.
 
 DATABASES = {
     'default': dj_database_url.config(
@@ -192,11 +191,26 @@ STORAGES = {
 # ---------------------------------------------------------------------------
 # Arquivos de mídia (uploads: ofertas, lojas, categorias, banners)
 # ---------------------------------------------------------------------------
-# ATENÇÃO: no Render o disco é efêmero. Uploads somem a cada deploy/reinício,
-# a menos que você use um Persistent Disk ou um storage externo (Cloudinary, S3).
+# Com as 3 variáveis do Cloudinary definidas, os uploads vão para a nuvem e
+# não somem a cada deploy. Sem elas (ex.: no seu PC), usa a pasta media/.
+#   CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUDINARY_CLOUD_NAME')
+CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY')
+CLOUDINARY_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET')
+
+if CLOUDINARY_CLOUD_NAME and CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET:
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': CLOUDINARY_CLOUD_NAME,
+        'API_KEY': CLOUDINARY_API_KEY,
+        'API_SECRET': CLOUDINARY_API_SECRET,
+    }
+    STORAGES["default"] = {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    }
 
 
 # ---------------------------------------------------------------------------

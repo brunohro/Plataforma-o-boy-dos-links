@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET
 from .forms import CadastroForm, OfertaForm, CategoriaForm, LojaParceiraForm, CupomForm
-from .models import Banner, Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto, ClickOferta
+from .models import Banner, Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto, ClickOferta, ClickCupom, FavoritoCupom
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -17,6 +17,10 @@ TEMPLATE_LOGIN = "plataforma/login/login.html"
 TEMPLATE_CADASTRO = "plataforma/login/cadastro.html"
 TEMPLATE_CADASTRO_ETAPA2 = "plataforma/login/cadastroetapa2.html"
 
+def cupons_ativos_qs():
+    """Cupons em vigência no momento."""
+    agora = timezone.now()
+    return Cupom.objects.filter(data_validade__gte=agora).annotate(total_clicks=Sum("clicks_registros_cupons"), total_favoritos=Count("favoritoscupons"))
 
 def ofertas_ativas_qs():
     """Ofertas em vigência no momento."""
@@ -60,6 +64,14 @@ def ofertas_recomendadas(user):
     return ofertas_ativas_qs().order_by("-data_inicio")[:8]
 
 @require_GET
+def ir_para_cupom(request, pk):
+    cupom = get_object_or_404(Cupom, pk=pk)
+
+    usuario = request.user if request.user.is_authenticated else None
+    ClickCupom.objects.create(usuario=usuario, cupom=cupom)
+
+    return redirect(cupom.link_afiliado)
+@require_GET
 def ir_para_oferta(request, pk):
     oferta = get_object_or_404(Oferta, pk=pk)
 
@@ -97,12 +109,29 @@ def favoritar_oferta(request, pk):
     voltar = request.META.get("HTTP_REFERER", "/")
     return redirect(f"{voltar}#oferta-{oferta.pk}")
 
+@require_POST
+def favoritar_cupom(request, pk):
+    if not request.user.is_authenticated:
+        return redirect("login")
+
+    cupom = get_object_or_404(Cupom, pk=pk)
+
+    favorito, criado = FavoritoCupom.objects.get_or_create(usuario=request.user, cupom=cupom)
+    if not criado:
+        favorito.delete()
+
+    voltar = request.META.get("HTTP_REFERER", "/")
+    return redirect(f"{voltar}#cupom-{cupom.pk}")
+
 @login_required
 def favoritos(request):
     lista = (
         ofertas_ativas_qs()
         .filter(favoritos__usuario=request.user)
         .order_by("-favoritos__criado_em")
+    )
+    lista = (
+        ofertas
     )
     return render(request, "plataforma/favoritos.html", {"ofertas": lista, **interacoes(request.user)})
 # =========================================================
@@ -143,7 +172,7 @@ def home(request):
     #     .order_by("data_validade")[:6]
     # )
 
-    cupons = Cupom.objects.all()
+    cupons = cupons_ativos_qs().order_by("data_validade")[:6]
 
     return render(request, TEMPLATE_INDEX, {
         "recentes": recentes,

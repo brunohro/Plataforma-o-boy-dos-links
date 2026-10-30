@@ -92,7 +92,7 @@ class LojaParceiraForm(forms.ModelForm):
 class CupomForm(forms.ModelForm):
     class Meta:
         model = Cupom
-        fields = ['loja','codigo', 'descricao', 'data_validade', 'desconto', 'quantidade_usos', 'ativo']
+        fields = ['loja','codigo', 'descricao', 'data_validade', 'desconto', 'ativo']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -102,5 +102,4 @@ class CupomForm(forms.ModelForm):
         self.fields['descricao'].widget.attrs['placeholder'] = 'Ex: O cupom depende da condição ... para ser utilizado.'
         self.fields['data_validade'].widget.attrs['placeholder'] = 'xx/xx/xxxx'
         self.fields['desconto'].widget.attrs['placeholder'] = 'R$50,00'
-        self.fields['quantidade_usos'].widget.attrs['placeholder'] = '100'
         self.fields['ativo'].widget.attrs['class'] = 'form-check-input'

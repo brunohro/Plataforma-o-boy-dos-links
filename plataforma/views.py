@@ -550,7 +550,7 @@ def editar_oferta(request, id):
             oferta = form.save()
             messages.success(
                 request,
-                f'Oferta "{oferta.nome}" atualizada com sucesso!'
+                f'Oferta "{oferta.nome_produto}" atualizada com sucesso!'
             )
             return redirect("ofertas_adm")
 

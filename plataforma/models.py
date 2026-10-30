@@ -68,8 +68,6 @@ class Cupom(models.Model):
         LojaParceira,
         on_delete=models.CASCADE,
         related_name="cupons",
-        null=True,
-        blank=True,
     )
     codigo = models.CharField(max_length=20, unique=True)
     descricao = models.TextField()
@@ -147,9 +145,7 @@ class Oferta(DescontoCalculadoMixin):
     )
     categoria = models.ForeignKey(
         Categoria,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
+        on_delete=models.PROTECT,
         related_name="ofertas",
     )
     cupom = models.ForeignKey(

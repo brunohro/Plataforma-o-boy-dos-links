@@ -20,6 +20,10 @@ urlpatterns = [
     path("cupons/<int:pk>/favoritar/", views.favoritar_cupom, name="favoritar_cupom"),
     path("favoritos/", views.favoritos, name="favoritos"),
 
+    #conta
+    
+    path("minhaConta/<int:id>", views.minha_conta, name="minha_conta"),
+
     #ofertas e cupons
     path("ofertas/", views.ofertas, name="ofertas"),
     path("cupons/", views.cupons, name="cupons"),

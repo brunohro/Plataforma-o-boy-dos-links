@@ -98,6 +98,14 @@ def ofertas_recomendadas(user):
 # PÁGINAS PÚBLICAS (USUÁRIO)
 #########################################################
 
+
+# MEU PERFIL 
+
+def minha_conta(request, id):
+    usuario = UsuarioReal.objects.get(id=id)
+    return render(request, "plataforma/minha_conta.html", {"usuario": usuario})
+
+
 # =========================================================
 # PÁGINA INICIAL
 # =========================================================

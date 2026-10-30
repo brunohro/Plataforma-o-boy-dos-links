@@ -135,7 +135,7 @@
 
                             {% if oferta.image_url %}
                                 <img
-                                    src="{{ oferta.image_url }}"
+                                    src="{{ oferta.image_url.url }}"
                                     alt="{{ oferta.nome_produto }}">
                             {% else %}
                                 <div class="page-offers-image-placeholder">

@@ -44,6 +44,7 @@ class OfertaForm(forms.ModelForm):
         ]
         widgets = {
         'descricao': forms.Textarea(attrs={'rows': 4}),
+        "image_url": forms.ClearableFileInput(attrs={"class": "form-control", "accept": "image/*"}),
         }
 
     def __init__(self, *args, **kwargs):

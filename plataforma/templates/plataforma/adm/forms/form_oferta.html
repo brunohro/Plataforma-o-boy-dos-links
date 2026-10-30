@@ -32,7 +32,7 @@
                     <i class="fa-solid fa-box-open"></i>
                     <div>
                         <h2>Informações do produto</h2>
-                        <p>Nome, categoria e loja responsável.</p>
+                        <p>Nome, categoria, preço e loja responsável.</p>
                     </div>
                 </div>
 
@@ -76,6 +76,38 @@
                                 <option value="" disabled>Nenhuma categoria cadastrada</option>
                             {% endfor %}
                         </select>
+                    </div>
+
+                    <div class="oferta-field">
+                        <label for="preco_atual">Preço atual (R$) *</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            id="preco_atual"
+                            name="preco_atual"
+                            class="oferta-input"
+                            placeholder="Ex.: 99.90"
+                            value="{{ form.preco_atual.value|default_if_none:'' }}"
+                            required
+                        >
+                        {{ form.preco_atual.errors }}
+                    </div>
+
+                    <div class="oferta-field">
+                        <label for="preco_anterior">Preço anterior (R$) *</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            id="preco_anterior"
+                            name="preco_anterior"
+                            class="oferta-input"
+                            placeholder="Ex.: 149.90"
+                            value="{{ form.preco_anterior.value|default_if_none:'' }}"
+                            required
+                        >
+                        {{ form.preco_anterior.errors }}
                     </div>
 
                     <div class="oferta-field oferta-field-full">
@@ -123,7 +155,7 @@
                         >
                     </div>
 
-                    <div class="oferta-field oferta-field-full">
+                    <div class="oferta-field">
                         <label for="cupom">Cupom de desconto</label>
                         <select id="cupom" name="cupom" class="oferta-input">
                             <option value="">Nenhum cupom vinculado</option>
@@ -134,6 +166,20 @@
                             </option>
                             {% endfor %}
                         </select>
+                        
+                    </div>
+
+                    <div class="oferta-field">
+                        <label for="duracao_horas">Duração (horas)</label>
+                        <input
+                            type="number"
+                            min="1"
+                            id="duracao_horas"
+                            name="duracao_horas"
+                            class="oferta-input"
+                            value="{{ form.duracao_horas.value|default:24 }}"
+                        >
+                        {{ form.duracao_horas.errors }}
                     </div>
                 </div>
             </section>

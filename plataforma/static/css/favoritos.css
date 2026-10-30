@@ -324,3 +324,19 @@
         transition: none;
     }
 }
+
+/* Títulos das seções (ofertas / cupons) */
+.favorites-page__section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 32px 0 16px;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.favorites-page__section-title small {
+    color: var(--text-muted, #9a9aa3);
+    font-size: 14px;
+    font-weight: 600;
+}

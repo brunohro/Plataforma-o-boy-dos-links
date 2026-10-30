@@ -16,7 +16,9 @@ urlpatterns = [
     path("ir/<int:pk>/", views.ir_para_oferta, name="ir_para_oferta"),
     path("ofertas/<int:pk>/votar/", views.votar_oferta, name="votar_oferta"),
     path("ofertas/<int:pk>/favoritar/", views.favoritar_oferta, name="favoritar_oferta"),
-    path("favoritos/", views.favoritos, name="favoritos"),   # só se mantiver a página de favoritos
+    path("cupons/<int:pk>/copiar/", views.registrar_copia_cupom, name="registrar_copia_cupom"),
+    path("cupons/<int:pk>/favoritar/", views.favoritar_cupom, name="favoritar_cupom"),
+    path("favoritos/", views.favoritos, name="favoritos"),
 
     #ofertas e cupons
     path("ofertas/", views.ofertas, name="ofertas"),

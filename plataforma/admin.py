@@ -15,6 +15,8 @@ from .models import (
     Oferta,
     UsuarioReal,
     Voto,
+    FavoritoCupom,
+    ClickCupom,
 )
 
 from django import forms
@@ -92,7 +94,6 @@ class CupomAdmin(admin.ModelAdmin):
         "loja",
         "desconto",
         "data_validade",
-        "quantidade_usos",
         "ativo",
     )
     list_filter = ("ativo", "loja", "data_validade")
@@ -197,3 +198,18 @@ class BannerAdmin(admin.ModelAdmin):
     search_fields = ("titulo", "descricao")
 
     ordering = ("ordem", "-criado_em")
+
+
+@admin.register(ClickCupom)
+class ClickCupomAdmin(admin.ModelAdmin):
+    list_display = ("usuario", "cupom", "criado_em")
+    list_filter = ("criado_em",)
+    search_fields = ("usuario__username", "usuario__email", "cupom__codigo")
+    readonly_fields = ("criado_em",)
+
+@admin.register(FavoritoCupom)
+class FavoritoCupomAdmin(admin.ModelAdmin):
+    list_display = ("usuario", "cupom", "criado_em")
+    list_filter = ("criado_em",)
+    search_fields = ("usuario__username", "usuario__email", "cupom__codigo")
+    readonly_fields = ("criado_em",)

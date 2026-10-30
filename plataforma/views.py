@@ -1,11 +1,12 @@
 from django.contrib import messages
+from django.http import JsonResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Count, Q, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET
 from .forms import CadastroForm, OfertaForm, CategoriaForm, LojaParceiraForm, CupomForm
-from .models import Banner, Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto, ClickOferta
+from .models import Banner, Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto, ClickOferta, ClickCupom, FavoritoCupom
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -17,6 +18,18 @@ TEMPLATE_LOGIN = "plataforma/login/login.html"
 TEMPLATE_CADASTRO = "plataforma/login/cadastro.html"
 TEMPLATE_CADASTRO_ETAPA2 = "plataforma/login/cadastroetapa2.html"
 
+def cupons_ativos_qs():
+    """Cupons em vigência no momento."""
+    agora = timezone.now()
+    return (
+        Cupom.objects
+        .filter(ativo=True, data_validade__gte=agora)
+        .select_related("loja")
+        .annotate(
+            total_usos=Count("clicks_registros_cupons", distinct=True),
+            total_favoritos=Count("favoritoscupons", distinct=True),
+        )
+    )
 
 def ofertas_ativas_qs():
     """Ofertas em vigência no momento."""
@@ -26,9 +39,9 @@ def ofertas_ativas_qs():
         .filter(data_inicio__lte=agora, data_fim__gte=agora)
         .select_related("loja", "categoria", "cupom")
         .annotate(
-            total_votos=Count("votos_registros"),
-            total_favoritos=Count("favoritos"),
-            total_clicks=Count("clicks_registros"),
+            total_votos=Count("votos_registros", distinct=True),
+            total_favoritos=Count("favoritos", distinct=True),
+            total_clicks=Count("clicks_registros", distinct=True),
         )
     )
 def interacoes(user):
@@ -36,11 +49,13 @@ def interacoes(user):
     if user.is_authenticated:
         votos = Voto.objects.filter(usuario=user).values_list("oferta_id", flat=True)
         favoritos = Favorito.objects.filter(usuario=user).values_list("oferta_id", flat=True)
+        favoritos_cupons = FavoritoCupom.objects.filter(usuario=user).values_list("cupom_id", flat=True)
         return {
             "votos": set(votos),
             "favoritos": set(favoritos),
+            "favoritos_cupons_ids": set(favoritos_cupons),
         }
-    return {"votos": set(), "favoritos": set()}
+    return {"votos": set(), "favoritos": set(), "favoritos_cupons_ids": set()}
 
 def ofertas_recomendadas(user):
     """Retorna ofertas recomendadas com base nas interações do usuário."""
@@ -58,6 +73,16 @@ def ofertas_recomendadas(user):
             .order_by("-data_inicio")[:8]
         )
     return ofertas_ativas_qs().order_by("-data_inicio")[:8]
+
+@require_POST
+def registrar_copia_cupom(request, pk):
+    """Conta uma cópia do cupom (usuário logado ou anônimo)."""
+    cupom = get_object_or_404(Cupom, pk=pk)
+
+    usuario = request.user if request.user.is_authenticated else None
+    ClickCupom.objects.create(usuario=usuario, cupom=cupom)
+
+    return JsonResponse({"usos": cupom.clicks_registros_cupons.count()})
 
 @require_GET
 def ir_para_oferta(request, pk):
@@ -97,14 +122,39 @@ def favoritar_oferta(request, pk):
     voltar = request.META.get("HTTP_REFERER", "/")
     return redirect(f"{voltar}#oferta-{oferta.pk}")
 
+@require_POST
+def favoritar_cupom(request, pk):
+    if not request.user.is_authenticated:
+        return redirect("login")
+
+    cupom = get_object_or_404(Cupom, pk=pk)
+
+    favorito, criado = FavoritoCupom.objects.get_or_create(usuario=request.user, cupom=cupom)
+    if not criado:
+        favorito.delete()
+
+    voltar = request.META.get("HTTP_REFERER", "/")
+    return redirect(f"{voltar}#cupom-{cupom.pk}")
+
 @login_required
 def favoritos(request):
-    lista = (
+    ofertas_favoritas = (
         ofertas_ativas_qs()
         .filter(favoritos__usuario=request.user)
         .order_by("-favoritos__criado_em")
     )
-    return render(request, "plataforma/favoritos.html", {"ofertas": lista, **interacoes(request.user)})
+    cupons_favoritos = (
+        Cupom.objects
+        .filter(favoritoscupons__usuario=request.user)
+        .select_related("loja")
+        .order_by("-favoritoscupons__criado_em")
+    )
+    return render(request, "plataforma/favoritos.html", {
+        "ofertas_favoritas": ofertas_favoritas,
+        "cupons_favoritos": cupons_favoritos,
+        **interacoes(request.user),
+    })
+
 # =========================================================
 # PÁGINA INICIAL
 # =========================================================
@@ -122,7 +172,14 @@ def home(request):
     banners = Banner.objects.filter(ativo=True).order_by("ordem")
 
     lojas_parceiras = (
-        LojaParceira.objects.all().order_by("nome")
+        LojaParceira.objects
+        .annotate(
+            total_cupons=Count(
+                "cupons",
+                filter=Q(cupons__ativo=True, cupons__data_validade__gte=agora),
+            )
+        )
+        .order_by("nome")
     )
 
     categorias = (
@@ -143,7 +200,7 @@ def home(request):
     #     .order_by("data_validade")[:6]
     # )
 
-    cupons = Cupom.objects.all()
+    cupons = cupons_ativos_qs().order_by("data_validade")[:6]
 
     return render(request, TEMPLATE_INDEX, {
         "recentes": recentes,
@@ -165,8 +222,12 @@ def home(request):
 # =========================================================
 
 def cupons(request):
-    cupons = Cupom.objects.all()
-    return render(request, "plataforma/cupons.html", {"cupons": cupons})
+    lista = cupons_ativos_qs().order_by("data_validade")
+    return render(request, "plataforma/cupons.html", {
+        "cupons": lista,
+        "total_cupons": lista.count(),
+        **interacoes(request.user),
+    })
 
 # =========================================================
 # PAINEL ADMINISTRATIVO
@@ -285,7 +346,12 @@ def editar_categoria(request, id):
 @staff_member_required
 def cupons_adm(request):
     busca = request.GET.get('q', '').strip()
-    cupons = Cupom.objects.select_related("loja").order_by("-data_validade")
+    cupons = (
+        Cupom.objects
+        .select_related("loja")
+        .annotate(total_usos=Count("clicks_registros_cupons"))
+        .order_by("-data_validade")
+    )
     if busca:
         cupons = cupons.filter(codigo__icontains=busca)
     paginator = Paginator(cupons, 10)

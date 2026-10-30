@@ -23,71 +23,7 @@
         <div class="featured-coupons__grid">
 
             {% for cupom in cupons %}
-                <article class="coupon-card">
-
-                    <!-- Área do desconto -->
-                    <div class="coupon-card__discount">
-                        <i class="fa-solid fa-ticket coupon-card__ticket"></i>
-
-                        {{ cupom.codigo}}
-
-                        {% if cupom.desconto %}
-                            <strong>{{ cupom.desconto }}%</strong>
-                            <span>DE DESCONTO</span>
-
-                        {% elif cupom.desconto_valor %}
-                            <strong>R$ {{ cupom.desconto_valor|floatformat:0 }}</strong>
-                            <span>DE DESCONTO</span>
-
-                        {% else %}
-                            <strong>OFERTA</strong>
-                            <span>ESPECIAL</span>
-                        {% endif %}
-                    </div>
-
-                    <!-- Informações -->
-                    <div class="coupon-card__content">
-
-                        <div class="coupon-card__store">
-                            <span class="coupon-card__store-name">
-                                {{ cupom.loja.nome }}
-                            </span>
-
-                            <span class="coupon-card__status">
-                                Ativo
-                            </span>
-                        </div>
-
-                        <h3 class="coupon-card__title">
-                            {{ cupom.nome }}
-                        </h3>
-
-                        <p class="coupon-card__details">
-                            {% if cupom.data_validade %}
-                                Válido até
-                                {{ cupom.data_validade|date:"d/m/Y" }}
-                            {% endif %}
-                        </p>
-
-                        <!-- Código e botão -->
-                        <div class="coupon-card__code-area">
-                            <span class="coupon-card__code" id="codigo-{{ cupom.id }}">
-                                {{ cupom.codigo }}
-                            </span>
-
-                            <button
-                                type="button"
-                                class="coupon-card__copy"
-                                data-code="{{ cupom.codigo }}"
-                                aria-label="Copiar cupom {{ cupom.codigo }}"
-                            >
-                                <i class="fa-regular fa-copy"></i>
-                                <span>Copiar</span>
-                            </button>
-                        </div>
-
-                    </div>
-                </article>
+                {% include "plataforma/components/cupom_item.html" %}
 
             {% empty %}
                 <p class="featured-coupons__empty">

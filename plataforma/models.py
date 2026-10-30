@@ -57,6 +57,11 @@ class LojaParceira(models.Model):
         agora = timezone.now()
         return self.ofertas.filter(data_inicio__lte=agora, data_fim__gte=agora).count()
 
+    @property
+    def contador_cupons(self):
+        agora = timezone.now()
+        return self.cupons.filter(ativo=True, data_validade__gte=agora).count()
+
 
 class Cupom(models.Model):
     loja = models.ForeignKey(
@@ -70,7 +75,6 @@ class Cupom(models.Model):
     descricao = models.TextField()
     data_validade = models.DateTimeField()
     desconto = models.DecimalField(max_digits=5, decimal_places=2)
-    quantidade_usos = models.IntegerField(default=0)
     ativo = models.BooleanField(default=True)
 
     def __str__(self):
@@ -259,4 +263,52 @@ class Banner(models.Model):
     class Meta:
         verbose_name = "Banner"
         verbose_name_plural = "Banners"
+        ordering = ["-criado_em"]
+
+class FavoritoCupom(models.Model):
+    usuario = models.ForeignKey(
+        UsuarioReal,
+        on_delete=models.CASCADE,
+        related_name="favoritoscupons",
+    )
+    cupom = models.ForeignKey(
+        Cupom,
+        on_delete=models.CASCADE,
+        related_name="favoritoscupons",
+    )
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Favorito de Cupom"
+        verbose_name_plural = "Favoritos de Cupom"
+        ordering = ["-criado_em"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["usuario", "cupom"],
+                name="unique_favoritocupom",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.usuario} - {self.cupom}"
+
+
+class ClickCupom(models.Model):
+    usuario = models.ForeignKey(
+        UsuarioReal,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="clicks_cupons",
+    )
+    cupom = models.ForeignKey(
+        Cupom,
+        on_delete=models.CASCADE,
+        related_name="clicks_registros_cupons",
+    )
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Click de Cupom"
+        verbose_name_plural = "Clicks de Cupons"
         ordering = ["-criado_em"]

@@ -14,8 +14,8 @@
                 </span>
 
                 <div>
-                    <h1>Minhas ofertas favoritas</h1>
-                    <p>Seus produtos favoritos reunidos em um só lugar.</p>
+                    <h1>Meus favoritos</h1>
+                    <p>Suas ofertas e cupons favoritos reunidos em um só lugar.</p>
                 </div>
             </div>
 
@@ -28,6 +28,10 @@
                 {% endif %}
             </span>
         </header>
+
+        <h2 class="favorites-page__section-title">
+            <i class="fa-solid fa-fire"></i> Ofertas favoritas
+        </h2>
 
         {% if ofertas_favoritas %}
             <div class="favorites-page__grid">
@@ -105,6 +109,31 @@
                 <a href="{% url 'ofertas' %}" class="favorites-empty__button">
                     <i class="fa-solid fa-fire"></i>
                     Explorar ofertas
+                </a>
+            </div>
+        {% endif %}
+
+        <h2 class="favorites-page__section-title">
+            <i class="fa-solid fa-ticket"></i> Cupons favoritos
+            <small>({{ cupons_favoritos|length }})</small>
+        </h2>
+
+        {% if cupons_favoritos %}
+            <div class="featured-coupons__grid">
+                {% for cupom in cupons_favoritos %}
+                    {% include "plataforma/components/cupom_item.html" %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="favorites-empty">
+                <span class="favorites-empty__icon">
+                    <i class="fa-regular fa-heart"></i>
+                </span>
+                <h2>Nenhum cupom favorito ainda</h2>
+                <p>Favorite cupons para encontrá-los facilmente depois.</p>
+                <a href="{% url 'cupons' %}" class="favorites-empty__button">
+                    <i class="fa-solid fa-ticket"></i>
+                    Ver cupons
                 </a>
             </div>
         {% endif %}

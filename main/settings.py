@@ -10,25 +10,67 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+"""
+Django settings for main project.
+
+Funciona em dois modos:
+- Local: DEBUG ligado e banco SQLite (db.sqlite3), sem configurar nada.
+- Render: DEBUG desligado e banco definido pela variável DATABASE_URL
+  (PostgreSQL). Se DATABASE_URL não existir, cai no SQLite.
+"""
+
+import os
 from pathlib import Path
+
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*9*op21cg!u^6_do3-a61j3+5g6--8q5or+&nf7c4ie^ma0f%l'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+# Quando rodando no Render, a variável RENDER é definida automaticamente.
+ON_RENDER = 'RENDER' in os.environ
 
 
-# Application definition
+# ---------------------------------------------------------------------------
+# Segurança
+# ---------------------------------------------------------------------------
+
+# No Render, defina SECRET_KEY nas variáveis de ambiente.
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'django-insecure-chave-apenas-para-desenvolvimento-local',
+)
+
+# Ligado localmente, desligado no Render.
+# Para forçar: DEBUG=True ou DEBUG=False nas variáveis de ambiente.
+DEBUG = os.environ.get('DEBUG', str(not ON_RENDER)).lower() == 'true'
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = []
+
+# O Render informa o domínio do serviço nesta variável.
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+    CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
+
+# Domínio próprio (opcional): CUSTOM_DOMAIN=www.meusite.com.br
+CUSTOM_DOMAIN = os.environ.get('CUSTOM_DOMAIN')
+if CUSTOM_DOMAIN:
+    ALLOWED_HOSTS.append(CUSTOM_DOMAIN)
+    CSRF_TRUSTED_ORIGINS.append(f'https://{CUSTOM_DOMAIN}')
+
+# Configurações de HTTPS (só em produção)
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+
+# ---------------------------------------------------------------------------
+# Aplicações
+# ---------------------------------------------------------------------------
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -42,6 +84,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # serve os arquivos estáticos
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -71,14 +114,22 @@ TEMPLATES = [
 WSGI_APPLICATION = 'main.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/6.1/ref/settings/#databases
+# ---------------------------------------------------------------------------
+# Banco de dados
+# ---------------------------------------------------------------------------
+# - Com DATABASE_URL definida (ex.: postgresql://user:senha@host/banco),
+#   usa PostgreSQL.
+# - Sem DATABASE_URL, usa SQLite local.
+#
+# Para migrar para PostgreSQL no futuro, basta criar o banco no Render e
+# colocar a "Internal Database URL" na variável DATABASE_URL do serviço.
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
 
 AUTH_USER_MODEL = "plataforma.UsuarioReal"
@@ -87,8 +138,10 @@ LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "/login/"
 LOGOUT_REDIRECT_URL = "/"
 
-# Password validation
-# https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators
+
+# ---------------------------------------------------------------------------
+# Validação de senha
+# ---------------------------------------------------------------------------
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -106,8 +159,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/6.1/topics/i18n/
+# ---------------------------------------------------------------------------
+# Internacionalização
+# ---------------------------------------------------------------------------
 
 LANGUAGE_CODE = 'pt-br'
 
@@ -118,14 +172,38 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.1/howto/static-files/
+# ---------------------------------------------------------------------------
+# Arquivos estáticos (CSS, JavaScript, imagens do projeto)
+# ---------------------------------------------------------------------------
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # destino do collectstatic
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 
+# ---------------------------------------------------------------------------
+# Arquivos de mídia (uploads: ofertas, lojas, categorias, banners)
+# ---------------------------------------------------------------------------
+# ATENÇÃO: no Render o disco é efêmero. Uploads somem a cada deploy/reinício,
+# a menos que você use um Persistent Disk ou um storage externo (Cloudinary, S3).
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+
+# ---------------------------------------------------------------------------
 # Email
-# https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
+# ---------------------------------------------------------------------------
+# No Django 6.1, o email é configurado por MAILERS. Não use EMAIL_BACKEND
+# junto, senão o Django lança ImproperlyConfigured.
 
 MAILERS = {
     'default': {
@@ -133,5 +211,4 @@ MAILERS = {
     },
 }
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

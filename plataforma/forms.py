@@ -39,6 +39,8 @@ class OfertaForm(forms.ModelForm):
             "descricao",
             "is_destaque",
             "is_relampago",
+            "preco_anterior",
+            "preco_atual",
         ]
         widgets = {
         'descricao': forms.Textarea(attrs={'rows': 4}),
@@ -61,6 +63,8 @@ class OfertaForm(forms.ModelForm):
         self.fields['cupom'].widget.attrs['class'] = 'form-select'
         self.fields['is_destaque'].widget.attrs['class'] = 'form-check-input'
         self.fields['is_relampago'].widget.attrs['class'] = 'form-check-input'
+        self.fields['preco_anterior'].widget.attrs['class'] = 'form-control'
+        self.fields['preco_atual'].widget.attrs['class'] = 'form-control'
 
         self.fields['cupom'].empty_label = 'Nenhum cupom'
         self.fields['categoria'].empty_label = 'Selecione uma categoria'

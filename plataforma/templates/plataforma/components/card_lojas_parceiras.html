@@ -9,9 +9,9 @@
             {% for loja in lojas_parceiras %}
                 <a href="#" class="partner-store">
                     <div class="partner-store__icon">
-                        {% if loja.logo_url %}
+                        {% if loja.logo_imagem %}
                             <img
-                                src="{{ loja.logo_url }}"
+                                src="{{ loja.logo_imagem.url }}"
                                 alt="Logo da {{ loja.nome }}"
                                 loading="lazy"
                             >
@@ -29,7 +29,7 @@
                     </div>
 
                     <p class="partner-store__coupons">
-                        {{ loja.cupons.count }} cupons
+                        {{ loja.total_cupons }} {% if loja.total_cupons == 1 %}cupom{% else %}cupons{% endif %}
                     </p>
 
                 </a>

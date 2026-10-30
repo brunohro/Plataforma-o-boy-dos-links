@@ -57,6 +57,11 @@ class LojaParceira(models.Model):
         agora = timezone.now()
         return self.ofertas.filter(data_inicio__lte=agora, data_fim__gte=agora).count()
 
+    @property
+    def contador_cupons(self):
+        agora = timezone.now()
+        return self.cupons.filter(ativo=True, data_validade__gte=agora).count()
+
 
 class Cupom(models.Model):
     loja = models.ForeignKey(
@@ -291,7 +296,9 @@ class FavoritoCupom(models.Model):
 class ClickCupom(models.Model):
     usuario = models.ForeignKey(
         UsuarioReal,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
         related_name="clicks_cupons",
     )
     cupom = models.ForeignKey(

@@ -1,0 +1,56 @@
+{# Card de cupom reutilizável. Espera a variável "cupom" (e opcionalmente favoritos_cupons_ids) #}
+<article class="coupon-card" id="cupom-{{ cupom.pk }}">
+
+    <div class="coupon-card__discount">
+        <i class="fa-solid fa-ticket coupon-card__ticket"></i>
+        <strong>{{ cupom.desconto|floatformat:"-2" }}%</strong>
+        <span>DE DESCONTO</span>
+    </div>
+
+    <div class="coupon-card__content">
+
+        <div class="coupon-card__store">
+            <span class="coupon-card__store-name">
+                {{ cupom.loja.nome|default:"Loja parceira" }}
+            </span>
+
+            <form method="post" action="{% url 'favoritar_cupom' cupom.pk %}">
+                {% csrf_token %}
+                <button
+                    type="submit"
+                    class="favorite-button {% if cupom.pk in favoritos_cupons_ids %}is-active{% endif %}"
+                    aria-label="Favoritar cupom {{ cupom.codigo }}"
+                >
+                    {% if cupom.pk in favoritos_cupons_ids %}♥{% else %}♡{% endif %}
+                </button>
+            </form>
+        </div>
+
+        <p class="coupon-card__details">
+            {{ cupom.descricao|truncatechars:90 }}
+        </p>
+
+        <p class="coupon-card__details">
+            Válido até {{ cupom.data_validade|date:"d/m/Y" }}
+            · <i class="fa-solid fa-copy"></i>
+            <span class="coupon-uses" data-uses-for="{{ cupom.pk }}">{{ cupom.total_usos|default:0 }}</span> usos
+        </p>
+
+        <div class="coupon-card__code-area">
+            <span class="coupon-card__code" id="codigo-{{ cupom.pk }}">{{ cupom.codigo }}</span>
+
+            <button
+                type="button"
+                class="coupon-card__copy"
+                data-code="{{ cupom.codigo }}"
+                data-copy-url="{% url 'registrar_copia_cupom' cupom.pk %}"
+                data-cupom-id="{{ cupom.pk }}"
+                aria-label="Copiar cupom {{ cupom.codigo }}"
+            >
+                <i class="fa-regular fa-copy"></i>
+                <span>Copiar</span>
+            </button>
+        </div>
+
+    </div>
+</article>

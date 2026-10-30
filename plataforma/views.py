@@ -9,6 +9,7 @@ from .models import Banner, Categoria, Cupom, Favorito, LojaParceira, Oferta, Us
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 TEMPLATE_PAINEL = "plataforma/adm/painel_adm.html"
 TEMPLATE_INDEX = "plataforma/index.html"
@@ -206,18 +207,35 @@ def admin_dashboard(request):
 
 @staff_member_required
 def adm_usuarios(request):
+    busca = request.GET.get('q', '').strip()
     usuarios = UsuarioReal.objects.order_by("-date_joined")
-    return render(request, "plataforma/adm/usuarios_adm.html", {"usuarios": usuarios})
+
+    if busca:
+        usuarios = usuarios.filter(
+            Q(username__icontains=busca) |
+            Q(email__icontains=busca) |
+            Q(telefone__icontains=busca)
+        )
+    paginator = Paginator(usuarios, 10)
+    page_obj = paginator.get_page(request.GET.get('page'))
+    return render(request, "plataforma/adm/usuarios_adm.html", {"usuarios": usuarios, "page_obj": page_obj})
 
 
 @staff_member_required
 def ofertas_adm(request):
+    busca = request.GET.get('q', '').strip()
     lista = (
         Oferta.objects
         .select_related("loja", "categoria", "cupom")
         .order_by("-criado_em")
     )
-    return render(request, "plataforma/adm/ofertas_adm.html", {"ofertas": lista})
+
+    if busca:
+        lista = lista.filter(nome_produto__icontains=busca)
+
+    paginator = Paginator(lista, 10)
+    page_obj = paginator.get_page(request.GET.get('page'))
+    return render(request, "plataforma/adm/ofertas_adm.html", {"ofertas": page_obj, "page_obj": page_obj})
 
 def cadastrar_oferta(request):
     return render(request, "plataforma/adm/forms/form_oferta.html")
@@ -228,13 +246,34 @@ def editar_oferta(request, id):
 
 @staff_member_required
 def lojas_adm(request):
-    lojas = LojaParceira.objects.order_by("nome")
-    return render(request, "plataforma/adm/lojas_adm.html", {"lojas": lojas})
+    busca = request.GET.get('q', '').strip()
+    lojas = LojaParceira.objects.all().order_by('nome')
+
+    if busca:
+        lojas = lojas.filter(nome__icontains=busca)
+
+    paginator = Paginator(lojas, 10)
+    page_obj = paginator.get_page(request.GET.get('page'))
+
+    context = {
+        'lojas': page_obj,
+        'page_obj': page_obj,
+    }
+
+    return render(request, 'plataforma/adm/lojas_adm.html', context)
+    
 
 @staff_member_required
 def categorias_adm(request):
+    busca = request.GET.get('q', '').strip()
     categorias = Categoria.objects.order_by("nome")
-    return render(request, "plataforma/adm/categorias_adm.html", {"categorias": categorias})
+
+    if busca:
+        categorias = categorias.filter(nome__icontains=busca)
+
+    paginator = Paginator(categorias, 10)
+    page_obj = paginator.get_page(request.GET.get('page'))
+    return render(request, "plataforma/adm/categorias_adm.html", {"categorias": page_obj, "page_obj": page_obj})
 
 def cadastrar_categoria(request):
     return render(request, "plataforma/adm/forms/form_categoria.html")
@@ -245,8 +284,14 @@ def editar_categoria(request, id):
 
 @staff_member_required
 def cupons_adm(request):
+    busca = request.GET.get('q', '').strip()
     cupons = Cupom.objects.select_related("loja").order_by("-data_validade")
-    return render(request, "plataforma/adm/cupons_adm.html", {"cupons": cupons})
+    if busca:
+        cupons = cupons.filter(codigo__icontains=busca)
+    paginator = Paginator(cupons, 10)
+    page_obj = paginator.get_page(request.GET.get('page'))
+    return render(request, "plataforma/adm/cupons_adm.html", {"cupons": page_obj, "page_obj": page_obj})
+
 
 def cadastrar_cupom(request):
     return render(request, "plataforma/adm/forms/form_cupom.html")
@@ -356,10 +401,6 @@ def excluir_oferta(request, id):
 # =========================================================
 # CRUD CATEGORIAS
 # =========================================================
-def categorias_adm(request):
-    categorias = Categoria.objects.all().order_by("nome")
-
-    return render(request, "plataforma/adm/categorias_adm.html", {"categorias": categorias})
 
 @staff_member_required
 def criar_categoria(request):
@@ -474,14 +515,6 @@ def usuarios_adm(request):
 # =========================================================
 # CRUD CUPOM ADM
 # =========================================================
-def cupons_adm(request):
-    cupons = Cupom.objects.filter(ativo=True).order_by("data_validade")
-
-    return render(
-        request,
-        "plataforma/adm/cupons_adm.html",
-        {"cupons": cupons}
-    )
 
 @staff_member_required
 def criar_cupom(request):

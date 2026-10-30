@@ -1,0 +1,62 @@
+
+{% extends 'plataforma/base.html' %}
+
+{% block content %}
+
+<section class="profile-page">
+    <div class="profile-page__container">
+
+        <header class="profile-page__header">
+            <h1>Minha Conta</h1>
+            <p>Confira as informações da sua conta.</p>
+        </header>
+
+        <div class="profile-card">
+
+            <div class="profile-card__header">
+                <div class="profile-card__avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+                <div>
+                    <h2>
+                        {{ request.user.get_full_name|default:request.user.username }}
+                    </h2>
+                    <span>Usuário cadastrado</span>
+                </div>
+            </div>
+
+            <div class="profile-card__information">
+
+                <div class="profile-field">
+                    <span>Nome de usuário</span>
+                    <strong>{{ request.user.username }}</strong>
+                </div>
+
+                <div class="profile-field">
+                    <span>Nome completo</span>
+                    <strong>
+                        {{ request.user.get_full_name|default:"Não informado" }}
+                    </strong>
+                </div>
+
+                <div class="profile-field">
+                    <span>E-mail</span>
+                    <strong>
+                        {{ request.user.email|default:"Não informado" }}
+                    </strong>
+                </div>
+
+                <div class="profile-field">
+                    <span>Data de cadastro</span>
+                    <strong>{{ request.user.date_joined|date:"d/m/Y" }}</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

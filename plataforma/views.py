@@ -3,6 +3,7 @@
 #########################################################
 
 from datetime import date, timedelta
+from functools import wraps
 from zoneinfo import ZoneInfo
 
 from django.contrib import messages
@@ -90,6 +91,31 @@ def interacoes(user):
     }
 
 
+def registrar_visita(request):
+    """Grava uma Visita: no máximo uma por sessão (navegador) a cada dia."""
+    hoje = timezone.localdate().isoformat()
+    if request.session.get("visita_registrada") == hoje:
+        return
+    usuario = request.user if request.user.is_authenticated else None
+    Visita.objects.create(usuario=usuario)
+    request.session["visita_registrada"] = hoje
+
+
+def conta_visita(view):
+    """Decorator: conta uma visita quando a página abre com sucesso (GET e resposta 200)."""
+    @wraps(view)
+    def interna(request, *args, **kwargs):
+        resposta = view(request, *args, **kwargs)
+        if request.method == "GET" and resposta.status_code == 200:
+            try:
+                registrar_visita(request)
+            except Exception:
+                # A estatística nunca pode derrubar o site
+                pass
+        return resposta
+    return interna
+
+
 def ofertas_recomendadas(user):
     """Retorna ofertas recomendadas com base nas interações do usuário."""
     if user.is_authenticated:
@@ -124,6 +150,7 @@ def minha_conta(request, id):
 # PÁGINA INICIAL
 # =========================================================
 
+@conta_visita
 def home(request):
     agora = timezone.now()
     ativas = ofertas_ativas_qs()
@@ -187,6 +214,7 @@ def home(request):
 # PÁGINA DE OFERTAS - USUÁRIO
 # =========================================================
 
+@conta_visita
 def ofertas(request, tipo="todas"):
     lista = ofertas_ativas_qs().order_by("data_fim")
     categorias = Categoria.objects.all()
@@ -214,6 +242,7 @@ def ofertas(request, tipo="todas"):
 # PÁGINA DE CUPONS - USUÁRIO
 # =========================================================
 
+@conta_visita
 def cupons(request):
     lista = cupons_ativos_qs().order_by("data_validade")
     return render(request, "plataforma/cupons.html", {
@@ -227,6 +256,7 @@ def cupons(request):
 # PÁGINA DE FAVORITOS - USUÁRIO
 # =========================================================
 
+@conta_visita
 @login_required
 def favoritos(request):
     ofertas_favoritas = (
@@ -333,6 +363,7 @@ def favoritar_cupom(request, pk):
 # LOGIN E CADASTRO
 #########################################################
 
+@conta_visita
 def login_view(request):
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
@@ -344,6 +375,7 @@ def login_view(request):
     return render(request, TEMPLATE_LOGIN, {"form": form})
 
 
+@conta_visita
 def cadastro_etapa1(request):
     if request.method == "POST":
         form = CadastroForm(request.POST)
@@ -365,6 +397,7 @@ def cadastro_etapa1(request):
     return render(request, TEMPLATE_CADASTRO, {"form": form})
 
 
+@conta_visita
 def cadastro_etapa2(request):
     if request.method == "POST":
         dados_completos = request.session['cadastro'].copy()

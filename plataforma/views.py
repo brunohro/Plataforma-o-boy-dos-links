@@ -564,6 +564,8 @@ def editar_oferta(request, id):
 
     else:
         form = OfertaForm(instance=oferta)
+        print("Preço anterior:", form["preco_anterior"].value())
+        print("Preço atual:", form["preco_atual"].value())
 
     return render(request, "plataforma/adm/forms/form_oferta.html", {
         "form": form,

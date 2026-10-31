@@ -10,11 +10,11 @@
 
       {% for categoria in categorias %}
       <a href="#" class="category-card">
-        <div class="category-icon">
-          {% if categoria.icone_url %}
-            <img src="{{ categoria.icone_url }}" alt="{{ categoria.nome }}">
+        <div class="partner-store__icon">
+          {% if categoria.icone_imagem %}
+            <img src="{{ categoria.icone_imagem.url }}" alt="{{ categoria.nome }}">
           {% endif %}
-          {% if not categoria.icone_url %}
+          {% if not categoria.icone_imagem %}
             <i class="fa-solid fa-tag"></i>
           {% endif %}
         </div>

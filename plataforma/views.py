@@ -68,12 +68,22 @@ def interacoes(user):
         votos = Voto.objects.filter(usuario=user).values_list("oferta_id", flat=True)
         favoritos = Favorito.objects.filter(usuario=user).values_list("oferta_id", flat=True)
         favoritos_cupons = FavoritoCupom.objects.filter(usuario=user).values_list("cupom_id", flat=True)
+        votos = set(votos)
+        favoritos = set(favoritos)
         return {
-            "votos": set(votos),
-            "favoritos": set(favoritos),
+            "votos": votos,
+            "favoritos": favoritos,
+            "votos_ids": votos,
+            "favoritos_ids": favoritos,
             "favoritos_cupons_ids": set(favoritos_cupons),
         }
-    return {"votos": set(), "favoritos": set(), "favoritos_cupons_ids": set()}
+    return {
+        "votos": set(),
+        "favoritos": set(),
+        "votos_ids": set(),
+        "favoritos_ids": set(),
+        "favoritos_cupons_ids": set(),
+    }
 
 
 def ofertas_recomendadas(user):
@@ -190,6 +200,7 @@ def ofertas(request, tipo="todas"):
         "categorias": categorias,
         "tipo_pagina": tipo,
         "categoria_atual": categoria_atual,
+        **interacoes(request.user),
     }
 
     return render(request, "plataforma/ofertas.html", context)

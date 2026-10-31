@@ -46,7 +46,7 @@
                 <thead>
                     <tr>
                         <th>Categoria</th>
-                        <th>categorias ativas</th>
+                        <th>Ofertas ativas</th>
                         <th class="actions-heading">Ações</th>
                     </tr>
                 </thead>
@@ -74,11 +74,11 @@
 
                         <td>
                             <span class="status-badge status-normal">
-                                {{ categoria.contador_categoriass }}
-                                {% if categoria.contador_categoriass == 1 %}
-                                    categorias ativa
+                                {{ categoria.contador_ofertas }}
+                                {% if categoria.contador_ofertas == 1 %}
+                                    oferta ativa 
                                 {% else %}
-                                    categoriass ativas
+                                    ofertas ativas
                                 {% endif %}
                             </span>
                         </td>

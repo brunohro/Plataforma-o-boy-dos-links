@@ -311,3 +311,23 @@ class ClickCupom(models.Model):
         verbose_name = "Click de Cupom"
         verbose_name_plural = "Clicks de Cupons"
         ordering = ["-criado_em"]
+
+
+class Visita(models.Model):
+    """Uma visita ao site (no máximo uma por sessão a cada dia). Alimenta o gráfico do painel."""
+    usuario = models.ForeignKey(
+        UsuarioReal,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="visitas",
+    )
+    criado_em = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        verbose_name = "Visita"
+        verbose_name_plural = "Visitas"
+        ordering = ["-criado_em"]
+
+    def __str__(self):
+        return f"Visita em {self.criado_em:%d/%m/%Y %H:%M}"

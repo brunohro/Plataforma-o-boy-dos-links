@@ -249,21 +249,13 @@
 
             <div class="period-filter">
 
-                <button class="period-button active">
-                    Dia
-                </button>
+                <button type="button" class="period-button active" data-agrupar="dia">Dia</button>
 
-                <button class="period-button">
-                    Semana
-                </button>
+                <button type="button" class="period-button" data-agrupar="semana">Semana</button>
 
-                <button class="period-button">
-                    Mês
-                </button>
+                <button type="button" class="period-button" data-agrupar="mes">Mês</button>
 
-                <button class="period-button">
-                    Ano
-                </button>
+                <button type="button" class="period-button" data-agrupar="ano">Ano</button>
 
             </div>
 
@@ -289,53 +281,98 @@
                 </div>
 
 
-                <select class="date-filter">
+                <select class="date-filter" id="grafico-dias">
 
                     <option value="7">Últimos 7 dias</option>
                     <option value="15">Últimos 15 dias</option>
                     <option value="30" selected>Últimos 30 dias</option>
                     <option value="90">Últimos 90 dias</option>
+                    <option value="365">Último ano</option>
 
                 </select>
 
             </div>
 
 
-            <div class="chart-placeholder">
-
-                <div class="chart-y-axis">
-                    <span>1000</span>
-                    <span>750</span>
-                    <span>500</span>
-                    <span>250</span>
-                    <span>0</span>
-                </div>
-
-
-                <div class="chart-area">
-
-                    <div class="chart-line visits-line"></div>
-
-                    <div class="chart-line clicks-line"></div>
-
-                    <div class="chart-grid-line line-1"></div>
-                    <div class="chart-grid-line line-2"></div>
-                    <div class="chart-grid-line line-3"></div>
-                    <div class="chart-grid-line line-4"></div>
-
-                    <div class="chart-x-axis">
-                        <span>01</span>
-                        <span>07</span>
-                        <span>14</span>
-                        <span>21</span>
-                        <span>30</span>
-                    </div>
-
-                </div>
-
+            <div class="chart-canvas-wrap">
+                <canvas id="grafico-adm"></canvas>
+                <p id="grafico-vazio" class="chart-empty" hidden>Ainda não há dados neste período.</p>
             </div>
+
 
         </div>
 
     </section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+(function () {
+    const urlDados = "{% url 'dados_grafico_adm' %}";
+    const canvas = document.getElementById("grafico-adm");
+    const seletor = document.getElementById("grafico-dias");
+    const botoes = document.querySelectorAll(".period-button[data-agrupar]");
+    const aviso = document.getElementById("grafico-vazio");
+    if (!canvas || !seletor || typeof Chart === "undefined") return;
+
+    const estilos = getComputedStyle(document.documentElement);
+    const cor = (variavel, padrao) => estilos.getPropertyValue(variavel).trim() || padrao;
+    const corVisitas = cor("--primary", "#f97316");
+    const corCliques = cor("--warning", "#eab308");
+    const corTexto = cor("--text-secondary", "#9ca3af");
+    const corGrade = cor("--border", "#333333");
+
+    let agrupar = "dia";
+    let grafico = null;
+
+    function montar(dados) {
+        const config = {
+            type: "line",
+            data: {
+                labels: dados.labels,
+                datasets: [
+                    { label: "Visitas", data: dados.visitas, borderColor: corVisitas, backgroundColor: corVisitas, tension: 0.3, pointRadius: 2 },
+                    { label: "Cliques", data: dados.cliques, borderColor: corCliques, backgroundColor: corCliques, tension: 0.3, pointRadius: 2 }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: "index", intersect: false },
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { ticks: { color: corTexto, maxTicksLimit: 10 }, grid: { display: false } },
+                    y: { beginAtZero: true, ticks: { color: corTexto, precision: 0 }, grid: { color: corGrade } }
+                }
+            }
+        };
+        if (grafico) { grafico.destroy(); }
+        grafico = new Chart(canvas, config);
+    }
+
+    async function carregar() {
+        try {
+            const resposta = await fetch(`${urlDados}?dias=${seletor.value}&agrupar=${agrupar}`, { credentials: "same-origin" });
+            if (!resposta.ok) throw new Error("Falha ao carregar o gráfico");
+            const dados = await resposta.json();
+            const total = dados.visitas.concat(dados.cliques).reduce((a, b) => a + b, 0);
+            aviso.hidden = total > 0;
+            montar(dados);
+        } catch (erro) {
+            console.error(erro);
+        }
+    }
+
+    botoes.forEach(function (botao) {
+        botao.addEventListener("click", function () {
+            botoes.forEach(function (b) { b.classList.remove("active"); });
+            botao.classList.add("active");
+            agrupar = botao.dataset.agrupar;
+            carregar();
+        });
+    });
+    seletor.addEventListener("change", carregar);
+
+    carregar();
+})();
+</script>
 {% endblock %}

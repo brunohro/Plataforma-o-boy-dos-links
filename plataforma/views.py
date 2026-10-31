@@ -2,15 +2,19 @@
 # IMPORTS
 #########################################################
 
+from datetime import date, timedelta
+from zoneinfo import ZoneInfo
+
 from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Count, Q, Sum
+from django.db.models.functions import TruncDay, TruncMonth, TruncWeek, TruncYear
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET
 from .forms import CadastroForm, OfertaForm, CategoriaForm, LojaParceiraForm, CupomForm
-from .models import Banner, Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto, ClickOferta, ClickCupom, FavoritoCupom
+from .models import Banner, Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto, ClickOferta, ClickCupom, FavoritoCupom, Visita
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -402,7 +406,7 @@ def admin_dashboard(request):
         "total_com_cupom": Oferta.objects.filter(cupom__isnull=False).count(),
         "total_votos": Voto.objects.count(),
         "total_favoritos": Favorito.objects.count(),
-        "total_clicks": Oferta.objects.aggregate(total=Sum("clicks_registros"))["total"] or 0,
+        "total_clicks": ClickOferta.objects.count() + ClickCupom.objects.count(),
         "ofertas": (
             Oferta.objects
             .select_related("loja", "categoria", "cupom")
@@ -416,6 +420,104 @@ def admin_dashboard(request):
     }
 
     return render(request, TEMPLATE_PAINEL, contexto)
+
+
+# =========================================================
+# GRÁFICO DO PAINEL (VISITAS E CLIQUES)
+# =========================================================
+
+try:
+    FUSO_GRAFICO = ZoneInfo("America/Sao_Paulo")
+except Exception:  # sem base de fusos instalada
+    FUSO_GRAFICO = timezone.get_current_timezone()
+
+AGRUPAMENTOS = {
+    "dia": TruncDay,
+    "semana": TruncWeek,
+    "mes": TruncMonth,
+    "ano": TruncYear,
+}
+PERIODOS_VALIDOS = (7, 15, 30, 90, 365)
+
+
+def _inicio_do_periodo(d, agrupar):
+    """Primeiro dia do bloco (dia, semana, mês ou ano) que contém a data d."""
+    if agrupar == "semana":
+        return d - timedelta(days=d.weekday())
+    if agrupar == "mes":
+        return d.replace(day=1)
+    if agrupar == "ano":
+        return d.replace(month=1, day=1)
+    return d
+
+
+def _proximo_periodo(d, agrupar):
+    if agrupar == "semana":
+        return d + timedelta(days=7)
+    if agrupar == "mes":
+        return date(d.year + (d.month == 12), d.month % 12 + 1, 1)
+    if agrupar == "ano":
+        return date(d.year + 1, 1, 1)
+    return d + timedelta(days=1)
+
+
+def _rotulo(d, agrupar):
+    if agrupar == "mes":
+        return d.strftime("%m/%Y")
+    if agrupar == "ano":
+        return d.strftime("%Y")
+    return d.strftime("%d/%m")
+
+
+def _contar_por_periodo(queryset, trunc, desde):
+    linhas = (
+        queryset
+        .filter(criado_em__gte=desde)
+        .annotate(periodo=trunc("criado_em", tzinfo=FUSO_GRAFICO))
+        .values("periodo")
+        .annotate(total=Count("id"))
+        .order_by("periodo")
+    )
+    return {linha["periodo"].date(): linha["total"] for linha in linhas}
+
+
+@staff_member_required
+@require_GET
+def dados_grafico_adm(request):
+    """JSON com as séries de visitas e cliques usadas pelo gráfico do painel."""
+    try:
+        dias = int(request.GET.get("dias", 30))
+    except ValueError:
+        dias = 30
+    if dias not in PERIODOS_VALIDOS:
+        dias = 30
+
+    agrupar = request.GET.get("agrupar", "dia")
+    if agrupar not in AGRUPAMENTOS:
+        agrupar = "dia"
+    trunc = AGRUPAMENTOS[agrupar]
+
+    hoje = timezone.now().astimezone(FUSO_GRAFICO).date()
+    desde_data = hoje - timedelta(days=dias - 1)
+    desde = timezone.now() - timedelta(days=dias)
+
+    visitas = _contar_por_periodo(Visita.objects.all(), trunc, desde)
+    cliques_ofertas = _contar_por_periodo(ClickOferta.objects.all(), trunc, desde)
+    cliques_cupons = _contar_por_periodo(ClickCupom.objects.all(), trunc, desde)
+
+    labels, serie_visitas, serie_cliques = [], [], []
+    atual = _inicio_do_periodo(desde_data, agrupar)
+    while atual <= hoje:
+        labels.append(_rotulo(atual, agrupar))
+        serie_visitas.append(visitas.get(atual, 0))
+        serie_cliques.append(cliques_ofertas.get(atual, 0) + cliques_cupons.get(atual, 0))
+        atual = _proximo_periodo(atual, agrupar)
+
+    return JsonResponse({
+        "labels": labels,
+        "visitas": serie_visitas,
+        "cliques": serie_cliques,
+    })
 
 
 # =========================================================

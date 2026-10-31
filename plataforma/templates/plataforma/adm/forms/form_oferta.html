@@ -25,7 +25,18 @@
         
         <form class="oferta-form" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-
+            {% if form.errors %}
+                <div class="oferta-alerta-erro">
+                    <strong>
+                        Não foi possível cadastrar a oferta.
+                    </strong>
+                    {% for campo, erros in form.errors.items %}
+                        {% for erro in erros %}
+                            <p>{{ erro }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endif %}
 
             <section class="oferta-form-section">
                 <div class="oferta-section-heading">
@@ -142,6 +153,7 @@
                             class="oferta-input"
                             placeholder="https://..."
                         >
+                        {{ form.link_afiliado.errors }}
                     </div>
 
                     <div class="oferta-field oferta-field-full">

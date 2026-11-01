@@ -60,6 +60,8 @@ urlpatterns = [
     # banners adm
     path("adm/banners/", views.banners_adm, name="banners_adm"),
     path("adm/banners/cadastrar/", views.cadastrar_banner, name="cadastrar_banner"),
+    path("adm/banners/editar/<int:id>/", views.editar_banner, name="editar_banner"),
+    path("adm/banners/<int:id>/excluir/", views.excluir_banner, name="excluir_banner"),
 
 
     path("ofertas/relampago/",views.ofertas,{"tipo": "relampago"}, name="ofertas_relampago",),

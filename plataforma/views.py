@@ -856,6 +856,59 @@ def cadastrar_banner(request):
         context
     )
 
+@staff_member_required
+def editar_banner(request, id):
+
+    banner = get_object_or_404(Banner, id=id)
+
+    if request.method == 'POST':
+
+        form = BannerForm(
+            request.POST,
+            request.FILES,
+            instance=banner
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            messages.success(
+                request,
+                'Banner atualizado com sucesso!'
+            )
+
+            return redirect('banners_adm')
+
+    else:
+        form = BannerForm(instance=banner)
+
+    context = {
+        'form': form,
+        'banner': banner,
+    }
+
+    return render(
+        request,
+        'plataforma/adm/forms/form_banner.html',
+        context
+    )
+
+@staff_member_required
+@require_POST
+def excluir_banner(request, id):
+
+    banner = get_object_or_404(Banner, id=id)
+
+    titulo = banner.titulo
+
+    banner.delete()
+
+    messages.success(
+        request,
+        f'Banner "{titulo}" excluído com sucesso!'
+    )
+    return redirect('banners_adm')
 
 
 

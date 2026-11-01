@@ -16,7 +16,7 @@
             </div>
 
             <div class="banners-header-actions">
-                <a href="{% url 'painel_adm' %}" class="banner-btn-voltar">
+                <a href="{% url 'painel_adm' %}" class="banner-form-btn-voltar">
                     <i class="fa-solid fa-arrow-left"></i>
                     Voltar
                 </a>
@@ -146,7 +146,7 @@
                             <div class="banners-actions">
 
                                 <a
-                                    href="{% url 'editar_categoria' banner.id %}"
+                                    href="{% url 'editar_banner' banner.id %}"
                                     class="banners-edit-button"
                                     title="Editar banner">
 
@@ -156,7 +156,7 @@
 
                                 <form
                                     method="POST"
-                                    action="{% url 'excluir_categoria' banner.id %}"
+                                    action="{% url 'excluir_banner' banner.id %}"
                                     onsubmit="return confirm('Tem certeza que deseja excluir o banner {{ banner.titulo|escapejs }}?');">
 
                                     {% csrf_token %}

@@ -1,0 +1,10 @@
+{# Selo de função. Uso: {% include 'plataforma/components/selo_funcao.html' with usuario=user %} #}
+{% if usuario.is_superuser %}
+<span class="role-badge role-badge--super" title="Superadministrador">
+    <i class="fa-solid fa-crown" aria-hidden="true"></i> Super Admin
+</span>
+{% elif usuario.is_staff %}
+<span class="role-badge role-badge--admin" title="Administrador">
+    <i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Admin
+</span>
+{% endif %}

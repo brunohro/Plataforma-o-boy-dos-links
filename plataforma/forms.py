@@ -114,6 +114,7 @@ class BannerForm(forms.ModelForm):
     class Meta:
         model = Banner
         fields = [
+            'etiqueta',
             'titulo',
             'imagem',
             'descricao',
@@ -124,6 +125,11 @@ class BannerForm(forms.ModelForm):
         ]
 
         widgets = {
+            'etiqueta': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Ex: OFERTA RELÂMPAGO'
+            }),
+
             'titulo': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Digite o título do banner'

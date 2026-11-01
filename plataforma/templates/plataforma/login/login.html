@@ -35,6 +35,7 @@
 
             <form class="login-form" method="post" novalidate>
                 {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next }}">
 
                 <div class="login-campo">
                     <label for="{{ form.username.id_for_label }}">Apelido</label>

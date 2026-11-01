@@ -1,4 +1,3 @@
-
 /* =========================
    CARROSSEL
 ========================= */
@@ -11,33 +10,131 @@
 
 .carousel {
     position: relative;
-    width: 1216px;
-    height: 335px;
+    width: calc(100% - 32px);
+    max-width: 1216px;
+    height: clamp(230px, 27.5vw, 335px);
     margin: 0 auto;
     overflow: hidden;
     border-radius: 15px;
+    background-color: var(--surface);
 }
 
 .carousel-track {
     display: flex;
     width: 100%;
     height: 100%;
-
     transition: transform 0.5s ease-in-out;
 }
 
 .carousel-slide {
+    position: relative;
+    flex: 0 0 100%;
     min-width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
-.carousel-slide img {
+.carousel-image {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
-
     display: block;
-
     object-fit: cover;
+}
+
+/* Degradê à esquerda: garante a leitura do texto sobre qualquer imagem */
+.carousel-slide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+        90deg,
+        rgba(13, 13, 13, 0.88) 0%,
+        rgba(13, 13, 13, 0.62) 42%,
+        rgba(13, 13, 13, 0) 78%
+    );
+}
+
+
+/* =========================
+   TEXTO SOBRE O BANNER
+========================= */
+
+.carousel-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 12px;
+    width: min(540px, 100%);
+    height: 100%;
+    padding: 0 56px;
+}
+
+.carousel-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background-color: var(--primary);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.carousel-title {
+    margin: 0;
+    color: #fff;
+    font-size: clamp(22px, 3.2vw, 38px);
+    font-weight: 800;
+    line-height: 1.12;
+    text-wrap: balance;
+}
+
+.carousel-text {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: clamp(13px, 1.4vw, 16px);
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.carousel-cta {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    margin-top: 6px;
+    padding: 11px 22px;
+    border-radius: 9px;
+    background-color: var(--primary);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    transition: background-color 0.2s;
+}
+
+.carousel-cta:hover,
+.carousel-cta:focus-visible {
+    background-color: var(--primary-hover);
+}
+
+/* Faz o banner inteiro clicável, sem aninhar links */
+.carousel-cta::after {
+    content: "";
+    position: absolute;
+    inset: -400px -900px;
+}
+
+.carousel-slide:has(.carousel-cta:focus-visible) {
+    outline: 2px solid var(--primary-hover);
+    outline-offset: -4px;
 }
 
 
@@ -48,8 +145,12 @@
 .carousel-button {
     position: absolute;
     top: 50%;
+    z-index: 3;
     transform: translateY(-50%);
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 35px;
     height: 35px;
 
@@ -58,21 +159,20 @@
 
     background-color: rgba(0, 0, 0, 0.6);
     color: white;
-
-    font-size: 18px;
-
+    font-size: 14px;
     cursor: pointer;
 
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s, background-color 0.2s;
 }
 
-.carousel:hover .carousel-button {
+.carousel:hover .carousel-button,
+.carousel:focus-within .carousel-button {
     opacity: 1;
 }
 
 .carousel-button:hover {
-    background-color: #f04b2f;
+    background-color: var(--primary);
 }
 
 .carousel-button.prev {
@@ -90,10 +190,9 @@
 
 .carousel-indicators {
     position: absolute;
-
+    z-index: 3;
     bottom: 12px;
     left: 50%;
-
     transform: translateX(-50%);
 
     display: flex;
@@ -103,20 +202,57 @@
 .indicator {
     width: 10px;
     height: 10px;
-
+    padding: 0;
+    border: none;
     border-radius: 50%;
-
-    background-color: #555;
-
+    background-color: rgba(255, 255, 255, 0.4);
     cursor: pointer;
-
     transition: all 0.3s;
 }
 
 .indicator.active {
     width: 25px;
     border-radius: 10px;
-
-    background-color: #f04b2f;
+    background-color: var(--primary);
 }
 
+
+/* =========================
+   CELULAR
+========================= */
+
+@media (max-width: 640px) {
+    .banner-section {
+        padding: 18px 0;
+    }
+
+    .carousel-content {
+        gap: 9px;
+        width: 100%;
+        padding: 0 22px 18px;
+    }
+
+    .carousel-slide::before {
+        background: linear-gradient(
+            90deg,
+            rgba(13, 13, 13, 0.9) 0%,
+            rgba(13, 13, 13, 0.6) 70%,
+            rgba(13, 13, 13, 0.25) 100%
+        );
+    }
+
+    .carousel-cta {
+        padding: 9px 18px;
+        font-size: 13px;
+    }
+
+    .carousel-button {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .carousel-track {
+        transition: none;
+    }
+}

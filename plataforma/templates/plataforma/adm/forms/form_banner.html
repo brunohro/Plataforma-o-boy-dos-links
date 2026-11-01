@@ -72,6 +72,25 @@
                     </div>
                 </div>
 
+                <!-- Etiqueta -->
+                <div class="banner-form-group">
+                    <label for="{{ form.etiqueta.id_for_label }}">
+                        Etiqueta
+                    </label>
+
+                    {{ form.etiqueta }}
+
+                    <small>
+                        Selo curto exibido acima do título. Ex.: OFERTA RELÂMPAGO, NOVIDADE, DESTAQUE.
+                    </small>
+
+                    {% if form.etiqueta.errors %}
+                        <span class="banner-form-error">
+                            {{ form.etiqueta.errors }}
+                        </span>
+                    {% endif %}
+                </div>
+
                 <!-- Título -->
                 <div class="banner-form-group">
                     <label for="{{ form.titulo.id_for_label }}">
@@ -90,7 +109,7 @@
                 <!-- Descrição -->
                 <div class="banner-form-group">
                     <label for="{{ form.descricao.id_for_label }}">
-                        Descrição
+                        Descrição (texto abaixo do título)
                     </label>
 
                     {{ form.descricao }}

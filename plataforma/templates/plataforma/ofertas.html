@@ -17,7 +17,7 @@
             <nav class="page-offers-nav" aria-label="Categorias de ofertas">
 
                 <a href="{% url 'ofertas' %}"
-                   class="page-offers-nav-item {% if tipo_pagina == 'todas' %}active{% endif %}">
+                   class="page-offers-nav-item {% if tipo_pagina == 'todas' and not categoria_atual %}active{% endif %}">
                     <i class="fa-solid fa-tags"></i>
                     <span>Todas as ofertas</span>
                 </a>
@@ -28,35 +28,13 @@
                     <span>Relâmpago</span>
                 </a>
 
-                <a href="?categoria=eletronicos"
-                   class="page-offers-nav-item {% if categoria_atual == 'eletronicos' %}active{% endif %}">
-                    <i class="fa-solid fa-mobile-screen-button"></i>
-                    <span>Eletrônicos</span>
+                {% for categoria in categorias %}
+                <a href="?categoria={{ categoria.id }}"
+                   class="page-offers-nav-item {% if categoria_atual == categoria.id|stringformat:'s' %}active{% endif %}">
+                    <i class="fa-solid fa-tag"></i>
+                    <span>{{ categoria.nome }}</span>
                 </a>
-
-                <a href="?categoria=perfumes"
-                   class="page-offers-nav-item {% if categoria_atual == 'perfumes' %}active{% endif %}">
-                    <i class="fa-solid fa-spray-can-sparkles"></i>
-                    <span>Perfumes</span>
-                </a>
-
-                <a href="?categoria=fitness"
-                   class="page-offers-nav-item {% if categoria_atual == 'fitness' %}active{% endif %}">
-                    <i class="fa-solid fa-dumbbell"></i>
-                    <span>Fitness</span>
-                </a>
-
-                <a href="?categoria=casa"
-                   class="page-offers-nav-item {% if categoria_atual == 'casa' %}active{% endif %}">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Casa</span>
-                </a>
-
-                <a href="?categoria=moda"
-                   class="page-offers-nav-item {% if categoria_atual == 'moda' %}active{% endif %}">
-                    <i class="fa-solid fa-shirt"></i>
-                    <span>Moda</span>
-                </a>
+                {% endfor %}
 
             </nav>
 
@@ -75,11 +53,11 @@
             <section class="page-offers-filter-section">
                 <h3>Tipo de promoção</h3>
 
-                <a href="?tipo=oferta-do-dia" class="page-offers-filter-link">
-                    Oferta do dia
+                <a href="{% url 'ofertas' %}" class="page-offers-filter-link">
+                    Todas as ofertas
                 </a>
 
-                <a href="?tipo=relampago" class="page-offers-filter-link">
+                <a href="{% url 'ofertas_relampago' %}" class="page-offers-filter-link">
                     Oferta relâmpago
                 </a>
             </section>
@@ -88,7 +66,7 @@
                 <h3>Categorias</h3>
 
                 {% for categoria in categorias %}
-                    <a href="?categoria={{ categoria.nome }}"
+                    <a href="?categoria={{ categoria.id }}"
                        class="page-offers-filter-link">
                         {{ categoria.nome }}
                     </a>

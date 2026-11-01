@@ -230,7 +230,9 @@ class Voto(models.Model):
 class ClickOferta(models.Model):
     usuario = models.ForeignKey(
         UsuarioReal,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
         related_name="clicks_ofertas",
     )
     oferta = models.ForeignKey(
@@ -247,6 +249,13 @@ class ClickOferta(models.Model):
 
 
 class Banner(models.Model):
+    etiqueta = models.CharField(
+        max_length=30,
+        blank=True,
+        default="",
+        verbose_name="Etiqueta",
+        help_text="Selo curto acima do título. Ex.: OFERTA RELÂMPAGO, NOVIDADE, DESTAQUE.",
+    )
     titulo = models.CharField(max_length=100)
     imagem = models.ImageField(upload_to="banners/")
     descricao = models.TextField(blank=True, null=True)

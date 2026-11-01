@@ -28,12 +28,12 @@ from django.contrib.auth.admin import UserAdmin
 @admin.register(UsuarioReal)
 class UsuarioAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
-        ("Dados extras", {"fields": ("telefone", "data_nascimento")}),
+        ("Dados extras", {"fields": ("apelido", "telefone", "data_nascimento", "sexo")}),
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
         ("Dados extras", {"fields": ("email", "telefone", "data_nascimento")}),
     )
-    list_display = ("username", "email", "telefone", "is_staff")
+    list_display = ("username", "email", "telefone", "is_staff", "is_superuser")
     
 class DescontoAdminMixin:
     """Mostra o desconto calculado e permite ordenar por ele na listagem."""
@@ -187,6 +187,7 @@ admin.site.index_title = "Painel de Administração"
 class BannerAdmin(admin.ModelAdmin):
     list_display = (
         "titulo",
+        "etiqueta",
         "ordem",
         "ativo",
     )

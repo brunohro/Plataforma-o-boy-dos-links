@@ -25,7 +25,18 @@
         
         <form class="oferta-form" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-
+            {% if form.errors %}
+                <div class="oferta-alerta-erro">
+                    <strong>
+                        Não foi possível cadastrar a oferta.
+                    </strong>
+                    {% for campo, erros in form.errors.items %}
+                        {% for erro in erros %}
+                            <p>{{ erro }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endif %}
 
             <section class="oferta-form-section">
                 <div class="oferta-section-heading">
@@ -45,6 +56,8 @@
                             name="nome_produto"
                             class="oferta-input"
                             placeholder="Ex.: Tênis esportivo masculino"
+                            value="{{ form.nome_produto.value|default_if_none:'' }}"
+
                         >
                     </div>
 
@@ -118,7 +131,7 @@
                             class="oferta-input oferta-textarea"
                             rows="4"
                             placeholder="Descreva os detalhes do produto..."
-                        ></textarea>
+                        >{{ form.descricao.value|default_if_none:'' }}</textarea>
                     </div>
                 </div>
             </section>
@@ -141,7 +154,10 @@
                             name="link_afiliado"
                             class="oferta-input"
                             placeholder="https://..."
+                            value="{{ form.link_afiliado.value|default_if_none:'' }}"
+
                         >
+                        {{ form.link_afiliado.errors }}
                     </div>
 
                     <div class="oferta-field oferta-field-full">
@@ -201,6 +217,8 @@
                             id="is_destaque"
                             name="is_destaque"
                             class="oferta-checkbox"
+                            {% if form.is_destaque.value %}checked{% endif %}
+
                         >
                         <span class="oferta-option-icon destaque">
                             <i class="fa-solid fa-star"></i>
@@ -217,6 +235,8 @@
                             id="is_relampago"
                             name="is_relampago"
                             class="oferta-checkbox"
+                            {% if form.is_relampago.value %}checked{% endif %}
+
                         >
                         <span class="oferta-option-icon relampago">
                             <i class="fa-solid fa-bolt"></i>

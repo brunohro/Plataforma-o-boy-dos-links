@@ -58,6 +58,12 @@ urlpatterns = [
     path("adm/lojas/editar/<int:id>/", views.editar_loja, name="editar_loja"),
     path("adm/lojas/<int:id>/excluir/", views.excluir_loja, name="excluir_loja"),
 
+    # banners adm
+    path("adm/banners/", views.banners_adm, name="banners_adm"),
+    path("adm/banners/cadastrar/", views.cadastrar_banner, name="cadastrar_banner"),
+    path("adm/banners/editar/<int:id>/", views.editar_banner, name="editar_banner"),
+    path("adm/banners/<int:id>/excluir/", views.excluir_banner, name="excluir_banner"),
+
 
     path("ofertas/relampago/",views.ofertas,{"tipo": "relampago"}, name="ofertas_relampago",),
     path("promocoes/", RedirectView.as_view(pattern_name="ofertas", permanent=True)),

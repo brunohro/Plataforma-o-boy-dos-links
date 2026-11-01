@@ -156,7 +156,7 @@ class Oferta(DescontoCalculadoMixin):
         related_name="ofertas",
     )
     nome_produto = models.CharField(max_length=100)
-    link_afiliado = models.URLField()
+    link_afiliado = models.URLField(max_length=500)
     image_url = models.ImageField(upload_to="ofertas/", blank=True, null=True)
     descricao = models.TextField(blank=True, null=True)
     is_destaque = models.BooleanField(default=False)

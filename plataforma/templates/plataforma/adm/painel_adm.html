@@ -13,6 +13,11 @@
         <span class="adm-subtitle">PAINEL ADMINISTRATIVO</span>
 
         <nav class="admin-buttons">
+            <a href="{% url 'banners_adm' %}" class="admin-button">
+                <i class="fa-solid fa-tags"></i>
+                <span>Gerenciamento de Banners</span>
+            </a>
+
             <a href="{% url 'ofertas_adm' %}" class="admin-button">
                 <i class="fa-solid fa-tags"></i>
                 <span>Gerenciamento de Ofertas</span>
@@ -88,7 +93,7 @@
 
             </div>
 
-
+            
             <!-- OFERTAS -->
 
             <div class="metric-card">
@@ -174,6 +179,28 @@
 
                     <strong>
                         {{ total_cupons_ativos }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <!-- BANNERS -->
+
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-rectangle-ad"></i>
+                </div>
+
+                <div>
+
+                    <span class="metric-label">
+                        Banners
+                    </span>
+
+                    <strong>
+                        {{ total_banners }}
                     </strong>
 
                 </div>

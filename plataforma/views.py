@@ -14,11 +14,11 @@ from django.db.models.functions import TruncDay, TruncMonth, TruncWeek, TruncYea
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET
-from .forms import CadastroForm, OfertaForm, CategoriaForm, LojaParceiraForm, CupomForm
+from .forms import CadastroForm, OfertaForm, CategoriaForm, LojaParceiraForm, CupomForm, BannerForm
 from .models import Banner, Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto, ClickOferta, ClickCupom, FavoritoCupom, Visita
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
 from django.utils.http import url_has_allowed_host_and_scheme
 
@@ -434,6 +434,7 @@ def admin_dashboard(request):
         "total_cupons_ativos": Cupom.objects.filter(
             ativo=True, data_validade__gte=agora
         ).count(),
+        "total_banners": Banner.objects.count(),
         "total_destaques": Oferta.objects.filter(is_destaque=True).count(),
         "total_relampago": Oferta.objects.filter(is_relampago=True).count(),
         "total_com_cupom": Oferta.objects.filter(cupom__isnull=False).count(),
@@ -710,6 +711,8 @@ def editar_oferta(request, id):
 
     else:
         form = OfertaForm(instance=oferta)
+        print("Preço anterior:", form["preco_anterior"].value())
+        print("Preço atual:", form["preco_atual"].value())
 
     return render(request, "plataforma/adm/forms/form_oferta.html", {
         "form": form,
@@ -927,6 +930,133 @@ def excluir_cupom(request, id):
 
     messages.success(request, f'Cupom "{codigo}" excluído com sucesso!')
     return redirect("cupons_adm")
+
+# =========================================================
+# CRUD BANNERS ADM
+# =========================================================
+
+@staff_member_required
+def banners_adm(request):
+
+    banners = Banner.objects.all()
+
+    # Busca
+    busca = request.GET.get('q', '')
+
+    if busca:
+        banners = banners.filter(
+            Q(titulo__icontains=busca) |
+            Q(descricao__icontains=busca)
+        )
+
+    # Ordenação
+    banners = banners.order_by('ordem', '-criado_em')
+
+    # Paginação
+    paginator = Paginator(banners, 10)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'banners': page_obj,
+        'page_obj': page_obj,
+    }
+
+    return render(
+        request,
+        'plataforma/adm/banners_adm.html',
+        context
+    )
+
+@staff_member_required
+def cadastrar_banner(request):
+
+    if request.method == 'POST':
+
+        form = BannerForm(
+            request.POST,
+            request.FILES
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            messages.success(
+                request,
+                'Banner cadastrado com sucesso!'
+            )
+
+            return redirect('banners_adm')
+
+    else:
+        form = BannerForm()
+
+    context = {
+        'form': form,
+    }
+
+    return render(
+        request,
+        'plataforma/adm/forms/form_banner.html',
+        context
+    )
+
+@staff_member_required
+def editar_banner(request, id):
+
+    banner = get_object_or_404(Banner, id=id)
+
+    if request.method == 'POST':
+
+        form = BannerForm(
+            request.POST,
+            request.FILES,
+            instance=banner
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            messages.success(
+                request,
+                'Banner atualizado com sucesso!'
+            )
+
+            return redirect('banners_adm')
+
+    else:
+        form = BannerForm(instance=banner)
+
+    context = {
+        'form': form,
+        'banner': banner,
+    }
+
+    return render(
+        request,
+        'plataforma/adm/forms/form_banner.html',
+        context
+    )
+
+@staff_member_required
+@require_POST
+def excluir_banner(request, id):
+
+    banner = get_object_or_404(Banner, id=id)
+
+    titulo = banner.titulo
+
+    banner.delete()
+
+    messages.success(
+        request,
+        f'Banner "{titulo}" excluído com sucesso!'
+    )
+    return redirect('banners_adm')
+
 
 
 # =========================================================

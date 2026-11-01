@@ -1,0 +1,251 @@
+
+{% extends '../../base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="admin-banner-form">
+    <div class="banner-form-container">
+
+        <!-- Cabeçalho -->
+        <header class="banner-form-header">
+            <div>
+                <span class="banner-form-eyebrow">ADMINISTRAÇÃO</span>
+
+                <h1>
+                    {% if banner %}
+                        Editar banner
+                    {% else %}
+                        Cadastrar banner
+                    {% endif %}
+                </h1>
+
+                <p>
+                    {% if banner %}
+                        Atualize as informações e a imagem do banner promocional.
+                    {% else %}
+                        Preencha os dados para adicionar um novo banner à plataforma.
+                    {% endif %}
+                </p>
+            </div>
+
+            <a href="{% url 'banners_adm' %}" class="banner-form-btn-voltar">
+                <i class="fa-solid fa-arrow-left"></i>
+                Voltar
+            </a>
+        </header>
+
+        <!-- Mensagens -->
+        {% if messages %}
+        <div class="banner-form-messages" role="status">
+            {% for message in messages %}
+            <div class="banner-form-message banner-form-message-{{ message.tags }}">
+                <i class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% elif message.tags == 'error' %}fa-circle-exclamation{% else %}fa-circle-info{% endif %}"></i>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Formulário -->
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            class="banner-form">
+
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="banner-form-errors">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            <!-- Informações principais -->
+            <div class="banner-form-section">
+
+                <div class="banner-form-section-title">
+                    <i class="fa-solid fa-rectangle-ad"></i>
+                    <div>
+                        <h2>Informações do banner</h2>
+                        <p>Defina o conteúdo principal da promoção.</p>
+                    </div>
+                </div>
+
+                <!-- Título -->
+                <div class="banner-form-group">
+                    <label for="{{ form.titulo.id_for_label }}">
+                        Título <span>*</span>
+                    </label>
+
+                    {{ form.titulo }}
+
+                    {% if form.titulo.errors %}
+                        <span class="banner-form-error">
+                            {{ form.titulo.errors }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <!-- Descrição -->
+                <div class="banner-form-group">
+                    <label for="{{ form.descricao.id_for_label }}">
+                        Descrição
+                    </label>
+
+                    {{ form.descricao }}
+
+                    {% if form.descricao.errors %}
+                        <span class="banner-form-error">
+                            {{ form.descricao.errors }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <!-- Link -->
+                <div class="banner-form-group">
+                    <label for="{{ form.link.id_for_label }}">
+                        Link de direcionamento <span>*</span>
+                    </label>
+
+                    {{ form.link }}
+
+                    <small>
+                        Endereço para onde o usuário será direcionado ao clicar no banner.
+                    </small>
+
+                    {% if form.link.errors %}
+                        <span class="banner-form-error">
+                            {{ form.link.errors }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <!-- Texto do botão -->
+                <div class="banner-form-group">
+                    <label for="{{ form.texto_botao.id_for_label }}">
+                        Texto do botão
+                    </label>
+
+                    {{ form.texto_botao }}
+
+                    {% if form.texto_botao.errors %}
+                        <span class="banner-form-error">
+                            {{ form.texto_botao.errors }}
+                        </span>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <!-- Imagem -->
+            <div class="banner-form-section">
+
+                <div class="banner-form-section-title">
+                    <i class="fa-solid fa-image"></i>
+                    <div>
+                        <h2>Imagem promocional</h2>
+                        <p>Selecione a imagem que será exibida no banner.</p>
+                    </div>
+                </div>
+
+                {% if banner and banner.imagem %}
+                <div class="banner-form-preview">
+                    <span>Imagem atual</span>
+
+                    <img src="{{ banner.imagem.url }}" alt="{{ banner.titulo }}">
+                </div>
+                {% endif %}
+
+                <div class="banner-form-group">
+                    <label for="{{ form.imagem.id_for_label }}">
+                        {% if banner %}
+                            Alterar imagem
+                        {% else %}
+                            Selecionar imagem <span>*</span>
+                        {% endif %}
+                    </label>
+
+                    {{ form.imagem }}
+
+                    {% if form.imagem.errors %}
+                        <span class="banner-form-error">
+                            {{ form.imagem.errors }}
+                        </span>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <!-- Configurações -->
+            <div class="banner-form-section">
+
+                <div class="banner-form-section-title">
+                    <i class="fa-solid fa-sliders"></i>
+                    <div>
+                        <h2>Configurações de exibição</h2>
+                        <p>Defina a posição e a disponibilidade do banner.</p>
+                    </div>
+                </div>
+
+                <!-- Ordem -->
+                <div class="banner-form-group">
+                    <label for="{{ form.ordem.id_for_label }}">
+                        Ordem de exibição
+                    </label>
+
+                    {{ form.ordem }}
+
+                    {% if form.ordem.errors %}
+                        <span class="banner-form-error">
+                            {{ form.ordem.errors }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <!-- Status -->
+                <div class="banner-form-checkbox">
+                    <label for="{{ form.ativo.id_for_label }}">
+                        {{ form.ativo }}
+                        <span>
+                            <strong>Banner ativo</strong>
+                            <small>
+                                Quando ativado, o banner poderá ser exibido na página inicial.
+                            </small>
+                        </span>
+                    </label>
+
+                    {% if form.ativo.errors %}
+                        <span class="banner-form-error">
+                            {{ form.ativo.errors }}
+                        </span>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <!-- Botões -->
+            <div class="banner-form-actions">
+
+                <a href="{% url 'banners_adm' %}" class="banner-form-cancel">
+                    Cancelar
+                </a>
+
+                <button type="submit" class="banner-form-submit">
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    {% if banner %}
+                        Salvar alterações
+                    {% else %}
+                        Cadastrar banner
+                    {% endif %}
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+</section>
+
+{% endblock %}

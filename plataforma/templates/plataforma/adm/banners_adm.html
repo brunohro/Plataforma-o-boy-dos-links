@@ -1,0 +1,298 @@
+
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="admin-banners">
+    <div class="banners-container">
+
+        <!-- Cabeçalho -->
+        <header class="banners-header">
+            <div>
+                <span class="banners-eyebrow">PAINEL ADMINISTRATIVO</span>
+                <h1>Gerenciar banners</h1>
+                <p>Cadastre, consulte e gerencie os banners promocionais exibidos na página inicial.</p>
+            </div>
+
+            <div class="banners-header-actions">
+                <a href="{% url 'painel_adm' %}" class="banners-btn-voltar">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Voltar
+                </a>
+
+                <a href="{% url 'cadastrar_banner' %}" class="banners-btn-add">
+                    <i class="fa-solid fa-plus"></i>
+                    Novo banner
+                </a>
+            </div>
+        </header>
+
+        <!-- Mensagens -->
+        {% if messages %}
+        <div class="banners-messages" role="status">
+            {% for message in messages %}
+            <div class="banners-message banners-message-{{ message.tags }}">
+                <i class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% elif message.tags == 'error' %}fa-circle-exclamation{% else %}fa-circle-info{% endif %}"></i>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Busca -->
+        <form method="get" class="banners-toolbar">
+            <div class="banners-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="search"
+                    name="q"
+                    placeholder="Buscar por título ou descrição..."
+                    value="{{ request.GET.q|default:'' }}"
+                    aria-label="Buscar banners">
+            </div>
+
+            <button type="submit" class="banners-search-button">
+                Buscar
+            </button>
+
+            {% if request.GET.q %}
+                <a href="{% url 'banners_adm' %}" class="banners-clear">
+                    Limpar
+                </a>
+            {% endif %}
+        </form>
+
+        <!-- Listagem -->
+        <div class="banners-table-wrapper">
+            <table class="banners-table">
+                <thead>
+                    <tr>
+                        <th>Banner</th>
+                        <th>Descrição</th>
+                        <th>Ordem</th>
+                        <th>Status</th>
+                        <th class="actions-heading">Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for banner in banners %}
+                    <tr>
+
+                        <!-- Imagem e título -->
+                        <td>
+                            <div class="banners-product">
+
+                                <div class="banners-image">
+                                    {% if banner.imagem %}
+                                        <img
+                                            src="{{ banner.imagem.url }}"
+                                            alt="{{ banner.titulo }}">
+                                    {% else %}
+                                        <i class="fa-solid fa-image"></i>
+                                    {% endif %}
+                                </div>
+
+                                <div class="banners-product-info">
+                                    <span class="banners-name">
+                                        {{ banner.titulo }}
+                                    </span>
+
+                                    <span class="banners-category">
+                                        Banner promocional
+                                    </span>
+                                </div>
+
+                            </div>
+                        </td>
+
+                        <!-- Descrição -->
+                        <td>
+                            <span class="banners-description">
+                                {{ banner.descricao|default:"Sem descrição"|truncatechars:70 }}
+                            </span>
+                        </td>
+
+                        <!-- Ordem -->
+                        <td>
+                            <span class="banners-order">
+                                {{ banner.ordem }}
+                            </span>
+                        </td>
+
+                        <!-- Status -->
+                        <td>
+                            <div class="banners-statuses">
+
+                                {% if banner.ativo %}
+                                    <span class="status-badge status-ativo">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        Ativo
+                                    </span>
+                                {% else %}
+                                    <span class="status-badge status-inativo">
+                                        <i class="fa-solid fa-circle-xmark"></i>
+                                        Inativo
+                                    </span>
+                                {% endif %}
+
+                            </div>
+                        </td>
+
+                        <!-- Ações -->
+                        <td>
+                            <div class="banners-actions">
+
+                                <a
+                                    href="{% url 'editar_banner' banner.id %}"
+                                    class="banners-edit-button"
+                                    title="Editar banner">
+
+                                    <i class="fa-solid fa-pen"></i>
+                                    <span>Editar</span>
+                                </a>
+
+                                <form
+                                    method="POST"
+                                    action="{% url 'excluir_banner' banner.id %}"
+                                    onsubmit="return confirm('Tem certeza que deseja excluir o banner {{ banner.titulo|escapejs }}?');">
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="banners-delete-button"
+                                        title="Excluir banner">
+
+                                        <i class="fa-solid fa-trash"></i>
+                                        <span>Excluir</span>
+                                    </button>
+
+                                </form>
+
+                            </div>
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">
+                            <div class="banners-empty">
+                                <i class="fa-solid fa-images"></i>
+
+                                <h3>Nenhum banner encontrado</h3>
+
+                                <p>
+                                    {% if request.GET.q %}
+                                        Tente buscar usando outro termo.
+                                    {% else %}
+                                        Ainda não existem banners cadastrados.
+                                    {% endif %}
+                                </p>
+
+                                {% if not request.GET.q %}
+                                    <a href="{% url 'cadastrar_banner' %}" class="banners-empty-button">
+                                        <i class="fa-solid fa-plus"></i>
+                                        Cadastrar primeiro banner
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Paginação -->
+        {% if page_obj.paginator.num_pages > 0 %}
+        <footer class="banners-footer">
+
+            <span class="banners-page-info">
+                Página {{ page_obj.number }} de
+                {{ page_obj.paginator.num_pages }}
+
+                <span class="banners-total">
+                    · {{ page_obj.paginator.count }} registros
+                </span>
+            </span>
+
+            {% if page_obj.has_other_pages %}
+            <nav class="banners-pagination"
+                 aria-label="Paginação dos banners">
+
+                {% if page_obj.has_previous %}
+
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page=1"
+                        class="page-button"
+                        aria-label="Primeira página"
+                        title="Primeira página">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </a>
+
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}"
+                        class="page-button"
+                        aria-label="Página anterior">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+
+                {% else %}
+
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </span>
+
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </span>
+
+                {% endif %}
+
+                <span class="page-current">
+                    {{ page_obj.number }}
+                </span>
+
+                {% if page_obj.has_next %}
+
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.next_page_number }}"
+                        class="page-button"
+                        aria-label="Próxima página">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.paginator.num_pages }}"
+                        class="page-button"
+                        aria-label="Última página"
+                        title="Última página">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </a>
+
+                {% else %}
+
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </span>
+
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </span>
+
+                {% endif %}
+
+            </nav>
+            {% endif %}
+
+        </footer>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

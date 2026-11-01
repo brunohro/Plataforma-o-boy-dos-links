@@ -823,6 +823,41 @@ def banners_adm(request):
         context
     )
 
+@staff_member_required
+@user_passes_test(lambda user: user.is_staff)
+def cadastrar_banner(request):
+
+    if request.method == 'POST':
+
+        form = BannerForm(
+            request.POST,
+            request.FILES
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            messages.success(
+                request,
+                'Banner cadastrado com sucesso!'
+            )
+
+            return redirect('banners_adm')
+
+    else:
+        form = BannerForm()
+
+    context = {
+        'form': form,
+    }
+
+    return render(
+        request,
+        'plataforma/adm/forms/forms_banners.html',
+        context
+    )
+
 # =========================================================
 # CRUD USUÁRIO
 # =========================================================

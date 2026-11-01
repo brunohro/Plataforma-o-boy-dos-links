@@ -386,6 +386,7 @@ def admin_dashboard(request):
         "total_cupons_ativos": Cupom.objects.filter(
             ativo=True, data_validade__gte=agora
         ).count(),
+        "total_banners": Banner.objects.count(),
         "total_destaques": Oferta.objects.filter(is_destaque=True).count(),
         "total_relampago": Oferta.objects.filter(is_relampago=True).count(),
         "total_com_cupom": Oferta.objects.filter(cupom__isnull=False).count(),

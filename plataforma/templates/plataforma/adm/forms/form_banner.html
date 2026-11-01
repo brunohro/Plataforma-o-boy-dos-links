@@ -10,7 +10,7 @@
         <!-- Cabeçalho -->
         <header class="banner-form-header">
             <div>
-                <span class="banner-form-eyebrow">PAINEL ADMINISTRATIVO</span>
+                <span class="banner-form-eyebrow">ADMINISTRAÇÃO</span>
 
                 <h1>
                     {% if banner %}
@@ -29,7 +29,7 @@
                 </p>
             </div>
 
-            <a href="{% url 'banner_adm' %}" class="banner-form-btn-voltar">
+            <a href="{% url 'banners_adm' %}" class="banner-form-btn-voltar">
                 <i class="fa-solid fa-arrow-left"></i>
                 Voltar
             </a>
@@ -227,7 +227,7 @@
             <!-- Botões -->
             <div class="banner-form-actions">
 
-                <a href="{% url 'banner_adm' %}" class="banner-form-cancel">
+                <a href="{% url 'banners_adm' %}" class="banner-form-cancel">
                     Cancelar
                 </a>
 

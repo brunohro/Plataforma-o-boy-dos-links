@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import UsuarioReal, Categoria, Oferta, LojaParceira, Cupom
+from .models import UsuarioReal, Categoria, Oferta, LojaParceira, Cupom, Banner
 
 
 class CadastroForm(UserCreationForm):
@@ -108,3 +108,53 @@ class CupomForm(forms.ModelForm):
         self.fields['data_validade'].widget.attrs['placeholder'] = 'xx/xx/xxxx'
         self.fields['desconto'].widget.attrs['placeholder'] = 'R$50,00'
         self.fields['ativo'].widget.attrs['class'] = 'form-check-input'
+
+
+class BannerForm(forms.ModelForm):
+    class Meta:
+        model = Banner
+        fields = [
+            'titulo',
+            'imagem',
+            'descricao',
+            'link',
+            'texto_botao',
+            'ordem',
+            'ativo',
+        ]
+
+        widgets = {
+            'titulo': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Digite o título do banner'
+            }),
+
+            'descricao': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Digite uma descrição',
+                'rows': 3
+            }),
+
+            'link': forms.URLInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'https://exemplo.com'
+            }),
+
+            'texto_botao': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Ex: Saiba mais'
+            }),
+
+            'ordem': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'min': 0
+            }),
+
+            'imagem': forms.ClearableFileInput(attrs={
+                'class': 'form-control'
+            }),
+
+            'ativo': forms.CheckboxInput(attrs={
+                'class': 'form-check-input'
+            }),
+        }

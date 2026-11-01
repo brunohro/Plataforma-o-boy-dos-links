@@ -9,7 +9,7 @@ from django.db.models import Count, Q, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET
-from .forms import CadastroForm, OfertaForm, CategoriaForm, LojaParceiraForm, CupomForm
+from .forms import CadastroForm, OfertaForm, CategoriaForm, LojaParceiraForm, CupomForm, BannerForm
 from .models import Banner, Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto, ClickOferta, ClickCupom, FavoritoCupom
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
@@ -854,7 +854,7 @@ def cadastrar_banner(request):
 
     return render(
         request,
-        'plataforma/adm/forms/forms_banners.html',
+        'plataforma/adm/forms/form_banner.html',
         context
     )
 

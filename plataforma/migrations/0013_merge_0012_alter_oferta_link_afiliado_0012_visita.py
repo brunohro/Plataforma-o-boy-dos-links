@@ -10,4 +10,5 @@ class Migration(migrations.Migration):
         ('plataforma', '0012_visita'),
     ]
 
+    operations = [
     ]

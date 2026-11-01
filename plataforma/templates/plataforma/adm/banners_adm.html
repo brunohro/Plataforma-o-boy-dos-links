@@ -70,7 +70,7 @@
                 <thead>
                     <tr>
                         <th>Banner</th>
-                        <th>Descrição</th>
+                        <th>Título</th>
                         <th>Ordem</th>
                         <th>Status</th>
                         <th class="actions-heading">Ações</th>
@@ -108,10 +108,10 @@
                             </div>
                         </td>
 
-                        <!-- Descrição -->
+                        <!-- Título -->
                         <td>
                             <span class="banners-description">
-                                {{ banner.descricao|default:"Sem descrição"|truncatechars:70 }}
+                                {{ banner.titulo|default:"Sem título"|truncatechars:70 }}
                             </span>
                         </td>
 
@@ -146,7 +146,7 @@
                             <div class="banners-actions">
 
                                 <a
-                                    href="{% url 'editar_banner' banner.id %}"
+                                    href="{% url 'editar_categoria' banner.id %}"
                                     class="banners-edit-button"
                                     title="Editar banner">
 
@@ -156,7 +156,7 @@
 
                                 <form
                                     method="POST"
-                                    action="{% url 'excluir_banner' banner.id %}"
+                                    action="{% url 'excluir_categoria' banner.id %}"
                                     onsubmit="return confirm('Tem certeza que deseja excluir o banner {{ banner.titulo|escapejs }}?');">
 
                                     {% csrf_token %}

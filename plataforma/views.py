@@ -788,8 +788,7 @@ def excluir_cupom(request, id):
 # CRUD BANNERS ADM
 # =========================================================
 
-@login_required
-@user_passes_test(lambda user: user.is_staff)
+@staff_member_required
 def banners_adm(request):
 
     banners = Banner.objects.all()
@@ -824,7 +823,6 @@ def banners_adm(request):
     )
 
 @staff_member_required
-@user_passes_test(lambda user: user.is_staff)
 def cadastrar_banner(request):
 
     if request.method == 'POST':
@@ -857,6 +855,9 @@ def cadastrar_banner(request):
         'plataforma/adm/forms/form_banner.html',
         context
     )
+
+
+
 
 # =========================================================
 # CRUD USUÁRIO

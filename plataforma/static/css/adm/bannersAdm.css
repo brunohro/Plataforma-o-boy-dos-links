@@ -335,8 +335,8 @@
     white-space: nowrap;
 }
 
-.status-featured,
-.status-flash {
+.status-ativo,
+.status-inativo {
     background: rgba(240, 75, 47, 0.10);
     border-color: rgba(240, 75, 47, 0.25);
     color: var(--primary);

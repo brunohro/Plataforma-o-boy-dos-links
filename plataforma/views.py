@@ -13,7 +13,7 @@ from .forms import CadastroForm, OfertaForm, CategoriaForm, LojaParceiraForm, Cu
 from .models import Banner, Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto, ClickOferta, ClickCupom, FavoritoCupom
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
 from django.utils.http import url_has_allowed_host_and_scheme
 
@@ -784,6 +784,44 @@ def excluir_cupom(request, id):
     messages.success(request, f'Cupom "{codigo}" excluído com sucesso!')
     return redirect("cupons_adm")
 
+# =========================================================
+# CRUD BANNERS ADM
+# =========================================================
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def banners_adm(request):
+
+    banners = Banner.objects.all()
+
+    # Busca
+    busca = request.GET.get('q', '')
+
+    if busca:
+        banners = banners.filter(
+            Q(titulo__icontains=busca) |
+            Q(descricao__icontains=busca)
+        )
+
+    # Ordenação
+    banners = banners.order_by('ordem', '-criado_em')
+
+    # Paginação
+    paginator = Paginator(banners, 10)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'banners': page_obj,
+        'page_obj': page_obj,
+    }
+
+    return render(
+        request,
+        'plataforma/adm/banners_adm.html',
+        context
+    )
 
 # =========================================================
 # CRUD USUÁRIO

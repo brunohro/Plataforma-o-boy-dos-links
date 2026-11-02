@@ -145,7 +145,9 @@ class Oferta(DescontoCalculadoMixin):
     )
     categoria = models.ForeignKey(
         Categoria,
-        on_delete=models.PROTECT,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=False,
         related_name="ofertas",
     )
     cupom = models.ForeignKey(

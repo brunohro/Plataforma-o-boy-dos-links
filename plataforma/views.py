@@ -57,7 +57,7 @@ def ofertas_ativas_qs():
     agora = timezone.now()
     return (
         Oferta.objects
-        .filter(data_inicio__lte=agora, data_fim__gte=agora)
+        .filter(data_inicio__lte=agora, data_fim__gte=agora, categoria__isnull=False)
         .select_related("loja", "categoria", "cupom")
         .annotate(
             total_votos=Count("votos_registros", distinct=True),

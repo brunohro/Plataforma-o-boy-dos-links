@@ -87,7 +87,7 @@ class LojaParceiraForm(forms.ModelForm):
             "logo_imagem": forms.ClearableFileInput(attrs={"class": "form-control", "accept": "image/*"}),
         }
 
-        def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
 
             self.fields["nome"].widget.attrs['placeholder'] = 'Ex: Mercado Livre'

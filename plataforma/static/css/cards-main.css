@@ -1,3 +1,262 @@
+
+/* ========================================
+   APRIMORAMENTO DOS CARDS RELÂMPAGO
+======================================== */
+
+.flash-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.flash-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+}
+
+/* Imagem do produto */
+
+.product-image {
+    height: 210px;
+    background: var(--surface);
+}
+
+.product-image img {
+    padding: 12px;
+    object-fit: contain;
+}
+
+.product-image-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.product-image-placeholder i {
+    font-size: 30px;
+}
+
+/* Desconto */
+
+.discount-badge {
+    padding: 7px 10px;
+    background: var(--primary);
+    color: var(--text-primary);
+    font-size: 12px;
+    font-weight: 800;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Favorito */
+
+.favorite-button {
+    width: 35px;
+    height: 35px;
+    background: rgba(13, 13, 13, 0.88);
+    color: var(--text-primary);
+    backdrop-filter: blur(5px);
+}
+
+.favorite-button.is-active {
+    background: var(--primary);
+    color: var(--text-primary);
+}
+
+/* Conteúdo */
+
+.product-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 13px;
+}
+
+.product-meta {
+    margin-bottom: 10px;
+}
+
+.store-name {
+    color: var(--text-secondary);
+    font-weight: 700;
+}
+
+.store-name i {
+    margin-right: 3px;
+    color: var(--primary);
+}
+
+.product-timer {
+    background: var(--surface);
+    color: var(--text-secondary);
+}
+
+/* Nome do produto */
+
+.product-title {
+    min-height: 38px;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+/* Preços */
+
+.price-area {
+    gap: 4px;
+    margin-top: auto;
+    padding-top: 8px;
+}
+
+.old-price {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.current-price {
+    color: var(--text-primary);
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.saving {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--success);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* Cupom */
+
+.coupon {
+    margin-top: 12px;
+    border-color: var(--primary-dark);
+    background: rgba(240, 75, 47, 0.08);
+    color: var(--primary);
+}
+
+/* Curtidas e visualizações */
+
+.flash-card__engagement {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 13px 0;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+}
+
+.flash-card__engagement form {
+    margin: 0;
+}
+
+.vote-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.vote-button:hover,
+.vote-button.is-active {
+    color: var(--primary);
+}
+
+.click-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+/* Botão ver oferta */
+
+.offer-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    min-height: 43px;
+    margin-top: auto;
+    padding: 11px 14px;
+    border: 1px solid var(--primary);
+    border-radius: 9px;
+    background: var(--primary);
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.offer-button:hover {
+    border-color: var(--primary-hover);
+    background: var(--primary-hover);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+.offer-button i:last-child {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+/* Responsividade */
+
+@media (max-width: 768px) {
+    .product-image {
+        height: 170px;
+    }
+
+    .product-content {
+        padding: 10px;
+    }
+
+    .current-price {
+        font-size: 19px;
+    }
+
+    .offer-button {
+        min-height: 39px;
+        font-size: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flash-card,
+    .offer-button {
+        transition: none;
+    }
+}
+
+
+
+
 /* ========================================
    OFERTAS RELÂMPAGO
 ======================================== */

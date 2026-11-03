@@ -19,8 +19,7 @@
         <div class="flash-grid">
 
             {% for oferta in mais_acessadas %}
-
-                            <article class="flash-card" id="oferta-{{ oferta.pk }}">
+                <article class="flash-card" id="oferta-{{ oferta.pk }}">
 
                     <div class="product-image">
 
@@ -28,11 +27,18 @@
                             -{{ oferta.desconto|floatformat:0 }}%
                         </span>
 
-                        <!-- NOVO: botão de favorito agora funciona (class, data-*, aria-pressed e o coração) -->
                         <form method="post" action="{% url 'favoritar_oferta' oferta.pk %}">
                             {% csrf_token %}
-                            <button type="submit" class="favorite-button {% if oferta.id in favoritos_ids %}is-active{% endif %}" aria-label="Favoritar">
-                            {% if oferta.id in favoritos_ids %}♥{% else %}♡{% endif %}
+                            <button
+                                type="submit"
+                                class="favorite-button {% if oferta.id in favoritos_ids %}is-active{% endif %}"
+                                aria-label="Favoritar oferta"
+                            >
+                                {% if oferta.id in favoritos_ids %}
+                                    <i class="fa-solid fa-heart"></i>
+                                {% else %}
+                                    <i class="fa-regular fa-heart"></i>
+                                {% endif %}
                             </button>
                         </form>
 
@@ -40,35 +46,33 @@
                             <img
                                 src="{{ oferta.image_url.url }}"
                                 alt="{{ oferta.nome_produto }}"
+                                loading="lazy"
                             >
                         {% else %}
                             <div class="product-image-placeholder">
-                                Sem imagem
+                                <i class="fa-regular fa-image"></i>
+                                <span>Sem imagem</span>
                             </div>
                         {% endif %}
 
                     </div>
 
-
                     <div class="product-content">
 
                         <div class="product-meta">
-
                             <span class="store-name">
+                                <i class="fa-solid fa-store"></i>
                                 {{ oferta.loja.nome }}
                             </span>
 
                             <span class="product-timer">
-                                Até {{ oferta.data_fim|date:"d/m/Y" }}
+                                {{ oferta.data_fim|date:"d/m/Y" }}
                             </span>
-
                         </div>
-
 
                         <h3 class="product-title">
                             {{ oferta.nome_produto }}
                         </h3>
-
 
                         <div class="price-area">
 
@@ -81,46 +85,54 @@
                             </strong>
 
                             <span class="saving">
+                                <i class="fa-solid fa-arrow-down"></i>
                                 Economize R$ {{ oferta.economia|floatformat:2 }}
                             </span>
 
                         </div>
 
-
                         {% if oferta.cupom %}
-
-                        <div class="coupon">
-                            🏷
-                            Cupom {{ oferta.cupom.codigo }}
-                        </div>
-
+                            <div class="coupon">
+                                <i class="fa-solid fa-ticket"></i>
+                                Cupom: {{ oferta.cupom.codigo }}
+                            </div>
                         {% endif %}
 
+                        <div class="flash-card__engagement">
 
-                        <!-- NOVO: botão de votar -->
-                        <form method="post" action="{% url 'votar_oferta' oferta.pk %}">
-                            {% csrf_token %}
-                            <button type="submit" class="vote-button {% if oferta.id in votos_ids %}is-active{% endif %}" aria-label="Curtir oferta">
-                                <i class="fa-solid fa-thumbs-up"></i> {{ oferta.votos_registros.count }}
-                                <span class="click-count"><i class="fa-solid fa-eye"></i> {{ oferta.clicks_registros.count }}</span>
-                            </button>
-                        </form>
+                            <form method="post" action="{% url 'votar_oferta' oferta.pk %}">
+                                {% csrf_token %}
+                                <button
+                                    type="submit"
+                                    class="vote-button {% if oferta.id in votos_ids %}is-active{% endif %}"
+                                    aria-label="Curtir oferta"
+                                >
+                                    <i class="fa-solid fa-thumbs-up"></i>
+                                    {{ oferta.votos_registros.count }}
+                                </button>
+                            </form>
 
+                            <span class="click-count">
+                                <i class="fa-solid fa-eye"></i>
+                                {{ oferta.clicks_registros.count }}
+                            </span>
 
-                        <!-- ALTERADO: o href passa pela rota que conta o clique (era {{ oferta.link_afiliado }}) -->
+                        </div>
+
                         <a
                             href="{% url 'ir_para_oferta' oferta.pk %}"
                             target="_blank"
                             rel="noopener noreferrer"
                             class="offer-button"
                         >
+                            <i class="fa-solid fa-bag-shopping"></i>
                             Ver oferta
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
 
                     </div>
 
                 </article>
-
             {% endfor %}
 
         </div>

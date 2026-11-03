@@ -19,110 +19,126 @@
 
         <div class="flash-grid">
 
-            {% for oferta in ofertas_relampago %}
 
-                            <article class="flash-card" id="oferta-{{ oferta.pk }}">
+{% for oferta in ofertas_relampago %}
 
-                    <div class="product-image">
+<article class="flash-card" id="oferta-{{ oferta.pk }}">
 
-                        <span class="discount-badge">
-                            -{{ oferta.desconto|floatformat:0 }}%
-                        </span>
+    <div class="product-image">
 
-                        <!-- NOVO: botão de favorito agora funciona (class, data-*, aria-pressed e o coração) -->
-                       <form method="post" action="{% url 'favoritar_oferta' oferta.pk %}">
-                            {% csrf_token %}
-                            <button type="submit" class="favorite-button {% if oferta.id in favoritos_ids %}is-active{% endif %}" aria-label="Favoritar">
-                            {% if oferta.id in favoritos_ids %}♥{% else %}♡{% endif %}
-                            </button>
-                        </form>
+        <span class="discount-badge">
+            -{{ oferta.desconto|floatformat:0 }}%
+        </span>
 
-                        {% if oferta.image_url %}
-                            <img
-                                src="{{ oferta.image_url.url }}"
-                                alt="{{ oferta.nome_produto }}"
-                            >
-                        {% else %}
-                            <div class="product-image-placeholder">
-                                Sem imagem
-                            </div>
-                        {% endif %}
+        <form method="post" action="{% url 'favoritar_oferta' oferta.pk %}">
+            {% csrf_token %}
+            <button
+                type="submit"
+                class="favorite-button {% if oferta.id in favoritos_ids %}is-active{% endif %}"
+                aria-label="Favoritar oferta"
+            >
+                {% if oferta.id in favoritos_ids %}
+                    <i class="fa-solid fa-heart"></i>
+                {% else %}
+                    <i class="fa-regular fa-heart"></i>
+                {% endif %}
+            </button>
+        </form>
 
-                    </div>
+        {% if oferta.image_url %}
+            <img
+                src="{{ oferta.image_url.url }}"
+                alt="{{ oferta.nome_produto }}"
+                loading="lazy"
+            >
+        {% else %}
+            <div class="product-image-placeholder">
+                <i class="fa-regular fa-image"></i>
+                <span>Sem imagem</span>
+            </div>
+        {% endif %}
 
+    </div>
 
-                    <div class="product-content">
+    <div class="product-content">
 
-                        <div class="product-meta">
+        <div class="product-meta">
+            <span class="store-name">
+                <i class="fa-solid fa-store"></i>
+                {{ oferta.loja.nome }}
+            </span>
 
-                            <span class="store-name">
-                                {{ oferta.loja.nome }}
-                            </span>
+            <span class="product-timer">
+                {{ oferta.data_fim|date:"d/m/Y" }}
+            </span>
+        </div>
 
-                            <span class="product-timer">
-                                Até {{ oferta.data_fim|date:"d/m/Y" }}
-                            </span>
+        <h3 class="product-title">
+            {{ oferta.nome_produto }}
+        </h3>
 
-                        </div>
+        <div class="price-area">
 
+            <span class="old-price">
+                R$ {{ oferta.preco_anterior|floatformat:2 }}
+            </span>
 
-                        <h3 class="product-title">
-                            {{ oferta.nome_produto }}
-                        </h3>
+            <strong class="current-price">
+                R$ {{ oferta.preco_atual|floatformat:2 }}
+            </strong>
 
+            <span class="saving">
+                <i class="fa-solid fa-arrow-down"></i>
+                Economize R$ {{ oferta.economia|floatformat:2 }}
+            </span>
 
-                        <div class="price-area">
+        </div>
 
-                            <span class="old-price">
-                                R$ {{ oferta.preco_anterior|floatformat:2 }}
-                            </span>
+        {% if oferta.cupom %}
+            <div class="coupon">
+                <i class="fa-solid fa-ticket"></i>
+                Cupom: {{ oferta.cupom.codigo }}
+            </div>
+        {% endif %}
 
-                            <strong class="current-price">
-                                R$ {{ oferta.preco_atual|floatformat:2 }}
-                            </strong>
+        <div class="flash-card__engagement">
 
-                            <span class="saving">
-                                Economize R$ {{ oferta.economia|floatformat:2 }}
-                            </span>
+            <form method="post" action="{% url 'votar_oferta' oferta.pk %}">
+                {% csrf_token %}
+                <button
+                    type="submit"
+                    class="vote-button {% if oferta.id in votos_ids %}is-active{% endif %}"
+                    aria-label="Curtir oferta"
+                >
+                    <i class="fa-solid fa-thumbs-up"></i>
+                    {{ oferta.votos_registros.count }}
+                </button>
+            </form>
 
-                        </div>
+            <span class="click-count">
+                <i class="fa-solid fa-eye"></i>
+                {{ oferta.clicks_registros.count }}
+            </span>
 
+        </div>
 
-                        {% if oferta.cupom %}
+        <a
+            href="{% url 'ir_para_oferta' oferta.pk %}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="offer-button"
+        >
+            <i class="fa-solid fa-bag-shopping"></i>
+            Ver oferta
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
 
-                        <div class="coupon">
-                            🏷
-                            Cupom {{ oferta.cupom.codigo }}
-                        </div>
+    </div>
 
-                        {% endif %}
+</article>
 
+{% endfor %}
 
-                        <!-- NOVO: botão de votar -->
-                       <form method="post" action="{% url 'votar_oferta' oferta.pk %}">
-                            {% csrf_token %}
-                            <button type="submit" class="vote-button {% if oferta.id in votos_ids %}is-active{% endif %}" aria-label="Curtir oferta">
-                                <i class="fa-solid fa-thumbs-up"></i> {{ oferta.votos_registros.count }}
-                                <span class="click-count"><i class="fa-solid fa-eye"></i> {{ oferta.clicks_registros.count }}</span>
-                            </button>
-                        </form>
-
-
-                        <!-- ALTERADO: o href passa pela rota que conta o clique (era {{ oferta.link_afiliado }}) -->
-                        <a
-                            href="{% url 'ir_para_oferta' oferta.pk %}"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="offer-button"
-                        >
-                            Ver oferta
-                        </a>
-
-                    </div>
-
-                </article>
-
-            {% endfor %}
 
         </div>
 

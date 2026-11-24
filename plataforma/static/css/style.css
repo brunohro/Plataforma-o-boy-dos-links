@@ -1,5 +1,10 @@
 /* VARIÁVEIS CSS */
-:root {
+/* ========================================
+   TEMA DARK (PADRÃO)
+======================================== */
+
+:root,
+[data-theme="dark"] {
     /* Fundos */
     --background: #0D0D0D;
     --surface: #151515;
@@ -11,7 +16,7 @@
 
     /* Textos */
     --text-primary: #F5F5F5;
-    --text-secondary: #B8B8B8;
+    --text-secondary: hwb(0 72% 28%);
     --text-muted: #858585;
 
     /* Marca */
@@ -33,6 +38,49 @@
     --info: #3B82F6;
     --info-hover: #2563EB;
 }
+
+
+/* ========================================
+   TEMA LIGHT
+======================================== */
+
+[data-theme="light"] {
+    /* Fundos */
+    --background: #F5F5F5;
+    --surface: #FFFFFF;
+    --card: #FFFFFF;
+    --card-hover: #F0F0F0;
+
+    /* Bordas */
+    --border: #E0E0E0;
+
+    /* Textos */
+    --text-primary: #171717;
+    --text-secondary: #555555;
+    --text-muted: #858585;
+
+    /* Marca */
+    --primary: #F04B2F;
+    --primary-hover: #D94126;
+    --primary-dark: #C93B24;
+
+    /* Estados */
+    --success: #16A34A;
+    --success-hover: #15803D;
+
+    --danger: #DC2626;
+    --danger-hover: #B91C1C;
+
+    --warning: #D97706;
+    --warning-hover: #B45309;
+
+    /* Ações informativas e cadastro */
+    --info: #2563EB;
+    --info-hover: #1D4ED8;
+}
+
+
+
 /* =========================
    RESET
 ========================= */
@@ -132,4 +180,34 @@ a {
     background: rgba(245, 158, 11, 0.12);
     border-color: rgba(245, 158, 11, 0.35);
     color: var(--warning);
+}
+
+
+
+
+/* BOTÃO DE TEMA */
+.theme-toggle {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+
+    color: var(--text-primary);
+    font-size: 17px;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background: var(--bg-hover);
+    color: var(--primary-color);
+    transform: rotate(15deg);
 }

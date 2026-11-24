@@ -1,0 +1,86 @@
+{% extends 'plataforma/base.html' %}
+
+{% block content %}
+
+<section class="profile-page">
+    <div class="profile-page__container">
+
+        <header class="profile-page__header">
+            <h1>Minha conta</h1>
+            <p>Confira as informações que você informou no cadastro.</p>
+        </header>
+
+        <div class="profile-card">
+
+            <div class="profile-card__header">
+                <div class="profile-card__avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+                <div class="profile-card__identity">
+                    <h2>
+                        {{ usuario.apelido|default:usuario.username }}
+                        {% include 'plataforma/components/selo_funcao.html' with usuario=usuario %}
+                    </h2>
+                    <p class="profile-card__since">
+                        Membro desde {{ usuario.date_joined|date:"d/m/Y" }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="profile-card__information">
+
+                <div class="profile-field">
+                    <span>Apelido</span>
+                    <strong>{{ usuario.username }}</strong>
+                </div>
+
+                <div class="profile-field">
+                    <span>E-mail</span>
+                    <strong>{{ usuario.email|default:"Não informado" }}</strong>
+                </div>
+
+                <div class="profile-field">
+                    <span>Telefone</span>
+                    <strong>{{ usuario.telefone|default:"Não informado" }}</strong>
+                </div>
+
+                <div class="profile-field">
+                    <span>Data de nascimento</span>
+                    <strong>
+                        {% if usuario.data_nascimento %}
+                            {{ usuario.data_nascimento|date:"d/m/Y" }}
+                        {% else %}
+                            Não informado
+                        {% endif %}
+                    </strong>
+                </div>
+
+                <div class="profile-field">
+                    <span>Sexo</span>
+                    <strong>
+                        {% if usuario.sexo %}
+                            {{ usuario.get_sexo_display }}
+                        {% else %}
+                            Não informado
+                        {% endif %}
+                    </strong>
+                </div>
+
+                <div class="profile-field">
+                    <span>Tipo de conta</span>
+                    <strong>
+                        {% if usuario.is_superuser %}Superadministrador
+                        {% elif usuario.is_staff %}Administrador
+                        {% else %}Usuário{% endif %}
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

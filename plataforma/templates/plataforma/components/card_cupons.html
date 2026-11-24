@@ -1,0 +1,36 @@
+{% load static %}
+
+<section class="featured-coupons" id="cupons">
+    <div class="featured-coupons__container">
+
+        <!-- Cabeçalho -->
+        <header class="featured-coupons__header">
+            <div class="featured-coupons__heading">
+                <span class="featured-coupons__heading-icon">
+                    <i class="fa-solid fa-ticket"></i>
+                </span>
+
+                <h2>Cupons em destaque</h2>
+            </div>
+
+            <a href="{% url 'cupons' %}" class="featured-coupons__view-all">
+                Ver tudo
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </header> 
+
+        <!-- Lista de cupons -->
+        <div class="featured-coupons__grid">
+
+            {% for cupom in cupons %}
+                {% include "plataforma/components/cupom_item.html" %}
+
+            {% empty %}
+                <p class="featured-coupons__empty">
+                    Nenhum cupom em destaque no momento.
+                </p>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>

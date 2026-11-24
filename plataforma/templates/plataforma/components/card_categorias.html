@@ -1,0 +1,31 @@
+{% load static %}
+<section class="categories-section" id="Categorias">
+  <div class="categories-container">
+
+    <div class="section-header">
+      <h2 class="section-title">Categorias populares</h2>
+    </div>
+
+    <div class="categories-grid">
+
+      {% for categoria in categorias %}
+      <a href="#" class="category-card">
+        <div class="partner-store__icon">
+          {% if categoria.icone_imagem %}
+            <img src="{{ categoria.icone_imagem.url }}" alt="{{ categoria.nome }}">
+          {% endif %}
+          {% if not categoria.icone_imagem %}
+            <i class="fa-solid fa-tag"></i>
+          {% endif %}
+        </div>
+
+        <div class="category-info">
+          <h3>{{ categoria.nome }}</h3>
+          <span>{{ categoria.total_ativas }} oferta{{ categoria.total_ativas|pluralize }}</span>
+        </div>
+      </a>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>

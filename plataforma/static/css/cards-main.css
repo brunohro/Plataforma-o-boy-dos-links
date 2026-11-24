@@ -1,0 +1,786 @@
+
+/* ========================================
+   APRIMORAMENTO DOS CARDS RELÂMPAGO
+======================================== */
+
+.flash-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.flash-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+}
+
+/* Imagem do produto */
+
+.product-image {
+    height: 210px;
+    background: var(--surface);
+}
+
+.product-image img {
+    padding: 12px;
+    object-fit: contain;
+}
+
+.product-image-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.product-image-placeholder i {
+    font-size: 30px;
+}
+
+/* Desconto */
+
+.discount-badge {
+    padding: 7px 10px;
+    background: var(--primary);
+    color: var(--text-primary);
+    font-size: 12px;
+    font-weight: 800;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Favorito */
+
+.favorite-button {
+    width: 35px;
+    height: 35px;
+    background: rgba(13, 13, 13, 0.88);
+    color: var(--text-primary);
+    backdrop-filter: blur(5px);
+}
+
+.favorite-button.is-active {
+    background: var(--primary);
+    color: var(--text-primary);
+}
+
+/* Conteúdo */
+
+.product-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 13px;
+}
+
+.product-meta {
+    margin-bottom: 10px;
+}
+
+.store-name {
+    color: var(--text-secondary);
+    font-weight: 700;
+}
+
+.store-name i {
+    margin-right: 3px;
+    color: var(--primary);
+}
+
+.product-timer {
+    background: var(--surface);
+    color: var(--text-secondary);
+}
+
+/* Nome do produto */
+
+.product-title {
+    min-height: 38px;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+/* Preços */
+
+.price-area {
+    gap: 4px;
+    margin-top: auto;
+    padding-top: 8px;
+}
+
+.old-price {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.current-price {
+    color: var(--text-primary);
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.saving {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--success);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* Cupom */
+
+.coupon {
+    margin-top: 12px;
+    border-color: var(--primary-dark);
+    background: rgba(240, 75, 47, 0.08);
+    color: var(--primary);
+}
+
+/* Curtidas e visualizações */
+
+.flash-card__engagement {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 13px 0;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+}
+
+.flash-card__engagement form {
+    margin: 0;
+}
+
+.vote-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.vote-button:hover,
+.vote-button.is-active {
+    color: var(--primary);
+}
+
+.click-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+/* Botão ver oferta */
+
+.offer-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    min-height: 43px;
+    margin-top: auto;
+    padding: 11px 14px;
+    border: 1px solid var(--primary);
+    border-radius: 9px;
+    background: var(--primary);
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.offer-button:hover {
+    border-color: var(--primary-hover);
+    background: var(--primary-hover);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+.offer-button i:last-child {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+/* Responsividade */
+
+@media (max-width: 768px) {
+    .product-image {
+        height: 170px;
+    }
+
+    .product-content {
+        padding: 10px;
+    }
+
+    .current-price {
+        font-size: 19px;
+    }
+
+    .offer-button {
+        min-height: 39px;
+        font-size: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flash-card,
+    .offer-button {
+        transition: none;
+    }
+}
+
+
+
+
+/* ========================================
+   OFERTAS RELÂMPAGO
+======================================== */
+
+.flash-promotions {
+    width: 100%;
+    padding: 16px 0 36px;
+}
+
+.flash-container {
+    width: calc(100% - 48px);
+    max-width: 1216px;
+    margin: auto;
+    padding: 20px;
+    background: var(--background-secundary);
+    border-radius: 16px;
+}
+
+.flash-container.flash-border {
+    position: relative;
+    isolation: isolate;
+    border: 1px solid transparent;
+
+    background:
+        linear-gradient(
+            var(--background-secundary),
+            var(--background-secundary)
+        ) padding-box,
+        linear-gradient(
+            120deg,
+            var(--primary-dark),
+            var(--primary),
+            #FF8A65,
+            var(--primary),
+            var(--primary-dark)
+        ) border-box;
+
+    background-size: 100% 100%, 300% 300%;
+
+    animation: flash-border-glow 6s ease infinite;
+
+    box-shadow:
+        0 0 12px rgba(240, 75, 47, 0.06);
+}
+
+@keyframes flash-border-glow {
+    0% {
+        background-position: 0 0, 0% 50%;
+        box-shadow:
+            0 0 12px rgba(240, 75, 47, 0.06);
+    }
+
+    50% {
+        background-position: 0 0, 100% 50%;
+        box-shadow:
+            0 0 22px rgba(240, 75, 47, 0.15);
+    }
+
+    100% {
+        background-position: 0 0, 0% 50%;
+        box-shadow:
+            0 0 12px rgba(240, 75, 47, 0.06);
+    }
+}
+
+/* Respeita usuários que preferem menos animações */
+@media (prefers-reduced-motion: reduce) {
+    .flash-container.flash-border {
+        animation: none;
+    }
+}
+
+
+
+/* ========================================
+   CABEÇALHO
+======================================== */
+
+.flash-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.flash-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.flash-title h2 {
+    margin: 0;
+    color: var(--foreground);
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.4px;
+}
+
+/* Ícone */
+
+.flash-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    font-size: 19px;
+}
+
+/* ========================================
+   GRID
+======================================== */
+
+.flash-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
+/* ========================================
+   CARD
+======================================== */
+
+.flash-card {
+    min-width: 0;
+    overflow: hidden;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.flash-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* ========================================
+   IMAGEM
+======================================== */
+
+.product-image {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background: var(--muted);
+}
+
+.product-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.flash-card:hover .product-image img {
+    transform: scale(1.03);
+}
+
+/* ========================================
+   DESCONTO
+======================================== */
+
+.discount-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 2;
+    padding: 5px 8px;
+    border-radius: 999px;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* ========================================
+   FAVORITO
+======================================== */
+
+.favorite-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(10, 10, 12, 0.85);
+    color: var(--foreground);
+    font-size: 19px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.favorite-button:hover {
+    background: var(--primary);
+    color: var(--primary-foreground);
+    transform: scale(1.06);
+}
+
+/* ========================================
+   CONTEÚDO
+======================================== */
+
+.product-content {
+    padding: 11px;
+}
+
+/* ========================================
+   LOJA + CONTADOR
+======================================== */
+
+.product-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 7px;
+}
+
+.store-name {
+    color: var(--muted-foreground);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+.product-timer {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 6px;
+    border-radius: 5px;
+    background: var(--muted);
+    color: var(--primary);
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.product-timer::before {
+    content: "⏱";
+    margin-right: 4px;
+    font-size: 10px;
+}
+
+/* ========================================
+   TÍTULO DO PRODUTO
+======================================== */
+
+.product-title {
+    display: -webkit-box;
+    min-height: 36px;
+    margin: 0 0 7px;
+    overflow: hidden;
+    color: var(--foreground);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* ========================================
+   AVALIAÇÃO
+======================================== */
+
+.product-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.stars {
+    color: #ff8a00;
+    font-size: 14px;
+    letter-spacing: -1.5px;
+}
+
+.rating-value {
+    color: var(--muted-foreground);
+    font-size: 11px;
+}
+
+/* ========================================
+   PREÇOS
+======================================== */
+
+.price-area {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.old-price {
+    color: var(--muted-foreground);
+    font-size: 11px;
+    text-decoration: line-through;
+}
+
+.current-price {
+    color: var(--foreground);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.saving {
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* ========================================
+   CUPOM
+======================================== */
+
+.coupon {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 6px 8px;
+    border: 1px dashed var(--primary);
+    border-radius: 7px;
+    background: rgba(240, 75, 47, 0.06);
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* ========================================
+   NOTEBOOKS E TELAS MÉDIAS
+======================================== */
+
+@media (max-width: 1100px) {
+    .flash-container {
+        width: calc(100% - 32px);
+        padding: 18px;
+    }
+
+    .flash-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .product-image {
+        height: 200px;
+    }
+}
+
+/* ========================================
+   TABLETS
+======================================== */
+
+@media (max-width: 768px) {
+    .flash-promotions {
+        padding: 12px 0 28px;
+    }
+
+    .flash-container {
+        width: calc(100% - 24px);
+        padding: 14px;
+        border-radius: 13px;
+    }
+
+    .flash-header {
+        margin-bottom: 12px;
+    }
+
+    .flash-title {
+        gap: 8px;
+    }
+
+    .flash-title h2 {
+        font-size: 20px;
+    }
+
+    .flash-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        font-size: 17px;
+    }
+
+    .flash-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+    }
+
+    .product-image {
+        height: 180px;
+    }
+
+    .product-content {
+        padding: 9px;
+    }
+
+    .product-title {
+        font-size: 12px;
+        min-height: 34px;
+    }
+
+    .current-price {
+        font-size: 17px;
+    }
+}
+
+/* ========================================
+   CELULARES
+======================================== */
+
+@media (max-width: 480px) {
+    .flash-container {
+        width: calc(100% - 20px);
+        padding: 10px;
+    }
+
+    .flash-title h2 {
+        font-size: 18px;
+    }
+
+    .flash-grid {
+        gap: 8px;
+    }
+
+    .product-image {
+        height: 145px;
+    }
+
+    .product-content {
+        padding: 8px;
+    }
+
+    .product-meta {
+        gap: 4px;
+    }
+
+    .store-name {
+        font-size: 10px;
+    }
+
+    .product-timer {
+        font-size: 9px;
+        padding: 3px 5px;
+    }
+
+    .discount-badge {
+        top: 6px;
+        left: 6px;
+        padding: 4px 6px;
+        font-size: 10px;
+    }
+
+    .favorite-button {
+        top: 6px;
+        right: 6px;
+        width: 28px;
+        height: 28px;
+        font-size: 17px;
+    }
+
+    .product-title {
+        font-size: 12px;
+        min-height: 34px;
+        margin-bottom: 6px;
+    }
+
+    .product-rating {
+        margin-bottom: 6px;
+    }
+
+    .stars {
+        font-size: 12px;
+    }
+
+    .rating-value {
+        font-size: 10px;
+    }
+
+    .current-price {
+        font-size: 16px;
+    }
+
+    .coupon {
+        gap: 4px;
+        padding: 5px 6px;
+        font-size: 10px;
+        overflow-wrap: anywhere;
+    }
+}
+
+/* ========================================
+   ACESSIBILIDADE
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .flash-card,
+    .product-image img,
+    .favorite-button {
+        transition: none;
+    }
+}
+

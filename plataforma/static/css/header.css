@@ -1,0 +1,1122 @@
+
+/* =========================================================
+   PADRONIZAÇÃO DE FONTE — HEADER
+========================================================= */
+
+.site-header {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-primary);
+}
+
+/* Links e textos */
+.site-header a,
+.site-header p,
+.site-header span {
+    font-size: 14px;
+    line-height: inherit;
+}
+
+/* Botões */
+.site-header button {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Campos de pesquisa */
+.site-header input,
+.site-header select {
+    font-size: 14px;
+}
+
+/* Ícones */
+.site-header i {
+    font-size: 16px;
+}
+
+/* Logo ou nome da marca */
+.site-header .logo {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+/* Menu de navegação */
+.site-header .nav-link {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Botão do menu mobile */
+.site-header .mobile-menu-button {
+    font-size: 22px;
+}
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.top-bar {
+    width: 100%;
+    position: relative;
+    z-index: 1001;
+    overflow: hidden;
+
+    background: #111111;
+    border-bottom: 1px solid #292929;
+
+    animation: topBarAppear 0.5s ease both;
+}
+
+.top-bar-content {
+    min-height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+/* =========================================================
+   MENSAGEM PRINCIPAL
+========================================================= */
+
+.top-message {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #A3A3A3;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+
+    transition: color 0.25s ease;
+}
+
+.top-message i {
+    color: #F04B2F;
+    font-size: 11px;
+
+    animation: boltPulse 2s ease-in-out infinite;
+}
+
+.top-message:hover {
+    color: #F5F5F5;
+}
+
+/* LOGOUT */ 
+
+.account-menu-logout {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.account-menu-logout:hover {
+    background: var(--card-hover);
+    color: var(--primary);
+}
+
+/* =========================================================
+   LINK DO WHATSAPP
+========================================================= */
+
+.top-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.top-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    color: #B8B8B8;
+    font-size: 13px;
+    font-weight: 500;
+
+    text-decoration: none;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.top-links a .fa-whatsapp {
+    color: #25D366;
+    font-size: 14px;
+
+    transition:
+        transform 0.25s ease,
+        color 0.25s ease;
+}
+
+.top-links a .external-icon {
+    color: #737373;
+    font-size: 9px;
+
+    transition:
+        transform 0.25s ease,
+        color 0.25s ease;
+}
+
+/* Hover */
+.top-links a:hover {
+    color: #F5F5F5;
+    transform: translateY(-1px);
+}
+
+.top-links a:hover .fa-whatsapp {
+    color: #39E879;
+    transform: scale(1.12);
+}
+
+.top-links a:hover .external-icon {
+    color: #F04B2F;
+    transform: translate(2px, -2px);
+}
+
+/* =========================================================
+   ANIMAÇÕES
+========================================================= */
+
+@keyframes topBarAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes boltPulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.65;
+        transform: scale(1.12);
+    }
+}
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+
+@media (max-width: 600px) {
+    .top-bar-content {
+        min-height: 34px;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .top-message {
+        display: none;
+    }
+
+    .top-links {
+        justify-content: center;
+    }
+
+    .top-links a {
+        font-size: 11px;
+    }
+}
+
+/* Respeita preferência por movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+    .top-bar,
+    .top-message i {
+        animation: none;
+    }
+
+    .top-links a,
+    .top-links a i {
+        transition: none;
+    }
+}
+
+/* =========================================================
+   HEADER - O BOY DOS LINKS
+========================================================= */
+
+.site-header {
+    width: 100%;
+    background: #0D0D0D;
+    color: #F5F5F5;
+    position: relative;
+    z-index: 1000;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.site-header .container {
+    width: 100%;
+    max-width: 1216px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* =========================================================
+   HEADER PRINCIPAL
+========================================================= */
+
+.header-main {
+    min-height: 68px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 25px;
+
+    border-bottom: 1px solid #333333;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    min-width: 215px;
+
+    color: inherit;
+    text-decoration: none;
+}
+
+.logo-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+.logo-icon img {
+    width: 42px;
+    height: 42px;
+
+    object-fit: contain;
+
+    display: block;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-text strong {
+    color: #F5F5F5;
+
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: 700;
+}
+
+.logo-text strong span {
+    color: var(--primary);
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: 700;
+}
+
+.logo-text small {
+    margin-top: 3px;
+
+    color: #858585;
+
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   BUSCA
+========================================================= */
+
+.search-form {
+    flex: 1;
+
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+
+    background: #F5F5F5;
+
+    border-radius: 22px;
+
+    overflow: hidden;
+}
+
+.search-form .search-icon {
+    padding-left: 18px;
+
+    color: #737373;
+
+    font-size: 22px;
+}
+
+.search-form input {
+    flex: 1;
+
+    width: 100%;
+    height: 100%;
+
+    border: none;
+    outline: none;
+
+    padding: 0 14px;
+
+    background: transparent;
+
+    color: #222222;
+
+    font-size: 14px;
+}
+
+.search-form input::placeholder {
+    color: #737373;
+}
+
+.search-form button {
+    height: 100%;
+
+    padding: 0 28px;
+
+    border: none;
+
+    background: var(--primary-dark);
+
+    color: #FFFFFF;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+.search-form button:hover {
+    background: #FF6245;
+}
+
+
+/* =========================================================
+   AÇÕES DO HEADER
+========================================================= */
+
+.header-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 20px;
+
+    white-space: nowrap;
+}
+
+.header-action {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: #F5F5F5;
+
+    font-size: 14px;
+
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+}
+
+.header-action:hover {
+    color: #F04B2F;
+}
+
+
+/* =========================================================
+   CONTA
+========================================================= */
+
+.account-dropdown {
+    position: relative;
+}
+
+.account-button {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 8px 0;
+
+    border: none;
+    background: transparent;
+
+    color: #F5F5F5;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.account-button:hover {
+    color: #F04B2F;
+}
+
+.account-button small {
+    font-size: 12px;
+}
+
+
+/* MENU DA CONTA */
+
+.account-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+
+    width: 210px;
+    padding: 15px;
+
+    background: #151515;
+    border: 1px solid #333333;
+    border-radius: 8px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: translateY(5px);
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
+
+    z-index: 9999;
+}
+
+.account-dropdown:hover .account-menu,
+.account-dropdown:focus-within .account-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.account-menu strong {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: #F5F5F5;
+
+    font-size: 14px;
+}
+
+.account-menu a {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 9px 6px;
+
+    color: #B8B8B8;
+
+    font-size: 13px;
+
+    text-decoration: none;
+
+    border-radius: 5px;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.account-menu a:hover {
+    background: #252525;
+    color: #F04B2F;
+}
+
+.menu-divider {
+    height: 1px;
+
+    margin: 8px 0;
+
+    background: #333333;
+}
+
+
+/* =========================================================
+   BOTÃO MOBILE
+========================================================= */
+
+.mobile-menu-button {
+    display: none;
+
+    border: none;
+    background: transparent;
+
+    color: #F5F5F5;
+
+    font-size: 22px;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   BUSCA MOBILE
+========================================================= */
+
+.mobile-search {
+    display: none;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.mobile-search form {
+    width: 100%;
+
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+
+    background: #F5F5F5;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+.mobile-search .search-icon {
+    padding-left: 15px;
+
+    color: #737373;
+
+    font-size: 20px;
+}
+
+.mobile-search input {
+    flex: 1;
+
+    height: 100%;
+
+    border: none;
+    outline: none;
+
+    padding: 0 12px;
+
+    background: transparent;
+
+    color: #222222;
+}
+
+.mobile-search input::placeholder {
+    color: #737373;
+}
+
+
+/* =========================================================
+   BARRA DE CATEGORIAS
+========================================================= */
+
+.categories-bar {
+    width: 100%;
+
+    background: #0D0D0D;
+
+    border-bottom: 1px solid #333333;
+}
+
+.categories-content {
+    min-height: 48px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    overflow: visible;
+}
+
+
+/* =========================================================
+   BOTÃO "TODAS AS CATEGORIAS"
+========================================================= */
+
+.categories-dropdown {
+    position: relative;
+    flex-shrink: 0;
+    z-index: 9999;
+}
+
+
+.categories-button {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    min-height: 38px;
+
+    padding: 8px 12px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: #737373;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+.categories-button:hover {
+    color: #F5F5F5;
+
+    background: #1C1C1C;
+}
+
+
+/* =========================================================
+   CATEGORIAS VISÍVEIS NA BARRA
+========================================================= */
+
+.categories-content > a {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 38px;
+
+    padding: 8px 12px;
+
+    border-radius: 6px;
+
+    color: #737373 !important;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+.categories-content > a:hover {
+    color: #F5F5F5 !important;
+
+    background: #1C1C1C;
+}
+
+
+/* =========================================================
+   MENU DROPDOWN DAS CATEGORIAS
+========================================================= */
+
+.categories-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+
+    width: 220px;
+    padding: 8px;
+
+    background: #151515 !important;
+    border: 1px solid #333333;
+    border-radius: 8px;
+
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: translateY(5px);
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
+
+    z-index: 99999;
+}
+
+
+/* ABRE AO PASSAR O MOUSE */
+
+.categories-dropdown:hover .categories-menu,
+.categories-dropdown:focus-within .categories-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+/* LINKS DO DROPDOWN */
+
+.categories-menu a {
+    display: flex !important;
+    align-items: center;
+
+    width: 100%;
+
+    padding: 10px 12px;
+
+    border-radius: 5px;
+
+    color: var(--text-secondary) !important;
+
+    background: transparent !important;
+
+    font-size: 13px;
+
+    text-decoration: none;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+.categories-menu a:hover {
+    color: var(--text-primary) !important;
+
+    background: var(--primary) !important;
+}
+
+
+/* =========================================================
+   LINKS DAS CATEGORIAS DESKTOP
+========================================================= */
+
+.categories-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.categories-links > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 40px;
+    padding: 9px 14px;
+
+    color: #A3A3A3 !important;
+    background: transparent;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+
+    text-decoration: none !important;
+    white-space: nowrap;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.categories-links > a:hover,
+.categories-links > a:focus-visible {
+    color: var(--primary) !important;
+    outline: none;
+}
+
+/* Botão "Todas as categorias" */
+.categories-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    min-height: 40px;
+    padding: 9px 14px;
+
+    color: var(--text-primary);
+    background: var(--background-secondary);
+
+    border: 1px solid var(--border-color)       ;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.categories-button:hover {
+    background: #262626;
+    border-color: var(--primary);
+}
+
+/* Links do menu dropdown */
+.categories-menu > a {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    padding: 10px 12px;
+
+    color: #A3A3A3 !important;
+    background: transparent;
+
+    border-radius: 7px;
+
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none !important;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.categories-menu > a:hover {
+    color: #F5F5F5 !important;
+    background: #242424;
+}
+
+
+/* TEXTO QUANDO NÃO HÁ CATEGORIAS */
+
+.categories-menu span {
+    display: block;
+
+    padding: 10px 12px;
+
+    color: #858585;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   MENU MOBILE
+========================================================= */
+
+.mobile-menu {
+    display: none;
+
+    width: 100%;
+
+    padding: 10px 15px;
+
+    background: #151515;
+
+    border-top: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+}
+
+.mobile-menu.active {
+    display: block;
+}
+
+.mobile-menu a {
+    display: block;
+
+    padding: 12px 10px;
+
+    color: #B8B8B8 !important;
+
+    font-size: 14px;
+
+    text-decoration: none;
+
+    border-radius: 5px;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+.mobile-menu a:hover {
+    color: #F5F5F5 !important;
+
+    background: #252525;
+}
+
+.mobile-menu-coupon {
+    margin-top: 8px;
+
+    border-top: 1px solid #333333;
+
+    color: #F04B2F !important;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .header-main {
+        gap: 15px;
+    }
+
+    .logo {
+        min-width: 190px;
+    }
+
+    .header-actions {
+        gap: 12px;
+    }
+
+    .categories-content {
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .categories-content::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+
+@media (max-width: 800px) {
+
+    .top-bar {
+        display: none;
+    }
+
+    .header-main {
+        min-height: 65px;
+    }
+
+    .logo {
+        min-width: auto;
+    }
+
+    .desktop-search {
+        display: none;
+    }
+
+    .mobile-search {
+        display: block;
+    }
+
+    .header-actions {
+        margin-left: auto;
+    }
+
+    .categories-bar {
+        display: none;
+    }
+
+    .mobile-menu-button {
+        display: block;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .site-header .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .header-main {
+        gap: 10px;
+    }
+
+    .logo-icon,
+    .logo-icon img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .logo-text strong {
+        font-size: 16px;
+    }
+
+    .logo-text small {
+        font-size: 7px;
+        letter-spacing: 1.5px;
+    }
+
+    .header-actions {
+        gap: 8px;
+    }
+
+    .coupon-action span {
+        display: none;
+    }
+
+    .account-button span {
+        display: none;
+    }
+
+    .account-menu {
+        right: -5px;
+    }
+}

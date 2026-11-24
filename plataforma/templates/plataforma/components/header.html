@@ -1,0 +1,231 @@
+{% load static %}
+
+<header class="site-header">
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+
+            <span class="top-message">
+                <i class="fa-solid fa-bolt"></i>
+                As melhores promoções, atualizadas todos os dias.
+            </span>
+
+            <div class="top-links">
+                <a
+                    href="https://wa.me/message/O2VMAB5BBUTZG1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <i class="fa-brands fa-whatsapp"></i>
+                    Entre no nosso grupo do WhatsApp
+                    <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- HEADER PRINCIPAL -->
+    <div class="header-main container">
+
+        <!-- MENU MOBILE -->
+        <button class="mobile-menu-button" id="mobileMenuButton">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+
+        <!-- LOGO -->
+        <a href="/" class="logo">
+
+            <span class="logo-icon">
+                <img src="{% static 'images/favicon-2.png' %}" alt="Logo do site">
+            </span>
+
+            <span class="logo-text">
+                <strong>
+                    O Boy <span>Dos Links</span>
+                </strong>
+
+                <small>
+                    PROMOÇÕES &amp; CUPONS
+                </small>
+            </span>
+
+        </a>
+
+
+        <!-- BUSCA DESKTOP -->
+        <form class="search-form desktop-search" action="/categoria/eletronicos">
+
+            <span class="search-icon">⌕</span>
+
+            <input
+                type="text"
+                name="q"
+                placeholder="Busque por produtos, marcas e ofertas..."
+            >
+
+            <button type="submit">
+                Buscar
+            </button>
+
+        </form>
+
+
+        <!-- AÇÕES -->
+        <div class="header-actions">
+
+            <a href="/cupons" class="header-action coupon-action">
+                <i class="fa-solid fa-ticket"></i>
+                <span>Cupons</span>
+            </a>
+    
+            <!-- CONTA -->
+        <div class="account-dropdown">
+
+            <button class="account-button">
+                <i class="fa-solid fa-user"></i>
+
+                {% if user.is_authenticated %}
+                    <span>Olá, {{ user.username }}</span>
+                {% else %}
+                    <span>Entrar</span>
+                {% endif %}
+
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+
+        <div class="account-menu">
+
+            {% if user.is_authenticated %}
+
+                <strong>Olá, {{ user.username }}!</strong>
+
+                <div class="menu-divider"></div>
+
+                <a href="{% url 'minha_conta' user.id %}">
+                    <i class="fa-solid fa-user-gear"></i>
+                    Minha conta
+                </a>
+
+                <a href="/favoritos/">
+                    <i class="fa-regular fa-heart"></i>
+                    Favoritos
+                </a>
+
+            {% if user.is_staff %}
+                <div class="menu-divider"></div>
+
+                <a href="/adm/">
+                    <i class="fa-solid fa-table-columns"></i>
+                    Painel Admin
+                </a>
+            {% endif %}
+
+            <div class="menu-divider"></div>
+
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="account-menu-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Sair
+                </button>
+            </form>
+
+        {% else %}
+
+            <strong>Minha Conta</strong>
+
+            <div class="menu-divider"></div>
+
+            <a href="{% url 'login' %}">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                Entrar
+            </a>
+
+            <a href="/cadastro/">
+                <i class="fa-solid fa-user-plus"></i>
+                Criar conta
+            </a>
+
+        {% endif %}
+
+    </div>
+</div>
+
+        </div>
+
+    </div>
+
+
+    <!-- BUSCA MOBILE -->
+    <div class="mobile-search container">
+
+        <form action="/categoria/eletronicos">
+
+            <span class="search-icon">⌕</span>
+
+            <input
+                type="text"
+                name="q"
+                placeholder="Buscar ofertas..."
+            >
+
+        </form>
+
+    </div>
+
+
+    <!-- CATEGORIAS DESKTOP -->
+    <nav class="categories-bar">
+
+        <div class="container categories-content">
+
+            <div class="categories-dropdown">
+
+                <button class="categories-button">
+                    <i class="fa-solid fa-bars"></i>
+                    Todas as categorias
+                </button>
+
+                <div class="categories-menu">
+                    {% for categoria in categorias_header %}
+                    <a href="/categoria/{{categoria.slug}}">{{categoria.nome}}</a>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+
+            <div class="categories-links">
+                <a href="#ofertasRelampago">Ofertas Relâmpago</a>
+                <a href="#AdicionadosRecentemente">Adicionados Recentemente</a>
+                <a href="#MaisAcessados">Mais Acessados</a>
+                <a href="#lojas">Lojas Parceiras</a>
+                <a href="#">Nosso time</a>
+                <a href="#">Área de Suporte</a>
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- MENU MOBILE -->
+    <div class="mobile-menu" id="mobileMenu">
+
+        <div class="mobile-menu-header">
+            <strong>Menu</strong>
+            <button class="close-button" id="closeMobileMenuButton">✖</button>
+        </div>
+
+        <ul class="mobile-menu-list">
+            {% for categoria in categorias_header %}
+            <li>
+                <a href="/categoria/{{categoria.slug}}">{{categoria.nome}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</header>

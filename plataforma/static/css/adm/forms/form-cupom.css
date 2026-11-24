@@ -1,0 +1,386 @@
+
+/* ========================================
+   FORMULÁRIO DE CUPONS
+======================================== */
+
+.cupom-form-page {
+    padding: 28px 0 48px;
+    color: var(--text-primary);
+}
+
+.cupom-form-container {
+    width: calc(100% - 40px);
+    max-width: 920px;
+    margin: 0 auto;
+}
+
+/* Cabeçalho */
+
+.cupom-form-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 26px;
+}
+
+.cupom-form-eyebrow {
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+}
+
+.cupom-form-header h1 {
+    margin: 8px 0;
+    font-size: 28px;
+    line-height: 1.25;
+}
+
+.cupom-form-header p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.cupom-btn-voltar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    white-space: nowrap;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.cupom-btn-voltar:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* Formulário */
+
+.cupom-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.cupom-form-section {
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+}
+
+.cupom-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 22px;
+}
+
+.cupom-section-heading > i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border: 1px solid rgba(240, 75, 47, 0.25);
+    border-radius: 10px;
+    background: rgba(240, 75, 47, 0.10);
+    color: var(--primary);
+    font-size: 16px;
+}
+
+.cupom-section-heading h2 {
+    margin: 0 0 5px;
+    font-size: 16px;
+}
+
+.cupom-section-heading p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Campos */
+
+.cupom-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 16px;
+}
+
+.cupom-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.cupom-field-full {
+    grid-column: 1 / -1;
+}
+
+.cupom-field label {
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.cupom-required {
+    color: var(--danger);
+}
+
+.cupom-input {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 12px 13px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    background: var(--card);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 13px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.cupom-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(240, 75, 47, 0.10);
+}
+
+.cupom-input::placeholder {
+    color: var(--text-muted);
+}
+
+.cupom-input option {
+    background: var(--card);
+    color: var(--text-primary);
+}
+
+.cupom-textarea {
+    min-height: 110px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.cupom-field-help {
+    color: var(--text-muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.cupom-field-error {
+    color: var(--danger);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Opções de exibição */
+
+.cupom-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.cupom-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.cupom-option:has(input:checked) {
+    border-color: var(--primary);
+    background: rgba(240, 75, 47, 0.05);
+}
+
+.cupom-checkbox {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin: 0;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+.cupom-option-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.cupom-option-icon.destaque {
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--warning);
+}
+
+.cupom-option-icon.relampago {
+    background: rgba(240, 75, 47, 0.12);
+    color: var(--primary);
+}
+
+.cupom-option-text {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.cupom-option-text strong {
+    color: var(--text-primary);
+    font-size: 12px;
+}
+
+.cupom-option-text small {
+    color: var(--text-muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* Erros gerais */
+
+.cupom-form-errors {
+    padding: 14px 16px;
+    border: 1px solid var(--danger);
+    border-radius: 8px;
+    background: rgba(239, 68, 68, 0.08);
+    color: var(--danger);
+    font-size: 13px;
+}
+
+.cupom-form-errors ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+/* Rodapé */
+
+.cupom-form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 4px;
+}
+
+.cupom-btn-cancelar,
+.cupom-btn-salvar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    box-sizing: border-box;
+    padding: 11px 18px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.cupom-btn-cancelar {
+    border-color: var(--border);
+    background: var(--card);
+    color: var(--text-secondary);
+}
+
+.cupom-btn-cancelar:hover {
+    border-color: var(--text-muted);
+    color: var(--text-primary);
+}
+
+.cupom-btn-salvar {
+    border-color: var(--info);
+    background: var(--info);
+    color: #FFFFFF;
+}
+
+.cupom-btn-salvar:hover {
+    border-color: var(--info-hover);
+    background: var(--info-hover);
+    transform: translateY(-1px);
+}
+
+/* Responsividade */
+
+@media (max-width: 640px) {
+    .cupom-form-page {
+        padding: 20px 0 32px;
+    }
+
+    .cupom-form-container {
+        width: calc(100% - 28px);
+    }
+
+    .cupom-form-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .cupom-form-header h1 {
+        font-size: 23px;
+    }
+
+    .cupom-form-section {
+        padding: 18px;
+    }
+
+    .cupom-form-grid,
+    .cupom-options {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .cupom-field-full {
+        grid-column: auto;
+    }
+
+    .cupom-form-footer {
+        align-items: stretch;
+        flex-direction: column-reverse;
+    }
+
+    .cupom-btn-cancelar,
+    .cupom-btn-salvar {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cupom-btn-voltar,
+    .cupom-input,
+    .cupom-option,
+    .cupom-btn-cancelar,
+    .cupom-btn-salvar {
+        transition: none;
+    }
+}

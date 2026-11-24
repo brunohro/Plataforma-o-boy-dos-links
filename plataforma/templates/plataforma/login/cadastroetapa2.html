@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro (Passo 2) - O Boy Dos Links</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cadastro.css' %}">
+</head>
+
+{% block content %}
+<main class="cadastro-container">
+    <div class="cadastro-area">
+
+        <h1 class="cadastro-titulo">
+            <a href="{% url 'index' %}">
+                O Boy <span>Dos Links</span>
+            </a>
+        </h1>
+
+        <div class="cadastro-box">
+
+            <h2 class="cadastro-subtitulo">Criar Conta - Passo 2</h2>
+
+            <p class="cadastro-descricao">
+                Finalize seus dados de acesso
+            </p>
+
+            <form class="cadastro-form" method="post" novalidate>
+                {% csrf_token %}
+
+                <div class="cadastro-campo cadastro-senha-area">
+                    <div class="cadastro-senha-label">
+                        <label for="{{ form.password1.id_for_label }}">Senha</label>
+                    </div>
+                    {{ form.password1 }}
+                    {{ form.password1.errors }}
+                </div>
+
+                <div class="cadastro-campo cadastro-senha-area">
+                    <div class="cadastro-senha-label">
+                        <label for="{{ form.password2.id_for_label }}">Confirmar senha</label>
+                    </div>
+                    {{ form.password2 }}
+                    {{ form.password2.errors }}
+                </div>
+
+                {{ form.non_field_errors }}
+
+                <button class="cadastro-botao" type="submit">Cadastrar</button>
+            </form>
+
+        </div>
+
+        <p class="cadastro-cadastro">
+            Já possui uma conta?
+            <a href="{% url 'login' %}">Entrar</a>
+        </p>
+
+    </div>
+</main>
+{% endblock %}

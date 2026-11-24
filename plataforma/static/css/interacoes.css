@@ -1,0 +1,31 @@
+/* favorito marcado */
+.favorite-button.is-active {
+    background: var(--primary);
+    color: #FFFFFF;
+}
+
+/* botão de votar */
+.vote-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 5px 10px;
+    border: 1px solid var(--border, #2a2a30);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-muted, #9a9aa3);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.vote-button:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.vote-button.is-active {
+    border-color: var(--primary);
+    color: var(--primary);
+}

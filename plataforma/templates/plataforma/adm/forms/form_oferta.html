@@ -1,0 +1,270 @@
+{% extends '../../base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin/formulario_oferta.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="oferta-form-page">
+    <div class="oferta-form-container">
+
+        <div class="oferta-form-header">
+            <div>
+                <span class="oferta-form-eyebrow">ADMINISTRAÇÃO</span>
+                <h1>Cadastrar nova oferta</h1>
+                <p>Preencha os dados para adicionar uma oferta ao site.</p>
+            </div>
+
+            <a href="{% url 'ofertas_adm' %}" class="oferta-btn-voltar">
+                <i class="fa-solid fa-arrow-left"></i>
+                Voltar
+            </a>
+        </div>
+
+        
+        <form class="oferta-form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if form.errors %}
+                <div class="oferta-alerta-erro">
+                    <strong>
+                        Não foi possível cadastrar a oferta.
+                    </strong>
+                    {% for campo, erros in form.errors.items %}
+                        {% for erro in erros %}
+                            <p>{{ erro }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <section class="oferta-form-section">
+                <div class="oferta-section-heading">
+                    <i class="fa-solid fa-box-open"></i>
+                    <div>
+                        <h2>Informações do produto</h2>
+                        <p>Nome, categoria, preço e loja responsável.</p>
+                    </div>
+                </div>
+
+                <div class="oferta-form-grid">
+                    <div class="oferta-field oferta-field-full">
+                        <label for="nome_produto">Nome do produto *</label>
+                        <input
+                            type="text"
+                            id="nome_produto"
+                            name="nome_produto"
+                            class="oferta-input"
+                            placeholder="Ex.: Tênis esportivo masculino"
+                            value="{{ form.nome_produto.value|default_if_none:'' }}"
+
+                        >
+                    </div>
+
+                    <div class="oferta-field">
+                        <label for="loja">Loja parceira *</label>
+                        <select id="loja" name="loja" class="oferta-input">
+                            <option value="">Nenhuma loja vinculada</option>
+                            {% for loja in lojas %}
+                                <option value="{{ loja.pk }}"
+                                    {% if oferta and oferta.loja_id == loja.pk %}selected{% endif %}>
+                                    {{ loja }}
+                                </option>
+                            {% empty %}
+                                <option value="" disabled>Nenhuma loja cadastrada</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="oferta-field">
+                        <label for="categoria">Categoria</label>
+                        <select id="categoria" name="categoria" class="oferta-input">
+                            <option value="">Nenhuma categoria vinculada</option>
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria.pk }}"
+                                    {% if oferta and oferta.categoria_id == categoria.pk %}selected{% endif %}>
+                                    {{ categoria }}
+                                </option>
+                            {% empty %}
+                                <option value="" disabled>Nenhuma categoria cadastrada</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="oferta-field">
+                        <label for="preco_atual">Preço atual (R$) *</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            id="preco_atual"
+                            name="preco_atual"
+                            class="oferta-input"
+                            placeholder="Ex.: 99.90"
+                            value="{{ form.preco_atual.value|default_if_none:'' }}"
+                            required
+                        >
+                        {{ form.preco_atual.errors }}
+                    </div>
+
+                    <div class="oferta-field">
+                        <label for="preco_anterior">Preço anterior (R$) *</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            id="preco_anterior"
+                            name="preco_anterior"
+                            class="oferta-input"
+                            placeholder="Ex.: 149.90"
+                            value="{{ form.preco_anterior.value|default_if_none:'' }}"
+                            required
+                        >
+                        {{ form.preco_anterior.errors }}
+                    </div>
+
+                    <div class="oferta-field oferta-field-full">
+                        <label for="descricao">Descrição da oferta</label>
+                        <textarea
+                            id="descricao"
+                            name="descricao"
+                            class="oferta-input oferta-textarea"
+                            rows="4"
+                            placeholder="Descreva os detalhes do produto..."
+                        >{{ form.descricao.value|default_if_none:'' }}</textarea>
+                    </div>
+                </div>
+            </section>
+
+            <section class="oferta-form-section">
+                <div class="oferta-section-heading">
+                    <i class="fa-solid fa-link"></i>
+                    <div>
+                        <h2>Links e cupom</h2>
+                        <p>Configure o acesso ao produto e o desconto.</p>
+                    </div>
+                </div>
+
+                <div class="oferta-form-grid">
+                    <div class="oferta-field oferta-field-full">
+                        <label for="link_afiliado">Link de afiliado *</label>
+                        <input
+                            type="url"
+                            id="link_afiliado"
+                            name="link_afiliado"
+                            class="oferta-input"
+                            placeholder="https://..."
+                            value="{{ form.link_afiliado.value|default_if_none:'' }}"
+
+                        >
+                        {{ form.link_afiliado.errors }}
+                    </div>
+
+                    <div class="oferta-field oferta-field-full">
+                        <label for="image_url">URL da imagem</label>
+                        <input
+                            type="file"
+                            id="image_url"
+                            name="image_url"
+                            class="oferta-input"
+                            accept="image/*"
+                        >
+                        
+                    </div>
+
+                    <div class="oferta-field">
+                        <label for="cupom">Cupom de desconto</label>
+                        <select id="cupom" name="cupom" class="oferta-input">
+                            <option value="">Nenhum cupom vinculado</option>
+                            {% for item_cupom in cupons %}
+                            <option value="{{ item_cupom.pk }}"
+                                {% if oferta and oferta.cupom_id == item_cupom.pk %}selected{% endif %}>
+                                {{ item_cupom }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        
+                    </div>
+
+                    <div class="oferta-field">
+                        <label for="duracao_horas">Duração (horas)</label>
+                        <input
+                            type="number"
+                            min="1"
+                            id="duracao_horas"
+                            name="duracao_horas"
+                            class="oferta-input"
+                            value="{{ form.duracao_horas.value|default:24 }}"
+                        >
+                        {{ form.duracao_horas.errors }}
+                    </div>
+                </div>
+            </section>
+
+            <section class="oferta-form-section">
+                <div class="oferta-section-heading">
+                    <i class="fa-solid fa-tags"></i>
+                    <div>
+                        <h2>Exibição da oferta</h2>
+                        <p>Escolha como o produto será destacado.</p>
+                    </div>
+                </div>
+
+                <div class="oferta-options">
+                    <label class="oferta-option" for="is_destaque">
+                        <input
+                            type="checkbox"
+                            id="is_destaque"
+                            name="is_destaque"
+                            class="oferta-checkbox"
+                            {% if form.is_destaque.value %}checked{% endif %}
+
+                        >
+                        <span class="oferta-option-icon destaque">
+                            <i class="fa-solid fa-star"></i>
+                        </span>
+                        <span class="oferta-option-text">
+                            <strong>Oferta em destaque</strong>
+                            <small>Dar maior visibilidade ao produto.</small>
+                        </span>
+                    </label>
+
+                    <label class="oferta-option" for="is_relampago">
+                        <input
+                            type="checkbox"
+                            id="is_relampago"
+                            name="is_relampago"
+                            class="oferta-checkbox"
+                            {% if form.is_relampago.value %}checked{% endif %}
+
+                        >
+                        <span class="oferta-option-icon relampago">
+                            <i class="fa-solid fa-bolt"></i>
+                        </span>
+                        <span class="oferta-option-text">
+                            <strong>Oferta relâmpago</strong>
+                            <small>Identificar como uma promoção relâmpago.</small>
+                        </span>
+                    </label>
+                </div>
+            </section>
+
+            <div class="oferta-form-footer">
+                <a href="{% url 'ofertas_adm' %}" class="oferta-btn-cancelar">
+                    Cancelar
+                </a>
+
+                <button type="submit" class="oferta-btn-salvar">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    {% if modo_edicao %}
+                        Salvar alterações
+                    {% else %}
+                        Cadastrar oferta
+                    {% endif %}
+                </button>
+            </div>
+
+        </form>
+    </div>
+</main>
+{% endblock %}

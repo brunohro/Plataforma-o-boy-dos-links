@@ -1,0 +1,46 @@
+
+{% extends 'plataforma/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="coupons-page">
+    <div class="coupons-page__container">
+
+        <header class="coupons-page__header">
+            <h1 class="coupons-page__title">
+                <i class="fa-solid fa-ticket"></i>
+                Cupons de desconto
+            </h1>
+
+            <p class="coupons-page__description">
+                Confira os cupons disponíveis e economize nas suas compras.
+            </p>
+
+            <div class="coupons-page__count">
+                <i class="fa-solid fa-tags"></i>
+                <strong>{{ total_cupons }}</strong>
+                cupons disponíveis
+            </div>
+        </header>
+
+                <!-- Lista de cupons -->
+        <div class="featured-coupons__grid">
+
+            {% for cupom in cupons %}
+                {% include "plataforma/components/cupom_item.html" %}
+
+            {% empty %}
+                <p class="featured-coupons__empty">
+                    Nenhum cupom em destaque no momento.
+                </p>
+            {% endfor %}
+
+        </div>
+
+    </div>
+</section>
+
+
+
+{% endblock %}

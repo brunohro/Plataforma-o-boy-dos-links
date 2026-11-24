@@ -1,0 +1,279 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="admin-usuarios">
+    <div class="usuarios-container">
+
+        <!-- Cabeçalho -->
+        <header class="usuarios-header">
+            <div>
+                <span class="usuarios-eyebrow">PAINEL ADMINISTRATIVO</span>
+                <h1>Gerenciar usuários</h1>
+                <p>Consulte os usuários cadastrados e gerencie quem tem acesso ao painel administrativo.</p>
+            </div>
+
+            <div>
+                <a href="{% url 'painel_adm' %}" class="usuarios-btn-voltar">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Voltar
+                </a>
+            </div>
+        </header>
+
+        <!-- Mensagens -->
+        {% if messages %}
+        <div class="usuarios-messages" role="status">
+            {% for message in messages %}
+            <div class="usuarios-message usuarios-message-{{ message.tags }}">
+                <i class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% elif message.tags == 'error' %}fa-circle-exclamation{% else %}fa-circle-info{% endif %}"></i>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if not eh_superadmin %}
+        <p class="usuarios-aviso">
+            <i class="fa-solid fa-lock"></i>
+            Apenas superadministradores podem promover ou remover administradores.
+        </p>
+        {% endif %}
+
+        <!-- Busca -->
+        <form method="get" class="usuarios-toolbar">
+            <div class="usuarios-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input
+                    type="search"
+                    name="q"
+                    placeholder="Buscar por usuário, apelido ou e-mail..."
+                    value="{{ request.GET.q|default:'' }}"
+                    aria-label="Buscar usuários">
+            </div>
+
+            <button type="submit" class="usuarios-search-button">
+                Buscar
+            </button>
+
+            {% if request.GET.q %}
+                <a href="{% url 'usuarios_adm' %}" class="usuarios-clear">
+                    Limpar
+                </a>
+            {% endif %}
+        </form>
+
+        <!-- Listagem -->
+        <div class="usuarios-table-wrapper">
+            <table class="usuarios-table">
+                <thead>
+                    <tr>
+                        <th>Nome de usuário</th>
+                        <th>Apelido</th>
+                        <th>E-mail</th>
+                        <th>Função</th>
+                        {% if eh_superadmin %}<th class="actions-heading">Ações</th>{% endif %}
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <!-- Username -->
+                        <td>
+                            <div class="usuarios-product">
+                                <div class="usuarios-image">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+
+                                <div class="usuarios-product-info">
+                                    <span class="usuarios-name">
+                                        {{ usuario.username }}
+                                    </span>
+                                    <span class="usuarios-category">
+                                        Usuário da plataforma
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Apelido -->
+                        <td>
+                            <span class="usuarios-apelido">
+                                {{ usuario.apelido|default:"Não informado" }}
+                            </span>
+                        </td>
+
+                        <!-- E-mail -->
+                        <td>
+                            <span class="usuarios-email">
+                                {{ usuario.email }}
+                            </span>
+                        </td>
+
+                        <!-- Função -->
+                        <td>
+                            <div class="usuarios-statuses">
+                                {% if usuario.is_superuser %}
+                                    <span class="status-badge status-super">
+                                        <i class="fa-solid fa-crown"></i> Superadmin
+                                    </span>
+                                {% elif usuario.is_staff %}
+                                    <span class="status-badge status-admin">
+                                        <i class="fa-solid fa-shield-halved"></i> Administrador
+                                    </span>
+                                {% else %}
+                                    <span class="status-badge status-normal">
+                                        <i class="fa-solid fa-user"></i> Usuário
+                                    </span>
+                                {% endif %}
+
+                                {% if not usuario.is_active %}
+                                    <span class="status-badge status-inativo">Inativo</span>
+                                {% endif %}
+                            </div>
+                        </td>
+
+                        <!-- Ações -->
+                        {% if eh_superadmin %}
+                        <td>
+                            <div class="usuarios-actions">
+                                {% if usuario.pk == request.user.pk %}
+                                    <span class="usuarios-nota">Você</span>
+                                {% elif usuario.is_superuser %}
+                                    <span class="usuarios-nota">—</span>
+                                {% elif usuario.is_staff %}
+                                    <form method="POST"
+                                          action="{% url 'alterar_permissao_usuario' usuario.id %}"
+                                          onsubmit="return confirm('Remover o acesso de administrador de {{ usuario.username|escapejs }}?');">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="acao" value="remover">
+                                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                        <button type="submit" class="usuarios-delete-button">
+                                            <i class="fa-solid fa-user-minus"></i>
+                                            <span>Remover admin</span>
+                                        </button>
+                                    </form>
+                                {% elif usuario.is_active %}
+                                    <form method="POST"
+                                          action="{% url 'alterar_permissao_usuario' usuario.id %}"
+                                          onsubmit="return confirm('Tornar {{ usuario.username|escapejs }} administrador? Ele terá acesso total ao painel.');">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="acao" value="promover">
+                                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                        <button type="submit" class="usuarios-promote-button">
+                                            <i class="fa-solid fa-user-shield"></i>
+                                            <span>Tornar admin</span>
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    <span class="usuarios-nota">Inativo</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        {% endif %}
+                    </tr>
+
+                    {% empty %}
+                    <tr>
+                        <td colspan="{% if eh_superadmin %}5{% else %}4{% endif %}">
+                            <div class="usuarios-empty">
+                                <i class="fa-solid fa-users"></i>
+
+                                <h3>Nenhum usuário encontrado</h3>
+
+                                <p>
+                                    {% if request.GET.q %}
+                                        Tente buscar usando outro termo.
+                                    {% else %}
+                                        Ainda não existem usuários cadastrados.
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Paginação -->
+        {% if page_obj.paginator.num_pages > 0 %}
+        <footer class="usuarios-footer">
+            <span class="usuarios-page-info">
+                Página {{ page_obj.number }} de
+                {{ page_obj.paginator.num_pages }}
+
+                <span class="usuarios-total">
+                    · {{ page_obj.paginator.count }} registros
+                </span>
+            </span>
+
+            {% if page_obj.has_other_pages %}
+            <nav class="usuarios-pagination"
+                 aria-label="Paginação dos usuários">
+
+                {% if page_obj.has_previous %}
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page=1"
+                        class="page-button"
+                        aria-label="Primeira página"
+                        title="Primeira página">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </a>
+
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}"
+                        class="page-button"
+                        aria-label="Página anterior">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+                {% else %}
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </span>
+
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </span>
+                {% endif %}
+
+                <span class="page-current">
+                    {{ page_obj.number }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.next_page_number }}"
+                        class="page-button"
+                        aria-label="Próxima página">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                    <a
+                        href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.paginator.num_pages }}"
+                        class="page-button"
+                        aria-label="Última página"
+                        title="Última página">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </a>
+                {% else %}
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </span>
+
+                    <span class="page-button disabled">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </span>
+                {% endif %}
+
+            </nav>
+            {% endif %}
+        </footer>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

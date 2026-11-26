@@ -1,0 +1,210 @@
+{% extends 'plataforma/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="support-page">
+
+    <!-- CABEÇALHO -->
+    <section class="support-header">
+        <span class="support-label">
+            <i class="fa-solid fa-headset"></i>
+            CENTRAL DE ATENDIMENTO
+        </span>
+
+        <h1>Como podemos <span>te ajudar?</span></h1>
+
+        <p>
+            Surgiu alguma dúvida, encontrou algum problema ou precisa de ajuda?
+            Estamos aqui para facilitar sua experiência com O Boy dos Links.
+        </p>
+    </section>
+
+    <!-- CANAIS DE ATENDIMENTO -->
+    <section class="support-cards">
+
+        <div class="support-card">
+            <div class="support-icon">
+                <i class="fa-brands fa-whatsapp"></i>
+            </div>
+
+            <h3>WhatsApp</h3>
+
+            <p>
+                Entre em contato diretamente conosco para tirar dúvidas
+                ou receber ajuda.
+            </p>
+
+            <!-- pode ser dinâmico no futuro -->
+            <a href="https://wa.me/message/O2VMAB5BBUTZG1" target="_blank"
+               class="support-button">
+                Falar pelo WhatsApp
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+        </div>
+
+        <div class="support-card">
+            <div class="support-icon">
+                <i class="fa-solid fa-tags"></i>
+            </div>
+
+            <h3>Problemas com ofertas</h3>
+
+            <p>
+                Encontrou um produto indisponível, preço diferente ou
+                cupom que não funcionou?
+            </p>
+
+            <!-- pode ser dinâmico no futuro -->
+            <a href="https://wa.me/message/O2VMAB5BBUTZG1" target="_blank"
+               class="support-button">
+                Reportar problema
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+        </div>
+
+        <div class="support-card">
+            <div class="support-icon">
+                <i class="fa-solid fa-circle-question"></i>
+            </div>
+
+            <h3>Dúvidas gerais</h3>
+
+            <p>
+                Quer saber como funcionam nossas ofertas, cupons ou links
+                de afiliados? Estamos à disposição.
+            </p>
+
+            <!-- pode ser dinâmico no futuro -->
+            <a href="https://wa.me/message/O2VMAB5BBUTZG1" target="_blank" 
+               class="support-button">
+                Tirar minhas dúvidas
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+        </div>
+
+    </section>
+
+    <!-- PERGUNTAS FREQUENTES -->
+    <section class="support-faq">
+
+        <div class="support-section-header">
+            <span class="support-label">FAQ</span>
+            <h2>Perguntas frequentes</h2>
+            <p>Algumas respostas para dúvidas que podem surgir durante sua experiência.</p>
+        </div>
+
+        <div class="faq-list">
+
+            <details class="faq-item">
+                <summary>
+                    <span>O Boy dos Links vende os produtos?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+
+                <div class="faq-answer">
+                    Não. Nós divulgamos ofertas, promoções e cupons encontrados
+                    em lojas parceiras. A compra é realizada diretamente no site
+                    da loja responsável pelo produto.
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary>
+                    <span>O preço divulgado pode mudar?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+
+                <div class="faq-answer">
+                    Sim. Os preços, cupons e condições das ofertas podem mudar
+                    a qualquer momento, de acordo com a disponibilidade e as
+                    regras da loja. Por isso, recomendamos conferir as condições
+                    diretamente no momento da compra.
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary>
+                    <span>O cupom não funcionou. O que fazer?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+
+                <div class="faq-answer">
+                    Alguns cupons possuem regras específicas, como valor mínimo
+                    de compra, produtos selecionados, limite de utilização ou
+                    prazo de validade. Confira as condições na loja e, caso
+                    continue com problemas, entre em contato conosco.
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary>
+                    <span>O produto está indisponível. E agora?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+
+                <div class="faq-answer">
+                    As ofertas podem acabar rapidamente, especialmente quando
+                    possuem estoque limitado. Caso o produto esteja indisponível,
+                    você pode entrar em nosso grupo para acompanhar novas
+                    oportunidades e ofertas semelhantes.
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary>
+                    <span>Como faço para receber novas ofertas?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+
+                <div class="faq-answer">
+                    Entre em nosso grupo de ofertas no WhatsApp para receber
+                    achadinhos, descontos, cupons e promoções selecionadas.
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary>
+                    <span>Como funciona o link de afiliado?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+
+                <div class="faq-answer">
+                    Alguns links divulgados podem ser links de afiliados.
+                    Isso significa que podemos receber uma comissão caso você
+                    realize uma compra por meio deles, sem que isso represente
+                    um custo adicional para você.
+                </div>
+            </details>
+
+        </div>
+
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="support-cta">
+
+        <div class="support-cta-icon">
+            <i class="fa-brands fa-whatsapp"></i>
+        </div>
+
+        <div class="support-cta-content">
+            <h2>Não encontrou sua resposta?</h2>
+
+            <p>
+                Nossa equipe está pronta para te ajudar.
+                Entre em contato e vamos resolver isso juntos.
+            </p>
+        </div>
+
+        <a href="https://wa.me/SEUNUMERO" target="_blank"
+           class="support-cta-button">
+            Entrar em contato
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+    </section>
+
+</div>
+
+{% endblock %}

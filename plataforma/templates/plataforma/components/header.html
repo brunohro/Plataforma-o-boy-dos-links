@@ -74,12 +74,17 @@
 
         <!-- AÇÕES -->
         <div class="header-actions">
-
+            <!-- ALTERAR TEMA -->
+        <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
+            <i class="fa-solid fa-moon"></i>
+        </button>
             <a href="/cupons" class="header-action coupon-action">
                 <i class="fa-solid fa-ticket"></i>
                 <span>Cupons</span>
             </a>
-    
+
+
+            
             <!-- CONTA -->
         <div class="account-dropdown">
 
@@ -188,23 +193,37 @@
                     Todas as categorias
                 </button>
 
-                <div class="categories-menu">
-                    {% for categoria in categorias_header %}
-                    <a href="/categoria/{{categoria.slug}}">{{categoria.nome}}</a>
-                    {% endfor %}
-                </div>
+            <div class="categories-menu">
+                {% for categoria in categorias_header %}
+                    <a href="{% if request.path == '/ofertas/' %}?categoria={{ categoria.id }}{% else %}{% url 'ofertas' %}?categoria={{ categoria.id }}{% endif %}">
+                        {{ categoria }}
+                    </a>
+                {% endfor %}
+            </div>
 
             </div>
 
 
-            <div class="categories-links">
-                <a href="#ofertasRelampago">Ofertas Relâmpago</a>
-                <a href="#AdicionadosRecentemente">Adicionados Recentemente</a>
-                <a href="#MaisAcessados">Mais Acessados</a>
-                <a href="#lojas">Lojas Parceiras</a>
-                <a href="#">Nosso time</a>
-                <a href="#">Área de Suporte</a>
-            </div>
+        <div class="categories-links">
+            <a href="{% if request.path == '/' %}#ofertasRelampago{% else %}{% url 'index' %}#ofertasRelampago{% endif %}">
+                Ofertas Relâmpago
+            </a>
+
+            <a href="{% if request.path == '/' %}#AdicionadosRecentemente{% else %}{% url 'index' %}#AdicionadosRecentemente{% endif %}">
+                Adicionados Recentemente
+            </a>
+
+            <a href="{% if request.path == '/' %}#MaisAcessados{% else %}{% url 'index' %}#MaisAcessados{% endif %}">
+                Mais Acessados
+            </a>
+
+            <a href="{% if request.path == '/' %}#lojas{% else %}{% url 'index' %}#lojas{% endif %}">
+                Lojas Parceiras
+            </a>
+
+            <a href="#">Nosso time</a>
+            <a href="{% url 'suporte' %}">Área de Suporte</a>
+        </div>
 
         </div>
 

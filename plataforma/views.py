@@ -1109,3 +1109,12 @@ def alterar_permissao_usuario(request, id):
         messages.error(request, "Ação inválida.")
 
     return redirect(destino)
+
+
+
+
+
+#suporte 
+
+def suporte(request):
+    return render(request, "plataforma/suporte.html")

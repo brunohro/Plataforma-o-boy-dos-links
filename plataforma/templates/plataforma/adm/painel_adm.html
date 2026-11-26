@@ -1,109 +1,47 @@
-{% extends "plataforma/base.html" %}
 
+{% extends "plataforma/base.html" %}
 {% load static %}
 
 {% block content %}
 
 <div class="adm-page">
 
-    <!-- =========================
-         CABEÇALHO
-    ========================== -->
-    <div class="admin-navigation">
-        <span class="adm-subtitle">PAINEL ADMINISTRATIVO</span>
+    <!-- CABEÇALHO -->
+    <div class="adm-header">
+        <span class="adm-subtitle">
+            <i class="fa-solid fa-gear"></i>
+            PAINEL ADMINISTRATIVO
+        </span>
 
-        <nav class="admin-buttons">
-            <a href="{% url 'banners_adm' %}" class="admin-button">
-                <i class="fa-solid fa-tags"></i>
-                <span>Gerenciamento de Banners</span>
-            </a>
-
-            <a href="{% url 'ofertas_adm' %}" class="admin-button">
-                <i class="fa-solid fa-tags"></i>
-                <span>Gerenciamento de Ofertas</span>
-            </a>
-
-            <a href="{% url 'cupons_adm' %}" class="admin-button">
-                <i class="fa-solid fa-ticket"></i>
-                <span>Gerenciamento de Cupons</span>
-            </a>
-
-            <a href="{% url 'usuarios_adm' %}" class="admin-button">
-                <i class="fa-solid fa-users"></i>
-                <span>Gerenciamento de Usuários</span>
-            </a>
-
-            <a href="{% url 'lojas_adm' %}" class="admin-button">
-                <i class="fa-solid fa-store"></i>
-                <span>Gerenciamento de Lojas</span>
-            </a>
-
-            <a href="{% url 'categorias_adm' %}" class="admin-button">
-               <i class="fa-solid fa-layer-group"></i>
-                <span>Gerenciamento de Categorias</span>
-            </a>
-        </nav>
+        <p class="adm-description">
+            Espaço exclusivo para administradores do sistema.
+        </p>
     </div>
-
+    
     <!-- =========================
-         VISÃO GERAL DO SISTEMA
+         VISÃO GERAL
     ========================== -->
 
     <section class="adm-section">
 
         <div class="section-title">
-
             <div>
-
-                <h2>
-                    Visão geral do sistema
-                </h2>
-
-                <span>
-                    Informações gerais da plataforma.
-                </span>
-
+                <h2>Visão geral</h2>
+                <span>Resumo das principais informações da plataforma.</span>
             </div>
-
         </div>
 
 
         <div class="metrics-grid">
 
-
-            <!-- USUÁRIOS -->
-
-            <div class="metric-card">
-
-                <div class="metric-icon">
-                    <i class="fa-solid fa-users"></i>
-                </div>
-
-                <div>
-
-                    <span class="metric-label">
-                        Usuários
-                    </span>
-
-                    <strong>
-                        {{ total_usuarios }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-            
             <!-- OFERTAS -->
-
             <div class="metric-card">
 
                 <div class="metric-icon">
-                    <i class="fa-solid fa-tag"></i>
+                    <i class="fa-solid fa-tags"></i>
                 </div>
 
-                <div>
-
+                <div class="metric-info">
                     <span class="metric-label">
                         Ofertas
                     </span>
@@ -111,135 +49,19 @@
                     <strong>
                         {{ total_ofertas }}
                     </strong>
-
                 </div>
 
             </div>
 
-
-            <!-- LOJAS -->
-
-            <div class="metric-card">
-
-                <div class="metric-icon">
-                    <i class="fa-solid fa-store"></i>
-                </div>
-
-                <div>
-
-                    <span class="metric-label">
-                        Lojas
-                    </span>
-
-                    <strong>
-                        {{ total_lojas }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <!-- CATEGORIAS -->
-
-            <div class="metric-card">
-
-                <div class="metric-icon">
-                    <i class="fa-solid fa-layer-group"></i>
-                </div>
-
-                <div>
-
-                    <span class="metric-label">
-                        Categorias
-                    </span>
-
-                    <strong>
-                        {{ total_categorias }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <!-- CUPONS -->
-
-            <div class="metric-card">
-
-                <div class="metric-icon">
-                    <i class="fa-solid fa-ticket"></i>
-                </div>
-
-                <div>
-
-                    <span class="metric-label">
-                        Cupons ativos
-                    </span>
-
-                    <strong>
-                        {{ total_cupons_ativos }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-            <!-- BANNERS -->
-
-            <div class="metric-card">
-
-                <div class="metric-icon">
-                    <i class="fa-solid fa-rectangle-ad"></i>
-                </div>
-
-                <div>
-
-                    <span class="metric-label">
-                        Banners
-                    </span>
-
-                    <strong>
-                        {{ total_banners }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <!-- FAVORITOS -->
-
-            <div class="metric-card">
-
-                <div class="metric-icon">
-                    <i class="fa-solid fa-heart"></i>
-                </div>
-
-                <div>
-
-                    <span class="metric-label">
-                        Favoritos
-                    </span>
-
-                    <strong>
-                        {{ total_favoritos }}
-                    </strong>
-
-                </div>
-
-            </div>
 
             <!-- CLIQUES -->
-
             <div class="metric-card">
 
                 <div class="metric-icon">
                     <i class="fa-solid fa-arrow-pointer"></i>
                 </div>
 
-                <div>
-
+                <div class="metric-info">
                     <span class="metric-label">
                         Cliques
                     </span>
@@ -247,88 +69,160 @@
                     <strong>
                         {{ total_clicks }}
                     </strong>
-
                 </div>
 
             </div>
 
 
+            <!-- USUÁRIOS -->
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+
+                <div class="metric-info">
+                    <span class="metric-label">
+                        Usuários
+                    </span>
+
+                    <strong>
+                        {{ total_usuarios }}
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <!-- FAVORITOS -->
+            <div class="metric-card">
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+
+                <div class="metric-info">
+                    <span class="metric-label">
+                        Favoritos
+                    </span>
+
+                    <strong>
+                        {{ total_favoritos }}
+                    </strong>
+                </div>
+
+            </div>
+
         </div>
 
     </section>
 
+
     <!-- =========================
-         GRÁFICO
+         GERENCIAMENTO
     ========================== -->
 
     <section class="adm-section">
 
-        <div class="section-title">
+        <div class="admin-navigation">
 
-            <div>
-                <h2>Visitas e Cliques</h2>
+            <!-- CABEÇALHO DO MENU -->
+            <button
+                class="admin-toggle"
+                type="button"
+                aria-expanded="true"
+            >
 
-                <span>
-                    Acompanhe o desempenho da plataforma por período.
+                <span class="adm-subtitle">
+                    <i class="fa-solid fa-sliders"></i>
+                    GERENCIAMENTO
                 </span>
-            </div>
+
+                <i class="fa-solid fa-chevron-down admin-arrow"></i>
+
+            </button>
 
 
-            <div class="period-filter">
+            <!-- MENU -->
+            <nav class="admin-buttons">
 
-                <button type="button" class="period-button active" data-agrupar="dia">Dia</button>
+                <!-- BANNERS -->
+                <a href="{% url 'banners_adm' %}" class="admin-button">
 
-                <button type="button" class="period-button" data-agrupar="semana">Semana</button>
-
-                <button type="button" class="period-button" data-agrupar="mes">Mês</button>
-
-                <button type="button" class="period-button" data-agrupar="ano">Ano</button>
-
-            </div>
-
-        </div>
-
-
-        <div class="chart-card">
-
-            <div class="chart-header">
-
-                <div class="chart-legend">
+                    <i class="fa-solid fa-images"></i>
 
                     <span>
-                        <i class="legend-dot visits"></i>
-                        Visitas
+                        Gerenciamento de Banners
                     </span>
+
+                </a>
+
+
+                <!-- OFERTAS -->
+                <a href="{% url 'ofertas_adm' %}" class="admin-button">
+
+                    <i class="fa-solid fa-tags"></i>
 
                     <span>
-                        <i class="legend-dot clicks"></i>
-                        Cliques
+                        Gerenciamento de Ofertas
                     </span>
 
-                </div>
+                </a>
 
 
-                <select class="date-filter" id="grafico-dias">
+                <!-- CUPONS -->
+                <a href="{% url 'cupons_adm' %}" class="admin-button">
 
-                    <option value="7">Últimos 7 dias</option>
-                    <option value="15">Últimos 15 dias</option>
-                    <option value="30" selected>Últimos 30 dias</option>
-                    <option value="90">Últimos 90 dias</option>
-                    <option value="365">Último ano</option>
+                    <i class="fa-solid fa-ticket"></i>
 
-                </select>
+                    <span>
+                        Gerenciamento de Cupons
+                    </span>
 
-            </div>
+                </a>
 
 
-            <div class="chart-canvas-wrap" data-url="{% url 'dados_grafico_adm' %}">
-                <canvas id="grafico-adm"></canvas>
-                <p id="grafico-vazio" class="chart-empty" hidden>Ainda não há dados neste período.</p>
-            </div>
+                <!-- USUÁRIOS -->
+                <a href="{% url 'usuarios_adm' %}" class="admin-button">
 
+                    <i class="fa-solid fa-users"></i>
+
+                    <span>
+                        Gerenciamento de Usuários
+                    </span>
+
+                </a>
+
+
+                <!-- LOJAS -->
+                <a href="{% url 'lojas_adm' %}" class="admin-button">
+
+                    <i class="fa-solid fa-store"></i>
+
+                    <span>
+                        Gerenciamento de Lojas
+                    </span>
+
+                </a>
+
+
+                <!-- CATEGORIAS -->
+                <a href="{% url 'categorias_adm' %}" class="admin-button">
+
+                    <i class="fa-solid fa-layer-group"></i>
+
+                    <span>
+                        Gerenciamento de Categorias
+                    </span>
+
+                </a>
+
+            </nav>
 
         </div>
 
     </section>
+
+</div>
 
 {% endblock %}

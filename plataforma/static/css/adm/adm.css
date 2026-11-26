@@ -2,6 +2,88 @@
    PAINEL ADMINISTRATIVO
 ======================================== */
 
+
+.admin-arrow {
+    color: var(--text-secondary);
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.admin-arrow.rotated {
+    transform: rotate(180deg);
+    color: var(--primary);
+}
+
+
+/* Container */
+.admin-navigation {
+    width: 100%;
+}
+
+/* Botão principal */
+.admin-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 12px 15px;
+
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.admin-toggle:hover {
+    background: var(--card-hover);
+}
+
+/* Título */
+.adm-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Seta */
+.admin-arrow {
+    transition: transform 0.3s ease;
+}
+
+/* Rotação da seta quando aberto */
+.admin-navigation.active .admin-arrow {
+    transform: rotate(180deg);
+}
+
+/* Menu */
+.admin-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+
+    margin-top: 0;
+    padding: 0;
+
+    transition:
+        max-height 0.4s ease,
+        opacity 0.3s ease,
+        margin 0.3s ease;
+}
+
+/* Menu aberto */
+.admin-navigation.active .admin-buttons {
+    max-height: 500px;
+    opacity: 1;
+    margin-top: 10px;
+}
+
+
 .admin-navigation {
     display: flex;
     flex-direction: column;

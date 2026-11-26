@@ -98,6 +98,7 @@ class LojaParceiraForm(forms.ModelForm):
             self.fields['logo_imagem'].widget.attrs['placeholder'] = 'https://...imagem.jpeg'
             self.fields['verificado'].widget.attrs['class'] = 'form-check-input'
 
+
 class CupomForm(forms.ModelForm):
     class Meta:
         model = Cupom

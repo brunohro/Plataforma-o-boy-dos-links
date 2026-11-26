@@ -60,17 +60,14 @@
     <!-- Categorias -->
     <div class="footer-column">
       <h3 class="footer-title">Categorias</h3>
-
-      <ul class="footer-list">
-        <li><a href="/categoria/eletronicos">Eletrônicos</a></li>
-        <li><a href="/categoria/moda">Moda</a></li>
-        <li><a href="/categoria/casa">Casa</a></li>
-        <li><a href="/categoria/esportes">Esportes</a></li>
-        <li><a href="/categoria/beleza">Beleza</a></li>
-        <li><a href="/categoria/informatica">Informática</a></li>
-      </ul>
+        <ul class="footer-list">
+        {% for categoria in categorias_header %}
+              <a href="{% if request.path == '/ofertas/' %}?categoria={{ categoria.id }}{% else %}{% url 'ofertas' %}?categoria={{ categoria.id }}{% endif %}">
+                  {{ categoria }}
+              </a>
+        {% endfor %}
+        </ul>
     </div>
-
 
     <!-- Institucional -->
     <div class="footer-column">

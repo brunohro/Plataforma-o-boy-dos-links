@@ -8,15 +8,16 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/cadastro.css' %}">
 </head>
+<body>
 
 {% block content %}
 <main class="cadastro-container">
     <div class="cadastro-area">
 
         <h1 class="cadastro-titulo">
-                <a href="{% url 'index' %}">
-                    O Boy <span>Dos Links</span>
-                </a>
+            <a href="{% url 'index' %}">
+                O Boy <span>Dos Links</span>
+            </a>
         </h1>
 
         <div class="cadastro-box">
@@ -42,26 +43,25 @@
                     {{ form.email.errors }}
                 </div>
 
-                <div class="cadastro-campo">
-                    <label for="{{ form.telefone.id_for_label }}">Telefone</label>
-                    {{ form.telefone }}
-                    {{ form.telefone.errors }}
+                <div class="cadastro-campo cadastro-senha-area">
+                    <div class="cadastro-senha-label">
+                        <label for="{{ form.password1.id_for_label }}">Senha</label>
+                    </div>
+                    {{ form.password1 }}
+                    {{ form.password1.errors }}
                 </div>
 
-                <div class="cadastro-campo">
-                    <label for="{{ form.data_nascimento.id_for_label }}">Data de nascimento</label>
-                    {{ form.data_nascimento }}
-                    {{ form.data_nascimento.errors }}
-                </div>
-                <div class="cadastro-campo">
-                    <label for="{{ form.sexo.id_for_label }}">Sexo</label>
-                    {{ form.sexo }}
-                    {{ form.sexo.errors }}
+                <div class="cadastro-campo cadastro-senha-area">
+                    <div class="cadastro-senha-label">
+                        <label for="{{ form.password2.id_for_label }}">Confirmar senha</label>
+                    </div>
+                    {{ form.password2 }}
+                    {{ form.password2.errors }}
                 </div>
 
                 {{ form.non_field_errors }}
 
-                <button class="cadastro-botao" type="submit">Próximo</button>
+                <button class="cadastro-botao" type="submit">Criar Conta</button>
             </form>
 
         </div>
@@ -74,3 +74,6 @@
     </div>
 </main>
 {% endblock %}
+
+</body>
+</html>

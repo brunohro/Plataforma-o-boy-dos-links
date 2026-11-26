@@ -14,7 +14,7 @@ from django.db.models.functions import TruncDay, TruncMonth, TruncWeek, TruncYea
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET
-from .forms import CadastroForm, OfertaForm, CategoriaForm, LojaParceiraForm, CupomForm, BannerForm
+from .forms import CadastroEtapa1Form, CadastroEtapa2Form, OfertaForm, CategoriaForm, LojaParceiraForm, CupomForm, BannerForm
 from .models import Banner, Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto, ClickOferta, ClickCupom, FavoritoCupom, Visita
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
@@ -377,42 +377,36 @@ def login_view(request):
 
 @conta_visita
 def cadastro_etapa1(request):
+    if request.user.is_authenticated:
+        return redirect("home")
+
     if request.method == "POST":
-        form = CadastroForm(request.POST)
-
-        form.errors.pop('sexo', None)
-        form.errors.pop('password1', None)
-        form.errors.pop('password2', None)
-
-        campos_etapa1 = ['username', 'email', 'telefone', 'data_nascimento']
-        if not any(campo in form.errors for campo in campos_etapa1):
-            request.session['cadastro'] = {
-                campo: request.POST.get(campo) for campo in campos_etapa1
-            }
-            return redirect("cadastro_etapa2")
+        form = CadastroEtapa1Form(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Autentica o usuário imediatamente
+            messages.success(request, "Conta criada com sucesso!")
+            return redirect("index")  # Vai para a tela inicial
     else:
-        dados_salvos = request.session.get('cadastro', None)
-        form = CadastroForm(initial=dados_salvos)
+        form = CadastroEtapa1Form()
 
     return render(request, TEMPLATE_CADASTRO, {"form": form})
 
-
+@login_required
 @conta_visita
 def cadastro_etapa2(request):
     if request.method == "POST":
-        dados_completos = request.session['cadastro'].copy()
-
-        dados_completos.update(request.POST.dict())
-
-        form = CadastroForm(dados_completos)
+        form = CadastroEtapa2Form(request.POST, instance=request.user)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Cadastro realizado com sucesso!")
-            return redirect("login")
+            user = form.save(commit=False)
+            user.cadastro_completo = True  # Oculta o aviso da home
+            user.save()
+            messages.success(request, "Dados complementares salvos com sucesso!")
+            return redirect("index")
     else:
-        form = CadastroForm()
-    return render(request, TEMPLATE_CADASTRO_ETAPA2, {"form": form})
+        form = CadastroEtapa2Form(instance=request.user)
 
+    return render(request, TEMPLATE_CADASTRO_ETAPA2, {"form": form})
 
 #########################################################
 # PAINEL ADMINISTRATIVO

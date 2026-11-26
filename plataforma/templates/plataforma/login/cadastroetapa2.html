@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro (Passo 2) - O Boy Dos Links</title>
+    <title>Completar Cadastro - O Boy Dos Links</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/cadastro.css' %}">
 </head>
+<body>
 
 {% block content %}
 <main class="cadastro-container">
@@ -21,43 +22,48 @@
 
         <div class="cadastro-box">
 
-            <h2 class="cadastro-subtitulo">Criar Conta - Passo 2</h2>
+            <h2 class="cadastro-subtitulo">Complete seus dados</h2>
 
             <p class="cadastro-descricao">
-                Finalize seus dados de acesso
+                Preencha as informações abaixo para receber mais ofertas
             </p>
 
             <form class="cadastro-form" method="post" novalidate>
                 {% csrf_token %}
 
-                <div class="cadastro-campo cadastro-senha-area">
-                    <div class="cadastro-senha-label">
-                        <label for="{{ form.password1.id_for_label }}">Senha</label>
-                    </div>
-                    {{ form.password1 }}
-                    {{ form.password1.errors }}
+                <div class="cadastro-campo">
+                    <label for="{{ form.telefone.id_for_label }}">Telefone</label>
+                    {{ form.telefone }}
+                    {{ form.telefone.errors }}
                 </div>
 
-                <div class="cadastro-campo cadastro-senha-area">
-                    <div class="cadastro-senha-label">
-                        <label for="{{ form.password2.id_for_label }}">Confirmar senha</label>
-                    </div>
-                    {{ form.password2 }}
-                    {{ form.password2.errors }}
+                <div class="cadastro-campo">
+                    <label for="{{ form.data_nascimento.id_for_label }}">Data de nascimento</label>
+                    {{ form.data_nascimento }}
+                    {{ form.data_nascimento.errors }}
+                </div>
+
+                <div class="cadastro-campo">
+                    <label for="{{ form.sexo.id_for_label }}">Sexo</label>
+                    {{ form.sexo }}
+                    {{ form.sexo.errors }}
                 </div>
 
                 {{ form.non_field_errors }}
 
-                <button class="cadastro-botao" type="submit">Cadastrar</button>
+                <button class="cadastro-botao" type="submit">Salvar Dados</button>
             </form>
 
         </div>
 
         <p class="cadastro-cadastro">
-            Já possui uma conta?
-            <a href="{% url 'login' %}">Entrar</a>
+            Quer fazer isso depois?
+            <a href="{% url 'index' %}">Voltar para o início</a>
         </p>
 
     </div>
 </main>
 {% endblock %}
+
+</body>
+</html>

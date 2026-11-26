@@ -8,14 +8,24 @@ class CadastroForm(UserCreationForm):
         model = UsuarioReal
         fields = [
             "username",
-            "email",
+            "email"
+        ]
+
+class CadastroEtapa2Form(forms.ModelForm):
+    class Meta:
+        model = UsuarioReal
+        fields = [
+            "telefone",
+            "sexo",
             "telefone",
             "data_nascimento",
             "sexo"
         ]
+        
         widgets = {
             "data_nascimento": forms.DateInput(attrs={"type": "date"}),
         }
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

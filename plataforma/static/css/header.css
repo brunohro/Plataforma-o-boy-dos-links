@@ -510,7 +510,7 @@
     top: 100%;
     right: 0;
 
-    width: 210px;
+    width: 325px;
     padding: 15px;
 
     background: var(--background);
@@ -575,6 +575,11 @@
 .account-menu a:hover {
     background: #252525;
     color: var(--primary);
+}
+
+#alerta:hover {
+    background: #252525;
+    color: var(--success-hover);
 }
 
 .menu-divider {

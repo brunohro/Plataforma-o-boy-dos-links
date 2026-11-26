@@ -16,6 +16,7 @@ class UsuarioReal(AbstractUser):
     is_staff = models.BooleanField(default=False)
     data_cadastro = models.DateTimeField(auto_now_add=True)
     sexo = models.CharField(max_length=10, choices=[("M", "Masculino"), ("F", "Feminino"), ("O", "Outro")], blank=True)
+    cadastro_completo = models.BooleanField(default=False)
 
     def __str__(self):
         return self.apelido or self.username

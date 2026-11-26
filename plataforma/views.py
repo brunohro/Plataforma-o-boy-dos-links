@@ -773,38 +773,33 @@ def excluir_oferta(request, id):
 # =========================================================
 # CRUD CATEGORIAS
 # =========================================================
-
 @staff_member_required
-def criar_categoria(request):
-    if request.method == "POST":
-        form = CategoriaForm(request.POST, request.FILES)
-        if form.is_valid():
-            categoria = form.save()
-            messages.success(request, f'Categoria "{categoria.nome}" cadastrada com sucesso!')
-            return redirect("categorias_adm")
-    else:
-        form = CategoriaForm()
+def cadastrar_editar_categoria(request, id=None):
+    categoria = get_object_or_404(Categoria, id=id) if id else None
 
-    return render(request, "plataforma/adm/forms/form_categoria.html",{"form": form})
-
-
-@staff_member_required
-def editar_categoria(request, id):
-    categoria = get_object_or_404(Categoria, id=id)
-
-    if request.method == "POST":
+    if request.method == 'POST':
         form = CategoriaForm(request.POST, request.FILES, instance=categoria)
+
         if form.is_valid():
-            categoria = form.save()
-            messages.success(request, f'Categoria "{categoria.nome}" atualizada com sucesso!')
-            return redirect("categorias_adm")
-    else:
+            form.save()
+
+            if categoria:
+                messages.success(request, "Categoria Atualizada com sucesso!")
+            else:
+                messages.success(request, "Categoria Cadastrada com sucesso!")
+
+            return redirect('categorias_adm')
+
+    else: 
         form = CategoriaForm(instance=categoria)
 
-    return render(request, "plataforma/adm/forms/form_categoria.html", {
-        "form": form,
-        "categoria": categoria,
-    })
+    context = {
+        'form': form,
+        'categoria': categoria,
+        'modo_edicao': categoria is not None
+    }
+
+    return render(request, "plataforma/adm/forms/form_categoria.html", context)
 
 
 @staff_member_required
@@ -821,50 +816,33 @@ def excluir_categoria(request, id):
 # =========================================================
 # CRUD LOJAPARCEIRA
 # =========================================================
-
 @staff_member_required
-def cadastrar_loja(request):
-    if request.method == "POST":
-        form = LojaParceiraForm(request.POST, request.FILES)
-        if form.is_valid():
-            loja = form.save()
-            messages.success(request, f'Loja "{loja.nome}" cadastrada com sucesso!')
-            return redirect("lojas_adm")
-    else:
-        form = LojaParceiraForm()
+def cadastrar_editar_loja(request, id=None):
+    loja = get_object_or_404(LojaParceira, id=id) if id else  None
 
-    return render(request, "plataforma/adm/forms/form_loja.html",{"form": form})
-
-
-@staff_member_required
-def editar_loja(request, id):
-    loja = get_object_or_404(LojaParceira, pk=id)
-
-    if request.method == "POST":
-        form = LojaParceiraForm(
-            request.POST,
-            request.FILES,
-            instance=loja
-        )
+    if request.method == 'POST':
+        form = LojaParceiraForm(request.POST, request.FILES, instance=loja)
 
         if form.is_valid():
-            loja = form.save()
-            messages.success(
-                request,
-                f'Loja "{loja.nome}" atualizada com sucesso!'
-            )
-            return redirect("lojas_adm")
+            form.save()
+
+            if loja:
+                messages.success(request, "Loja Atualizada com sucesso!")
+            else:
+                messages.success(request, "Loja Cadastrada com sucesso!")
+
+            return redirect('lojas_adm')
+
     else:
         form = LojaParceiraForm(instance=loja)
 
-    return render(
-        request,
-        "plataforma/adm/forms/form_loja.html",
-        {
-            "form": form,
-            "loja": loja,
-        }
-    )
+    context = {
+        'form': form,
+        'loja': loja,
+        'modo_edicao': loja is not None
+    }
+
+    return render(request, "plataforma/adm/forms/form_loja.html", context)
 
 
 @staff_member_required
@@ -883,50 +861,35 @@ def excluir_loja(request, id):
 # =========================================================
 
 @staff_member_required
-def criar_cupom(request):
+def cadastrar_editar_cupom(request, id=None):
     lojas = LojaParceira.objects.all()
 
-    if request.method == "POST":
-        form = CupomForm(request.POST, request.FILES)
+    cupom = get_object_or_404(Cupom, id=id) if id else None
+
+    if request.method == 'POST':
+        form = CupomForm(request.POST, instance=cupom)
 
         if form.is_valid():
             form.save()
-            messages.success(request, "Cupom cadastrado com sucesso!")
-            return redirect("cupons_adm")
-    else:
-        form = CupomForm()
 
-    return render(request, "plataforma/adm/forms/form_cupom.html", {
-        "form": form,
-        "lojas": lojas,
-    })
+            if cupom:
+                messages.success(request, "Cupom Atualizado com sucesso!")
+            else:
+                messages.success(request, "Cupom Cadastrado com sucesso!")
 
-
-@staff_member_required
-def editar_cupom(request, id):
-    cupom = get_object_or_404(Cupom, id=id)
-    lojas = LojaParceira.objects.all()
-
-    if request.method == "POST":
-        form = CupomForm(
-            request.POST,
-            request.FILES,
-            instance=cupom
-        )
-
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Cupom atualizado com sucesso!")
-            return redirect("cupons_adm")
+            return redirect('cupons_adm')
     else:
         form = CupomForm(instance=cupom)
 
-    return render(request, "plataforma/adm/forms/form_cupom.html", {
-        "form": form,
-        "cupom": cupom,
-        "lojas": lojas,
-    })
+    context = {
+        'form': form,
+        'lojas': lojas,
+        'cupom': cupom,
+        'modo_edicao': cupom is not None
+    }
 
+    return render(request, "plataforma/adm/forms/form_cupom.html", context)
+    
 
 @staff_member_required
 @require_POST
@@ -977,60 +940,19 @@ def banners_adm(request):
     )
 
 @staff_member_required
-def cadastrar_banner(request):
-
-    if request.method == 'POST':
-
-        form = BannerForm(
-            request.POST,
-            request.FILES
-        )
-
-        if form.is_valid():
-
-            form.save()
-
-            messages.success(
-                request,
-                'Banner cadastrado com sucesso!'
-            )
-
-            return redirect('banners_adm')
-
+def cadastrar_editar_banner(request, id=None):
+    if id:
+        banner = get_object_or_404(Banner, id=id)
     else:
-        form = BannerForm()
-
-    context = {
-        'form': form,
-    }
-
-    return render(
-        request,
-        'plataforma/adm/forms/form_banner.html',
-        context
-    )
-
-@staff_member_required
-def editar_banner(request, id):
-
-    banner = get_object_or_404(Banner, id=id)
+        banner = Banner()
 
     if request.method == 'POST':
-
-        form = BannerForm(
-            request.POST,
-            request.FILES,
-            instance=banner
-        )
+        form = BannerForm(request.POST, request.FILES)
 
         if form.is_valid():
-
             form.save()
 
-            messages.success(
-                request,
-                'Banner atualizado com sucesso!'
-            )
+            messages.success(request, 'Banner cadastrado com sucesso!')
 
             return redirect('banners_adm')
 
@@ -1039,7 +961,7 @@ def editar_banner(request, id):
 
     context = {
         'form': form,
-        'banner': banner,
+        'modo_edicao': bool(id)
     }
 
     return render(
@@ -1047,6 +969,7 @@ def editar_banner(request, id):
         'plataforma/adm/forms/form_banner.html',
         context
     )
+
 
 @staff_member_required
 @require_POST

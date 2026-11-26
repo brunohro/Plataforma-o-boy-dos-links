@@ -45,26 +45,26 @@ urlpatterns = [
 
     # cupons adm
     path("adm/cupons/", views.cupons_adm, name="cupons_adm"),
-    path("adm/cupons/cadastrar", views.criar_cupom, name="cadastrar_cupom"),
-    path("adm/cupons/editar/<int:id>", views.editar_cupom, name="editar_cupom"),
+    path("adm/cupons/cadastrar", views.cadastrar_editar_cupom, name="cadastrar_cupom"),
+    path("adm/cupons/editar/<int:id>", views.cadastrar_editar_cupom, name="editar_cupom"),
     path("adm/cupons/<int:id>/excluir/", views.excluir_cupom, name="excluir_cupom"),
 
     #categorias adm
     path("adm/categorias/", views.categorias_adm, name="categorias_adm"),
-    path("adm/categorias/cadastrar", views.criar_categoria, name="cadastrar_categoria"),
-    path("adm/categorias/editar/<int:id>", views.editar_categoria, name="editar_categoria"),
+    path("adm/categorias/cadastrar", views.cadastrar_editar_categoria, name="cadastrar_categoria"),
+    path("adm/categorias/editar/<int:id>", views.cadastrar_editar_categoria, name="editar_categoria"),
     path("adm/categorias/<int:id>/excluir/", views.excluir_categoria, name="excluir_categoria"),
     
     # lojas adm
     path("adm/lojas/", views.lojas_adm, name="lojas_adm"),
-    path("adm/lojas/cadastrar/", views.cadastrar_loja, name="cadastrar_loja"),
-    path("adm/lojas/editar/<int:id>/", views.editar_loja, name="editar_loja"),
+    path("adm/lojas/cadastrar/", views.cadastrar_editar_loja, name="cadastrar_loja"),
+    path("adm/lojas/editar/<int:id>/", views.cadastrar_editar_loja, name="editar_loja"),
     path("adm/lojas/<int:id>/excluir/", views.excluir_loja, name="excluir_loja"),
 
     # banners adm
     path("adm/banners/", views.banners_adm, name="banners_adm"),
-    path("adm/banners/cadastrar/", views.cadastrar_banner, name="cadastrar_banner"),
-    path("adm/banners/editar/<int:id>/", views.editar_banner, name="editar_banner"),
+    path("adm/banners/cadastrar/", views.cadastrar_editar_banner, name="cadastrar_banner"),
+    path("adm/banners/editar/<int:id>/", views.cadastrar_editar_banner, name="editar_banner"),
     path("adm/banners/<int:id>/excluir/", views.excluir_banner, name="excluir_banner"),
 
 

@@ -28,6 +28,9 @@ urlpatterns = [
     path("ofertas/", views.ofertas, name="ofertas"),
     path("cupons/", views.cupons, name="cupons"),
 
+    #suporte
+    path("suporte/", views.suporte, name="suporte"),
+
     # Painel administrativo
     path("adm/", views.admin_dashboard, name="painel_adm"),
     path("adm/grafico/", views.dados_grafico_adm, name="dados_grafico_adm"),

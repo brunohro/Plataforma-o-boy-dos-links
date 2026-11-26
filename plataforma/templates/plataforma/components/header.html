@@ -107,12 +107,10 @@
 
                 <strong>Olá, {{ user.username }}!</strong>
 
-                {% if not user.cadastro_completo %}
-                    <div class="menu-divider"></div>
-
-                    <a href="{% url 'cadastro_etapa2' %}" class="menu-alerta-ofertas">
+                {% if user.is_authenticated and not user.cadastro_completo %}
+                    <a href="{% url 'cadastro_etapa2' %}" class="alerta-externo-ofertas">
                         <i class="fa-solid fa-circle-exclamation"></i>
-                        Complete seus dados para mais ofertas!
+                        <span>Complete seus dados para mais ofertas!</span>
                     </a>
                 {% endif %}
 

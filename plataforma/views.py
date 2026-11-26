@@ -57,7 +57,7 @@ def ofertas_ativas_qs():
     agora = timezone.now()
     return (
         Oferta.objects
-        .filter(data_inicio__lte=agora, data_fim__gte=agora, categoria__isnull=False)
+        .filter(data_inicio__lte=agora, data_fim__gte=agora)
         .select_related("loja", "categoria", "cupom")
         .annotate(
             total_votos=Count("votos_registros", distinct=True),
@@ -141,21 +141,9 @@ def ofertas_recomendadas(user):
 
 # MEU PERFIL 
 
-@login_required
 def minha_conta(request, id):
-    """Perfil do próprio usuário. Qualquer outro id redireciona para o perfil dele."""
-    if id != request.user.id:
-        return redirect("minha_conta", id=request.user.id)
-
-    usuario = request.user
-    return render(request, "plataforma/minha_conta.html", {
-        "usuario": usuario,
-        "total_favoritos": (
-            Favorito.objects.filter(usuario=usuario).count()
-            + FavoritoCupom.objects.filter(usuario=usuario).count()
-        ),
-        "total_votos": Voto.objects.filter(usuario=usuario).count(),
-    })
+    usuario = UsuarioReal.objects.get(id=id)
+    return render(request, "plataforma/minha_conta.html", {"usuario": usuario})
 
 
 # =========================================================
@@ -231,35 +219,15 @@ def ofertas(request, tipo="todas"):
     lista = ofertas_ativas_qs().order_by("data_fim")
     categorias = Categoria.objects.all()
 
-    categoria_atual = request.GET.get("categoria", "").strip()
+    categoria_atual = request.GET.get("categoria", "")
 
     if tipo == "relampago":
         lista = lista.filter(is_relampago=True)
 
-    # Aceita o id da categoria (?categoria=3) ou o nome (?categoria=Moda)
-    categoria_obj = None
-    if categoria_atual.isdigit():
-        categoria_obj = categorias.filter(id=int(categoria_atual)).first()
-    elif categoria_atual:
-        categoria_obj = categorias.filter(nome__iexact=categoria_atual).first()
-
-    if categoria_obj:
-        lista = lista.filter(categoria=categoria_obj)
-        categoria_atual = str(categoria_obj.id)
-    else:
-        categoria_atual = ""
-
-    busca = request.GET.get("q", "").strip()
-    if busca:
-        lista = lista.filter(
-            Q(nome_produto__icontains=busca)
-            | Q(descricao__icontains=busca)
-            | Q(loja__nome__icontains=busca)
-            | Q(categoria__nome__icontains=busca)
-        )
+    if categoria_atual:
+        lista = lista.filter(categoria__id=categoria_atual)
 
     context = {
-        "busca": busca,
         "ofertas": lista,
         "categorias": categorias,
         "tipo_pagina": tipo,
@@ -401,18 +369,10 @@ def login_view(request):
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
-            destino = request.POST.get("next") or request.GET.get("next") or ""
-            if not url_has_allowed_host_and_scheme(
-                destino, allowed_hosts={request.get_host()}, require_https=request.is_secure()
-            ):
-                destino = "index"
-            return redirect(destino)
+            return redirect("index")
     else:
         form = AuthenticationForm()
-    return render(request, TEMPLATE_LOGIN, {
-        "form": form,
-        "next": request.GET.get("next", ""),
-    })
+    return render(request, TEMPLATE_LOGIN, {"form": form})
 
 
 @conta_visita
@@ -439,20 +399,14 @@ def cadastro_etapa1(request):
 
 @conta_visita
 def cadastro_etapa2(request):
-    dados_etapa1 = request.session.get('cadastro')
-    if not dados_etapa1:
-        # Abriu o passo 2 direto (ou a sessão expirou): volta para o passo 1
-        return redirect("cadastro")
-
     if request.method == "POST":
-        dados_completos = dados_etapa1.copy()
+        dados_completos = request.session['cadastro'].copy()
 
         dados_completos.update(request.POST.dict())
 
         form = CadastroForm(dados_completos)
         if form.is_valid():
             form.save()
-            request.session.pop('cadastro', None)
             messages.success(request, "Cadastro realizado com sucesso!")
             return redirect("login")
     else:
@@ -612,14 +566,12 @@ def adm_usuarios(request):
     if busca:
         usuarios = usuarios.filter(
             Q(username__icontains=busca) |
-            Q(apelido__icontains=busca) |
             Q(email__icontains=busca) |
             Q(telefone__icontains=busca)
         )
     paginator = Paginator(usuarios, 10)
     page_obj = paginator.get_page(request.GET.get('page'))
-    # A tabela percorre a página atual (antes percorria todos os usuários)
-    return render(request, "plataforma/adm/usuarios_adm.html", {"usuarios": page_obj, "page_obj": page_obj, "eh_superadmin": request.user.is_superuser,})
+    return render(request, "plataforma/adm/usuarios_adm.html", {"usuarios": usuarios, "page_obj": page_obj, "eh_superadmin": request.user.is_superuser,})
 
 
 @staff_member_required
@@ -695,6 +647,17 @@ def cupons_adm(request):
 # CRUD DE OFERTAS
 # =========================================================
 
+# --- Versões antigas (editar_oferta é sobrescrita mais abaixo) ---
+def cadastrar_oferta(request):
+    return render(request, "plataforma/adm/forms/form_oferta.html")
+
+
+def editar_oferta(request, id):
+    oferta = Oferta.objects.get(id=id)
+    return render(request, "plataforma/adm/forms/form_oferta.html", {"oferta": oferta})
+
+
+# --- Versões ativas ---
 @staff_member_required
 def criar_oferta(request):
     lojas = LojaParceira.objects.all()
@@ -748,6 +711,8 @@ def editar_oferta(request, id):
 
     else:
         form = OfertaForm(instance=oferta)
+        print("Preço anterior:", form["preco_anterior"].value())
+        print("Preço atual:", form["preco_atual"].value())
 
     return render(request, "plataforma/adm/forms/form_oferta.html", {
         "form": form,
@@ -774,6 +739,17 @@ def excluir_oferta(request, id):
 # CRUD CATEGORIAS
 # =========================================================
 
+# --- Versões antigas (editar_categoria é sobrescrita mais abaixo) ---
+def cadastrar_categoria(request):
+    return render(request, "plataforma/adm/forms/form_categoria.html")
+
+
+def editar_categoria(request, id):
+    categoria = Categoria.objects.get(id=id)
+    return render(request, "plataforma/adm/forms/form_categoria.html", {"categoria": categoria})
+
+
+# --- Versões ativas ---
 @staff_member_required
 def criar_categoria(request):
     if request.method == "POST":
@@ -821,6 +797,12 @@ def excluir_categoria(request, id):
 # =========================================================
 # CRUD LOJAPARCEIRA
 # =========================================================
+
+def lojas(request):
+    lojas = LojaParceira.objects.all().order_by("nome")
+
+    return render(request, "plataforma/adm/lojas_adm.html", {"lojas": lojas})
+
 
 @staff_member_required
 def cadastrar_loja(request):
@@ -882,6 +864,17 @@ def excluir_loja(request, id):
 # CRUD CUPOM ADM
 # =========================================================
 
+# --- Versões antigas (editar_cupom é sobrescrita mais abaixo) ---
+def cadastrar_cupom(request):
+    return render(request, "plataforma/adm/forms/form_cupom.html")
+
+
+def editar_cupom(request, id):
+    cupom = Cupom.objects.get(id=id)
+    return render(request, "plataforma/adm/forms/form_cupom.html", {"cupom": cupom})
+
+
+# --- Versões ativas ---
 @staff_member_required
 def criar_cupom(request):
     lojas = LojaParceira.objects.all()
@@ -1069,6 +1062,12 @@ def excluir_banner(request, id):
 # =========================================================
 # CRUD USUÁRIO
 # =========================================================
+
+def usuarios_adm(request):
+    usuarios = UsuarioReal.filter(is_active=True).order_by("nome")
+
+    return render(request, "plataforma/adm/usuarios_adm.html", {"usuarios": usuarios})
+
 
 @staff_member_required
 @require_POST

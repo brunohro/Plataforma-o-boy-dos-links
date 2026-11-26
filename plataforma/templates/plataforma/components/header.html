@@ -108,9 +108,9 @@
                 <strong>Olá, {{ user.username }}!</strong>
 
                 {% if user.is_authenticated and not user.cadastro_completo %}
-                    <a href="{% url 'cadastro_etapa2' %}" class="alerta-externo-ofertas">
+                    <a id="alerta" href="{% url 'cadastro_etapa2' %}" class="alerta-externo-ofertas">
                         <i class="fa-solid fa-circle-exclamation"></i>
-                        <span>Complete seus dados para mais ofertas!</span>
+                        <span>Quase lá! 1/2 para ofertas personalizadas</span> 
                     </a>
                 {% endif %}
 

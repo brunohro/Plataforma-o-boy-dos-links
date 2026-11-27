@@ -56,7 +56,6 @@ class OfertaForm(forms.ModelForm):
 
         self.fields['nome_produto'].widget.attrs['placeholder'] = 'Ex: Tênis de corrida masculino'
         self.fields['link_afiliado'].widget.attrs['placeholder'] = 'https://...'
-        self.fields['image_url'].widget.attrs['placeholder'] = 'https://...imagem.jpeg'
         self.fields['descricao'].widget.attrs['placeholder'] = 'Descrição da oferta...'
 
         self.fields['nome_produto'].widget.attrs['class'] = 'form-control'
@@ -68,9 +67,10 @@ class OfertaForm(forms.ModelForm):
         self.fields['cupom'].widget.attrs['class'] = 'form-select'
         self.fields['is_destaque'].widget.attrs['class'] = 'form-check-input'
         self.fields['is_relampago'].widget.attrs['class'] = 'form-check-input'
-        self.fields['preco_anterior'].widget.attrs['class'] = 'form-control'
-        self.fields['preco_atual'].widget.attrs['class'] = 'form-control'
-
+        self.fields['preco_atual'].widget.attrs['class'] = 'oferta-input'
+        self.fields['preco_atual'].widget.attrs['placeholder'] = 'Ex.: 99.90'
+        self.fields['preco_anterior'].widget.attrs['class'] = 'oferta-input'
+        self.fields['preco_anterior'].widget.attrs['placeholder'] = 'Ex.: 149.90'
         self.fields['cupom'].empty_label = 'Nenhum cupom'
         self.fields['categoria'].empty_label = 'Selecione uma categoria'
 
@@ -111,7 +111,8 @@ class CupomForm(forms.ModelForm):
         self.fields['codigo'].widget.attrs['placeholder'] = 'CODIGO'
         self.fields['descricao'].widget.attrs['placeholder'] = 'Ex: O cupom depende da condição ... para ser utilizado.'
         self.fields['data_validade'].widget.attrs['placeholder'] = 'xx/xx/xxxx'
-        self.fields['desconto'].widget.attrs['placeholder'] = 'R$50,00'
+        self.fields['desconto'].widget.attrs['class'] = 'cupom-input'
+        self.fields['desconto'].widget.attrs['placeholder'] = 'Ex.: 10.00'
         self.fields['ativo'].widget.attrs['class'] = 'form-check-input'
 
 

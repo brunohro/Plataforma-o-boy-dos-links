@@ -92,34 +92,14 @@
                     </div>
 
                     <div class="oferta-field">
-                        <label for="preco_atual">Preço atual (R$) *</label>
-                        <input
-                            type="number"
-                            step="0.01"
-                            min="0"
-                            id="preco_atual"
-                            name="preco_atual"
-                            class="oferta-input"
-                            placeholder="Ex.: 99.90"
-                            value="{{ form.preco_atual.value|default_if_none:'' }}"
-                            required
-                        >
+                        <label for="{{ form.preco_atual.id_for_label }}">Preço atual (R$) *</label>
+                        {{ form.preco_atual }}
                         {{ form.preco_atual.errors }}
                     </div>
 
                     <div class="oferta-field">
-                        <label for="preco_anterior">Preço anterior (R$) *</label>
-                        <input
-                            type="number"
-                            step="0.01"
-                            min="0"
-                            id="preco_anterior"
-                            name="preco_anterior"
-                            class="oferta-input"
-                            placeholder="Ex.: 149.90"
-                            value="{{ form.preco_anterior.value|default_if_none:'' }}"
-                            required
-                        >
+                        <label for="{{ form.preco_anterior.id_for_label }}">Preço anterior (R$) *</label>
+                        {{ form.preco_anterior }}
                         {{ form.preco_anterior.errors }}
                     </div>
 
@@ -161,7 +141,7 @@
                     </div>
 
                     <div class="oferta-field oferta-field-full">
-                        <label for="image_url">URL da imagem</label>
+                        <label for="image_url">Imagem da Oferta</label>
                         <input
                             type="file"
                             id="image_url"

@@ -12,7 +12,12 @@
         <div class="cupom-form-header">
             <div>
                 <span class="cupom-form-eyebrow">ADMINISTRAÇÃO</span>
-                <h1>{% if modo_edicao %}Editar cupom{% else %}Cadastrar novo cupom{% endif %}</h1>
+                <h1>
+                    {% if modo_edicao %}
+                        Editar cupom
+                    {% else %}
+                        Cadastrar novo cupom
+                    {% endif %}</h1>
                 <p>Preencha os dados para {% if modo_edicao %}atualizar o{% else %}adicionar um novo{% endif %} cupom à plataforma.</p>
             </div>
 

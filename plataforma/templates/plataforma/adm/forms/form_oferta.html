@@ -12,8 +12,22 @@
         <div class="oferta-form-header">
             <div>
                 <span class="oferta-form-eyebrow">ADMINISTRAÇÃO</span>
-                <h1>Cadastrar nova oferta</h1>
-                <p>Preencha os dados para adicionar uma oferta ao site.</p>
+
+                <h1>
+                    {% if modo_edicao %}
+                        Editar oferta
+                    {% else %}
+                        Cadastrar nova oferta
+                    {% endif %}
+                </h1>
+
+                <p>
+                    {% if modo_edicao %}
+                        Atualize as informações da oferta cadastrada no site.
+                    {% else %}
+                        Preencha os dados para adicionar uma oferta ao site.
+                    {% endif %}
+                </p>
             </div>
 
             <a href="{% url 'ofertas_adm' %}" class="oferta-btn-voltar">

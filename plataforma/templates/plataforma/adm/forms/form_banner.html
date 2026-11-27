@@ -13,7 +13,7 @@
                 <span class="banner-form-eyebrow">ADMINISTRAÇÃO</span>
 
                 <h1>
-                    {% if banner %}
+                    {% if modo_edicao %}
                         Editar banner
                     {% else %}
                         Cadastrar banner
@@ -21,7 +21,7 @@
                 </h1>
 
                 <p>
-                    {% if banner %}
+                    {% if modo_edicao %}
                         Atualize as informações e a imagem do banner promocional.
                     {% else %}
                         Preencha os dados para adicionar um novo banner à plataforma.

@@ -39,8 +39,8 @@ urlpatterns = [
 
     # ofertas adm
     path("adm/ofertas/", views.ofertas_adm, name="ofertas_adm"),
-    path("adm/ofertas/cadastrar", views.criar_oferta, name="cadastrar_oferta"),
-    path("adm/ofertas/editar/<int:id>", views.editar_oferta, name="editar_oferta"),
+    path("adm/ofertas/cadastrar", views.cadastrar_editar_oferta, name="cadastrar_oferta"),
+    path("adm/ofertas/editar/<int:id>", views.cadastrar_editar_oferta, name="editar_oferta"),
     path("adm/ofertas/<int:id>/excluir/", views.excluir_oferta, name="excluir_oferta"),
 
     # cupons adm

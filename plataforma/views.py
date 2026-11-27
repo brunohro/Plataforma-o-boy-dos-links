@@ -640,82 +640,40 @@ def cupons_adm(request):
 # =========================================================
 # CRUD DE OFERTAS
 # =========================================================
-
-# --- Versões antigas (editar_oferta é sobrescrita mais abaixo) ---
-def cadastrar_oferta(request):
-    return render(request, "plataforma/adm/forms/form_oferta.html")
-
-
-def editar_oferta(request, id):
-    oferta = Oferta.objects.get(id=id)
-    return render(request, "plataforma/adm/forms/form_oferta.html", {"oferta": oferta})
-
-
-# --- Versões ativas ---
 @staff_member_required
-def criar_oferta(request):
+def cadastrar_editar_oferta(request, id=None):
     lojas = LojaParceira.objects.all()
     categorias = Categoria.objects.all()
     cupons = Cupom.objects.all()
 
-    if request.method == "POST":
-        form = OfertaForm(request.POST, request.FILES)
+    oferta = get_object_or_404(Oferta, id=id) if id else None
+
+    if request.method == 'POST':
+        form = OfertaForm(request.POST, request.FILES, instance=oferta)
 
         if form.is_valid():
-            oferta = form.save()
-            messages.success(
-                request,
-                f'Oferta "{oferta.nome_produto}" cadastrada com sucesso!'
-            )
-            return redirect("ofertas_adm")
-    else:
-        form = OfertaForm()
+            form.save()
 
-    return render(request, "plataforma/adm/forms/form_oferta.html", {
-        "form": form,
-        "lojas": lojas,
-        "categorias": categorias,
-        "cupons": cupons,
-        "modo_edicao": False
-    })
+            if oferta:
+                messages.success(request, 'Oferta atualizada com sucesso!')
+            else:
+                messages.success(request, 'Oferta cadastrada com sucesso!')
 
-
-@staff_member_required
-def editar_oferta(request, id):
-    lojas = LojaParceira.objects.all()
-    categorias = Categoria.objects.all()
-    cupons = Cupom.objects.all()
-
-    oferta = get_object_or_404(Oferta, id=id)
-
-    if request.method == "POST":
-        form = OfertaForm(
-            request.POST,
-            request.FILES,
-            instance=oferta
-        )
-
-        if form.is_valid():
-            oferta = form.save()
-            messages.success(
-                request,
-                f'Oferta "{oferta.nome_produto}" atualizada com sucesso!'
-            )
-            return redirect("ofertas_adm")
+            return redirect('ofertas_adm')
 
     else:
         form = OfertaForm(instance=oferta)
-        print("Preço anterior:", form["preco_anterior"].value())
-        print("Preço atual:", form["preco_atual"].value())
 
-    return render(request, "plataforma/adm/forms/form_oferta.html", {
-        "form": form,
-        "oferta": oferta,
-        "lojas": lojas,
-        "categorias": categorias,
-        "cupons": cupons,
-        "modo_edicao": True,
-    })
+    context = {
+        'form': form,
+        'lojas': lojas,
+        'categorias': categorias,
+        'cupons': cupons,
+        'oferta': oferta,
+        'modo_edicao': oferta is not None
+    }
+
+    return render(request, "plataforma/adm/forms/form_oferta.html", context)
 
 
 @staff_member_required
@@ -819,17 +777,6 @@ def excluir_loja(request, id):
 # CRUD CUPOM ADM
 # =========================================================
 
-# --- Versões antigas (editar_cupom é sobrescrita mais abaixo) ---
-def cadastrar_cupom(request):
-    return render(request, "plataforma/adm/forms/form_cupom.html")
-
-
-def editar_cupom(request, id):
-    cupom = Cupom.objects.get(id=id)
-    return render(request, "plataforma/adm/forms/form_cupom.html", {"cupom": cupom})
-
-
-# --- Versões ativas ---
 @staff_member_required
 def cadastrar_editar_cupom(request, id=None):
     lojas = LojaParceira.objects.all()

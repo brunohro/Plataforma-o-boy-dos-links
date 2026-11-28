@@ -15,7 +15,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET
 from .forms import CadastroEtapa1Form, CadastroEtapa2Form, OfertaForm, CategoriaForm, LojaParceiraForm, CupomForm, BannerForm
-from .models import Banner, Categoria, Cupom, Favorito, LojaParceira, Oferta, UsuarioReal, Voto, ClickOferta, ClickCupom, FavoritoCupom, Visita
+from .models import Banner, Categoria, Cupom, Favorito, LojaParceira, Oferta, Produto, Curtida, UsuarioReal, ClickOferta, ClickCupom, FavoritoCupom, Visita
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -60,7 +60,7 @@ def ofertas_ativas_qs():
         .filter(data_inicio__lte=agora, data_fim__gte=agora)
         .select_related("loja", "categoria", "cupom")
         .annotate(
-            total_votos=Count("votos_registros", distinct=True),
+            total_curtidas=Count("produto__curtidas", distinct=True),
             total_favoritos=Count("favoritos", distinct=True),
             total_clicks=Count("clicks_registros", distinct=True),
         )
@@ -70,7 +70,11 @@ def ofertas_ativas_qs():
 def interacoes(user):
     """Retorna as interações do usuário com as ofertas."""
     if user.is_authenticated:
-        votos = Voto.objects.filter(usuario=user).values_list("oferta_id", flat=True)
+        votos = (
+            Oferta.objects
+            .filter(produto__curtidas__usuario=user)
+            .values_list("id", flat=True)
+        )
         favoritos = Favorito.objects.filter(usuario=user).values_list("oferta_id", flat=True)
         favoritos_cupons = FavoritoCupom.objects.filter(usuario=user).values_list("cupom_id", flat=True)
         votos = set(votos)
@@ -157,7 +161,7 @@ def home(request):
     recentes = ativas.filter(is_relampago=False, is_destaque=False).order_by("-criado_em")[:8] ### Adicionado apenas 8 campos de ofertas recentes
     ofertas_relampago = ativas.filter(is_relampago=True).order_by("data_fim")[:4]
     ofertas_destaque = ativas.filter(is_destaque=True, is_relampago=False).order_by("-criado_em")[:8]
-    mais_votadas = ativas.order_by("-total_votos")[:8]
+    mais_votadas = ativas.order_by("-total_curtidas")[:8]
     mais_favoritas = ativas.order_by("-total_favoritos")[:8]
     mais_acessadas = ativas.order_by("-total_clicks")[:8]
     recomendadas = ofertas_recomendadas(request.user)[:8]
@@ -270,7 +274,21 @@ def favoritos(request):
         .select_related("loja")
         .order_by("-favoritoscupons__criado_em")
     )
+
+    produtos_curtidos = list(
+        Produto.objects
+        .filter(curtidas__usuario=request.user)
+        .order_by("-curtidas__criado_em")
+    )
+    # Ofertas ativas de cada produto curtido (a mais barata primeiro)
+    ofertas_por_produto = {}
+    for oferta in ofertas_ativas_qs().filter(produto__in=produtos_curtidos).order_by("preco_atual"):
+        ofertas_por_produto.setdefault(oferta.produto_id, []).append(oferta)
+    for produto in produtos_curtidos:
+        produto.ofertas_ativas = ofertas_por_produto.get(produto.id, [])
+
     return render(request, "plataforma/favoritos.html", {
+        "produtos_curtidos": produtos_curtidos,
         "ofertas_favoritas": ofertas_favoritas,
         "cupons_favoritos": cupons_favoritos,
         **interacoes(request.user),
@@ -312,22 +330,23 @@ def ir_para_oferta(request, pk):
 
 @require_POST
 def votar_oferta(request, pk):
+    """Curtir / descurtir. A curtida fica no PRODUTO da oferta, não na oferta."""
     if not request.user.is_authenticated:
         return redirect("login")
 
     oferta = get_object_or_404(Oferta, pk=pk)
 
-    voto, criado = Voto.objects.get_or_create(usuario=request.user, oferta=oferta)
-    if not criado:
-        voto.delete()
+    # Segurança: ofertas muito antigas podem ainda não ter produto. O save() liga.
+    if oferta.produto_id is None:
+        oferta.save()
+
+    curtida, criada = Curtida.objects.get_or_create(usuario=request.user, produto=oferta.produto)
+    if not criada:
+        curtida.delete()
 
     voltar = request.META.get("HTTP_REFERER", "/")
     return redirect(f"{voltar}#oferta-{oferta.pk}")
 
-
-# =========================================================
-# FAVORITOS (AÇÕES)
-# =========================================================
 
 @require_POST
 def favoritar_oferta(request, pk):
@@ -432,7 +451,7 @@ def admin_dashboard(request):
         "total_destaques": Oferta.objects.filter(is_destaque=True).count(),
         "total_relampago": Oferta.objects.filter(is_relampago=True).count(),
         "total_com_cupom": Oferta.objects.filter(cupom__isnull=False).count(),
-        "total_votos": Voto.objects.count(),
+        "total_curtidas": Curtida.objects.count(),
         "total_favoritos": Favorito.objects.count(),
         "total_clicks": ClickOferta.objects.count() + ClickCupom.objects.count(),
         "ofertas": (
@@ -615,6 +634,50 @@ def categorias_adm(request):
     paginator = Paginator(categorias, 10)
     page_obj = paginator.get_page(request.GET.get('page'))
     return render(request, "plataforma/adm/categorias_adm.html", {"categorias": page_obj, "page_obj": page_obj})
+
+
+@staff_member_required
+def produtos_adm(request):
+    """Lista os produtos com o total de ofertas e de curtidas de cada um."""
+    busca = request.GET.get('q', '').strip()
+    produtos = (
+        Produto.objects
+        .annotate(
+            total_curtidas=Count("curtidas", distinct=True),
+            total_ofertas=Count("ofertas", distinct=True),
+        )
+        .order_by("-total_curtidas", "nome")
+    )
+
+    if busca:
+        produtos = produtos.filter(nome__icontains=busca)
+
+    paginator = Paginator(produtos, 10)
+    page_obj = paginator.get_page(request.GET.get('page'))
+    return render(request, "plataforma/adm/produtos_adm.html", {"produtos": page_obj, "page_obj": page_obj})
+
+
+@staff_member_required
+def curtidas_produto_adm(request, id):
+    """Mostra quais usuários curtiram um produto."""
+    produto = get_object_or_404(Produto, id=id)
+    busca = request.GET.get('q', '').strip()
+    curtidas = produto.curtidas.select_related("usuario").order_by("-criado_em")
+
+    if busca:
+        curtidas = curtidas.filter(
+            Q(usuario__apelido__icontains=busca) |
+            Q(usuario__username__icontains=busca) |
+            Q(usuario__email__icontains=busca)
+        )
+
+    paginator = Paginator(curtidas, 10)
+    page_obj = paginator.get_page(request.GET.get('page'))
+    return render(request, "plataforma/adm/curtidas_produto_adm.html", {
+        "produto": produto,
+        "curtidas": page_obj,
+        "page_obj": page_obj,
+    })
 
 
 @staff_member_required

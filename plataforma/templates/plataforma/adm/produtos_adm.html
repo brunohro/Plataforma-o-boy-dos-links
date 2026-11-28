@@ -1,0 +1,147 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="admin-categorias">
+    <div class="categorias-container">
+
+        <header class="categorias-header">
+            <div>
+                <span class="categorias-eyebrow">PAINEL ADMINISTRATIVO</span>
+                <h1>Produtos e curtidas</h1>
+                <p>Os produtos são criados automaticamente ao cadastrar uma oferta. Veja quem curtiu cada um.</p>
+            </div>
+
+            <div>
+                <a href="{% url 'painel_adm' %}" class="categoria-btn-voltar">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Voltar
+                </a>
+            </div>
+        </header>
+
+        <form method="get" class="categorias-toolbar">
+            <div class="categorias-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="search" name="q"
+                    placeholder="Buscar produto pelo nome..."
+                    value="{{ request.GET.q|default:'' }}"
+                    aria-label="Buscar produtos">
+            </div>
+
+            <button type="submit" class="categorias-search-button">Buscar</button>
+
+            {% if request.GET.q %}
+                <a href="{% url 'produtos_adm' %}" class="categorias-clear">Limpar</a>
+            {% endif %}
+        </form>
+
+        <div class="categorias-table-wrapper">
+            <table class="categorias-table">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Ofertas</th>
+                        <th>Curtidas</th>
+                        <th class="actions-heading">Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for produto in produtos %}
+                    <tr>
+                        <td>
+                            <div class="categorias-product">
+                                <div class="categorias-image">
+                                    <i class="fa-solid fa-box"></i>
+                                </div>
+                                <div class="categorias-product-info">
+                                    <span class="categorias-name">{{ produto.nome }}</span>
+                                    <span class="categorias-category">Cadastrado em {{ produto.criado_em|date:"d/m/Y" }}</span>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <span class="status-badge status-normal">
+                                {{ produto.total_ofertas }} oferta{{ produto.total_ofertas|pluralize }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status-badge status-normal">
+                                {{ produto.total_curtidas }} curtida{{ produto.total_curtidas|pluralize }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="categorias-actions">
+                                <a href="{% url 'curtidas_produto_adm' produto.id %}"
+                                    class="categorias-edit-button"
+                                    aria-label="Ver quem curtiu {{ produto.nome }}"
+                                    title="Ver quem curtiu">
+                                    <i class="fa-solid fa-users"></i>
+                                    <span>Ver quem curtiu</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">
+                            <div class="categorias-empty">
+                                <i class="fa-solid fa-box"></i>
+                                <h3>Nenhum produto encontrado</h3>
+                                <p>
+                                    {% if request.GET.q %}
+                                        Tente buscar usando outro nome.
+                                    {% else %}
+                                        Os produtos aparecem aqui quando você cadastra a primeira oferta.
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if page_obj.paginator.num_pages > 0 %}
+        <footer class="categorias-footer">
+            <span class="categorias-page-info">
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                <span class="categorias-total">· {{ page_obj.paginator.count }} registros</span>
+            </span>
+
+            {% if page_obj.has_other_pages %}
+            <nav class="categorias-pagination" aria-label="Paginação">
+                {% if page_obj.has_previous %}
+                    <a href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}"
+                        class="page-button" aria-label="Página anterior">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+                {% else %}
+                    <span class="page-button disabled"><i class="fa-solid fa-chevron-left"></i></span>
+                {% endif %}
+
+                <span class="page-current">{{ page_obj.number }}</span>
+
+                {% if page_obj.has_next %}
+                    <a href="?{% if request.GET.q %}q={{ request.GET.q|urlencode }}&{% endif %}page={{ page_obj.next_page_number }}"
+                        class="page-button" aria-label="Próxima página">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                {% else %}
+                    <span class="page-button disabled"><i class="fa-solid fa-chevron-right"></i></span>
+                {% endif %}
+            </nav>
+            {% endif %}
+        </footer>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

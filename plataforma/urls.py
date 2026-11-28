@@ -49,6 +49,10 @@ urlpatterns = [
     path("adm/cupons/editar/<int:id>", views.cadastrar_editar_cupom, name="editar_cupom"),
     path("adm/cupons/<int:id>/excluir/", views.excluir_cupom, name="excluir_cupom"),
 
+    # produtos e curtidas adm
+    path("adm/produtos/", views.produtos_adm, name="produtos_adm"),
+    path("adm/produtos/<int:id>/curtidas/", views.curtidas_produto_adm, name="curtidas_produto_adm"),
+
     #categorias adm
     path("adm/categorias/", views.categorias_adm, name="categorias_adm"),
     path("adm/categorias/cadastrar", views.cadastrar_editar_categoria, name="cadastrar_categoria"),

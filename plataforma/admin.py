@@ -14,7 +14,8 @@ from .models import (
     LojaParceira,
     Oferta,
     UsuarioReal,
-    Voto,
+    Produto,
+    Curtida,
     FavoritoCupom,
     ClickCupom,
 )
@@ -117,7 +118,7 @@ class OfertaAdmin(DescontoAdminMixin, admin.ModelAdmin):
         "is_destaque",
         "is_relampago",
         "criado_em",
-        "total_votos",
+        "total_curtidas",
         "total_favoritos",
         "total_clicks",
     )
@@ -138,15 +139,16 @@ class OfertaAdmin(DescontoAdminMixin, admin.ModelAdmin):
     )
     readonly_fields = (
         "desconto_exibido",
+        "produto",
         "data_inicio",
         "data_fim",
         "criado_em",
     )
     ordering = ("-criado_em",)
 
-    @admin.display(description="Votos")
-    def total_votos(self, obj):
-        return obj.votos_registros.count()
+    @admin.display(description="Curtidas do produto")
+    def total_curtidas(self, obj):
+        return obj.produto.curtidas.count() if obj.produto else 0
 
     @admin.display(description="Favoritos")
     def total_favoritos(self, obj):
@@ -164,11 +166,35 @@ class FavoritoAdmin(admin.ModelAdmin):
     readonly_fields = ("criado_em",)
 
 
-@admin.register(Voto)
-class VotoAdmin(admin.ModelAdmin):
-    list_display = ("usuario", "oferta", "criado_em")
+class CurtidaInline(admin.TabularInline):
+    """Mostra, dentro do produto, os usuários que curtiram."""
+    model = Curtida
+    extra = 0
+    raw_id_fields = ("usuario",)
+    readonly_fields = ("criado_em",)
+
+
+@admin.register(Produto)
+class ProdutoAdmin(admin.ModelAdmin):
+    list_display = ("nome", "total_ofertas", "total_curtidas", "criado_em")
+    search_fields = ("nome",)
+    readonly_fields = ("criado_em",)
+    inlines = [CurtidaInline]
+
+    @admin.display(description="Ofertas")
+    def total_ofertas(self, obj):
+        return obj.ofertas.count()
+
+    @admin.display(description="Curtidas")
+    def total_curtidas(self, obj):
+        return obj.curtidas.count()
+
+
+@admin.register(Curtida)
+class CurtidaAdmin(admin.ModelAdmin):
+    list_display = ("usuario", "produto", "criado_em")
     list_filter = ("criado_em",)
-    search_fields = ("usuario__username", "usuario__email", "oferta__nome_produto")
+    search_fields = ("usuario__username", "usuario__email", "produto__nome")
     readonly_fields = ("criado_em",)
 
 

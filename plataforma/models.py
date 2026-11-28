@@ -138,6 +138,29 @@ class DescontoCalculadoMixin(models.Model):
                 )
 
 
+class Produto(models.Model):
+
+    nome = models.CharField(max_length=100, unique=True)
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Produto"
+        verbose_name_plural = "Produtos"
+        ordering = ["nome"]
+
+    def __str__(self):
+        return self.nome
+
+    @classmethod
+    def buscar_ou_criar(cls, nome):
+        """Acha o produto pelo nome (sem diferenciar maiúsculas) ou cria um novo."""
+        nome = " ".join((nome or "").split())
+        produto = cls.objects.filter(nome__iexact=nome).first()
+        if produto is None:
+            produto = cls.objects.create(nome=nome)
+        return produto
+
+
 class Oferta(DescontoCalculadoMixin):
     loja = models.ForeignKey(
         LojaParceira,
@@ -158,6 +181,14 @@ class Oferta(DescontoCalculadoMixin):
         blank=True,
         related_name="ofertas",
     )
+    produto = models.ForeignKey(
+        Produto,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        editable=False,
+        related_name="ofertas",
+    )
     nome_produto = models.CharField(max_length=100)
     link_afiliado = models.URLField(max_length=500)
     image_url = models.ImageField(upload_to="ofertas/", blank=True, null=True)
@@ -167,6 +198,13 @@ class Oferta(DescontoCalculadoMixin):
     criado_em = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.nome_produto
+
+    def save(self, *args, **kwargs):
+        # Na primeira vez, liga a oferta ao produto (cria o produto se ainda não existir).
+        # Ofertas com o mesmo nome de produto caem no mesmo produto.
+        if self.produto_id is None:
+            self.produto = Produto.buscar_ou_criar(self.nome_produto)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Oferta"
@@ -203,32 +241,33 @@ class Favorito(models.Model):
 
 
 
-class Voto(models.Model):
+class Curtida(models.Model):
     usuario = models.ForeignKey(
         UsuarioReal,
         on_delete=models.CASCADE,
-        related_name="votos",
+        related_name="curtidas",
     )
-    oferta = models.ForeignKey(
-        Oferta,
+    produto = models.ForeignKey(
+        Produto,
         on_delete=models.CASCADE,
-        related_name="votos_registros",
+        related_name="curtidas",
     )
     criado_em = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "Voto"
-        verbose_name_plural = "Votos"
+        verbose_name = "Curtida"
+        verbose_name_plural = "Curtidas"
         ordering = ["-criado_em"]
         constraints = [
             models.UniqueConstraint(
-                fields=["usuario", "oferta"],
-                name="unique_voto",
+                fields=["usuario", "produto"],
+                name="unique_curtida",
             ),
         ]
 
     def __str__(self):
-        return f"{self.usuario} - {self.oferta}"
+        return f"{self.usuario} - {self.produto}"
+
 
 class ClickOferta(models.Model):
     usuario = models.ForeignKey(

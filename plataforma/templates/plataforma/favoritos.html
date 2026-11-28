@@ -114,6 +114,96 @@
         {% endif %}
 
         <h2 class="favorites-page__section-title">
+            <i class="fa-solid fa-thumbs-up"></i> Produtos curtidos
+            <small>({{ produtos_curtidos|length }})</small>
+        </h2>
+
+        {% if produtos_curtidos %}
+            <div class="favorites-page__grid">
+
+                {% for produto in produtos_curtidos %}
+                    <article class="favorites-card">
+
+                        <div class="favorites-card__image">
+                            {% with primeira=produto.ofertas_ativas.0 %}
+                                {% if primeira and primeira.image_url %}
+                                    <img
+                                        src="{{ primeira.image_url.url }}"
+                                        alt="{{ produto.nome }}"
+                                        loading="lazy"
+                                    >
+                                {% else %}
+                                    <i class="fa-regular fa-image"></i>
+                                {% endif %}
+                            {% endwith %}
+
+                            <span class="favorites-card__badge">
+                                <i class="fa-solid fa-thumbs-up"></i>
+                                Curtido
+                            </span>
+                        </div>
+
+                            {% if produto.ofertas_ativas %}
+                                    {% for oferta in produto.ofertas_ativas %}
+                                        <div class="favorites-card__content">
+                                        <span class="favorites-card__store">
+                                            {{ oferta.loja.nome }}
+                                        </span>
+
+                                        <h2 class="favorites-card__title">
+                                            {{ produto.nome }}
+                                        </h2>
+                                        <div class="favorites-card__prices">
+                                            {% if oferta.preco_anterior %}
+                                                <span class="favorites-card__old-price">
+                                                    R$ {{ oferta.preco_anterior|floatformat:2 }}
+                                                </span>
+                                            {% endif %}
+
+                                            <strong class="favorites-card__price">
+                                                R$ {{ oferta.preco_atual|floatformat:2 }}
+                                            </strong>
+                                        </div>
+                                        <a
+                                            href="{{ oferta.link_afiliado }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="favorites-card__button"
+                                        >
+                                            Ver oferta
+                                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                        </a>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="favorites-card__muted">
+                                    Sem oferta ativa agora. Seu interesse continua guardado aqui.
+                                </p>
+                            {% endif %}
+                        </div>
+
+                    </article>
+                {% endfor %}
+
+            </div>
+        {% else %}
+            <div class="favorites-empty">
+                <span class="favorites-empty__icon">
+                    <i class="fa-regular fa-thumbs-up"></i>
+                </span>
+
+                <h2>Nenhum produto curtido ainda</h2>
+
+                <p>Curta os produtos que você gostou. Eles ficam aqui mesmo depois que a oferta acabar.</p>
+
+                <a href="{% url 'ofertas' %}" class="favorites-empty__button">
+                    <i class="fa-solid fa-fire"></i>
+                    Explorar ofertas
+                </a>
+            </div>
+        {% endif %}
+
+        <h2 class="favorites-page__section-title">
             <i class="fa-solid fa-ticket"></i> Cupons favoritos
             <small>({{ cupons_favoritos|length }})</small>
         </h2>

@@ -1,4 +1,3 @@
-
 {% extends 'plataforma/base.html' %}
 {% load static %}
 
@@ -122,6 +121,7 @@
             <div class="favorites-page__grid">
 
                 {% for produto in produtos_curtidos %}
+                    {# um card por produto curtido, com o preço de cada loja parceira #}
                     <article class="favorites-card">
 
                         <div class="favorites-card__image">
@@ -143,43 +143,50 @@
                             </span>
                         </div>
 
-                            {% if produto.ofertas_ativas %}
-                                    {% for oferta in produto.ofertas_ativas %}
-                                        <div class="favorites-card__content">
-                                        <span class="favorites-card__store">
-                                            {{ oferta.loja.nome }}
+                        <div class="favorites-card__content">
+                            <h2 class="favorites-card__title">
+                                {{ produto.nome }}
+                            </h2>
+
+                            {% for oferta in produto.ofertas_ativas %}
+                                <span class="favorites-card__store">
+                                    {{ oferta.loja.nome }}
+                                </span>
+
+                                <div class="favorites-card__prices">
+                                    {% if oferta.preco_anterior %}
+                                        <span class="favorites-card__old-price">
+                                            R$ {{ oferta.preco_anterior|floatformat:2 }}
                                         </span>
+                                    {% endif %}
 
-                                        <h2 class="favorites-card__title">
-                                            {{ produto.nome }}
-                                        </h2>
-                                        <div class="favorites-card__prices">
-                                            {% if oferta.preco_anterior %}
-                                                <span class="favorites-card__old-price">
-                                                    R$ {{ oferta.preco_anterior|floatformat:2 }}
-                                                </span>
-                                            {% endif %}
+                                    <strong class="favorites-card__price">
+                                        R$ {{ oferta.preco_atual|floatformat:2 }}
+                                    </strong>
+                                </div>
 
-                                            <strong class="favorites-card__price">
-                                                R$ {{ oferta.preco_atual|floatformat:2 }}
-                                            </strong>
-                                        </div>
-                                        <a
-                                            href="{{ oferta.link_afiliado }}"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            class="favorites-card__button"
-                                        >
-                                            Ver oferta
-                                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                        </a>
-                                    {% endfor %}
-                                </ul>
-                            {% else %}
+                                <a
+                                    href="{{ oferta.link_afiliado }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="favorites-card__button"
+                                >
+                                    Ver oferta
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            {% empty %}
                                 <p class="favorites-card__muted">
                                     Sem oferta ativa agora. Seu interesse continua guardado aqui.
                                 </p>
-                            {% endif %}
+                            {% endfor %}
+
+                            <form method="post" action="{% url 'descurtir_produto' produto.pk %}" style="width: 100%;">
+                                {% csrf_token %}
+                                <button type="submit" class="favorites-card__button">
+                                    <i class="fa-solid fa-thumbs-down"></i>
+                                    Deixar de curtir
+                                </button>
+                            </form>
                         </div>
 
                     </article>

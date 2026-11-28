@@ -200,10 +200,10 @@ class Oferta(DescontoCalculadoMixin):
         return self.nome_produto
 
     def save(self, *args, **kwargs):
-        # Na primeira vez, liga a oferta ao produto (cria o produto se ainda não existir).
-        # Ofertas com o mesmo nome de produto caem no mesmo produto.
-        if self.produto_id is None:
-            self.produto = Produto.buscar_ou_criar(self.nome_produto)
+
+        nome = " ".join((self.nome_produto or "").split())
+        if self.produto_id is None or self.produto.nome.lower() != nome.lower():
+            self.produto = Produto.buscar_ou_criar(nome)
         super().save(*args, **kwargs)
 
     class Meta:

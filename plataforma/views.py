@@ -349,6 +349,16 @@ def votar_oferta(request, pk):
 
 
 @require_POST
+def descurtir_produto(request, pk):
+    """Remove a curtida direto pelo PRODUTO (funciona mesmo sem nenhuma oferta ativa)."""
+    if not request.user.is_authenticated:
+        return redirect("login")
+
+    Curtida.objects.filter(usuario=request.user, produto_id=pk).delete()
+    return redirect("favoritos")
+
+
+@require_POST
 def favoritar_oferta(request, pk):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -654,6 +664,17 @@ def produtos_adm(request):
 
     paginator = Paginator(produtos, 10)
     page_obj = paginator.get_page(request.GET.get('page'))
+
+    # Imagem do produto = imagem da oferta mais recente que tiver foto
+    for produto in page_obj:
+        oferta = (
+            produto.ofertas
+            .exclude(image_url="")
+            .exclude(image_url__isnull=True)
+            .first()
+        )
+        produto.imagem = oferta.image_url if oferta else None
+
     return render(request, "plataforma/adm/produtos_adm.html", {"produtos": page_obj, "page_obj": page_obj})
 
 

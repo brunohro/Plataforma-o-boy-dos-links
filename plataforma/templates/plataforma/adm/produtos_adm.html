@@ -54,7 +54,15 @@
                         <td>
                             <div class="categorias-product">
                                 <div class="categorias-image">
-                                    <i class="fa-solid fa-box"></i>
+                                    {% if produto.imagem %}
+                                        <img
+                                            src="{{ produto.imagem.url }}"
+                                            alt="{{ produto.nome }}"
+                                            loading="lazy"
+                                        >
+                                    {% else %}
+                                        <i class="fa-solid fa-box"></i>
+                                    {% endif %}
                                 </div>
                                 <div class="categorias-product-info">
                                     <span class="categorias-name">{{ produto.nome }}</span>
